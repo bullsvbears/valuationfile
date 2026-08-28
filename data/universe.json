@@ -2878,19 +2878,6 @@
    "priorYearReturn": 0.030719995
   },
   {
-   "ticker": "PAYX",
-   "name": "Paychex, Inc.",
-   "fiscalYearEnd": 5,
-   "coverage": "Non-Covered Companies",
-   "covered": false,
-   "sectors": [
-    "HCM Legacy"
-   ],
-   "peerGroups": [],
-   "ytdReturn": 0.11098229999999999,
-   "priorYearReturn": 0.030719995
-  },
-  {
    "ticker": "PCTY",
    "name": "Paylocity Holding Corp.",
    "fiscalYearEnd": 6,

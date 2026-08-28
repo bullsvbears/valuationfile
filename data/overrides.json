@@ -29,8 +29,34 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "AMPL": {
    "series": {
@@ -78,8 +104,49 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "BAND": {
    "series": {
@@ -131,8 +198,55 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "BRZE": {
    "series": {
@@ -180,8 +294,49 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "CRM": {
    "series": {
@@ -233,8 +388,55 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "CXM": {
    "series": {
@@ -280,8 +482,49 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "DV": {
    "series": {
@@ -333,8 +576,55 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "FIVN": {
    "series": {
@@ -382,8 +672,51 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "GDDY": {
    "series": {
@@ -435,8 +768,55 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "HUBS": {
    "series": {
@@ -488,8 +868,55 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "IDCC": {
    "series": {
@@ -527,8 +954,41 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "INTU": {
    "series": {
@@ -576,8 +1036,51 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "KVYO": {
    "series": {
@@ -615,8 +1118,39 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "MNDY": {
    "series": {
@@ -664,8 +1198,49 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "NICE": {
    "series": {
@@ -715,8 +1290,51 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "NOW": {
    "series": {
@@ -772,8 +1390,59 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "OOMA": {
    "series": {
@@ -825,8 +1494,55 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "RDCM": {
    "series": {
@@ -879,8 +1595,54 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SHOP": {
    "series": {
@@ -932,8 +1694,55 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SMWB": {
    "series": {
@@ -981,8 +1790,49 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SPT": {
    "series": {
@@ -1034,8 +1884,55 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "TEAM": {
    "series": {
@@ -1087,8 +1984,55 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "THRY": {
    "series": {
@@ -1140,8 +2084,55 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "TWLO": {
    "series": {
@@ -1189,8 +2180,51 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "WIX": {
    "series": {
@@ -1242,8 +2276,55 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ZETA": {
    "series": {
@@ -1289,8 +2370,49 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ZM": {
    "series": {
@@ -1340,8 +2462,51 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "FIG": {
    "series": {
@@ -1369,8 +2534,29 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ADSK": {
    "series": {
@@ -1421,16 +2607,62 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ARLO": {
    "series": {},
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {},
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "BLND": {
    "series": {
@@ -1448,16 +2680,29 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "ebitda": [
+     "2020"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "BSY": {
    "series": {},
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {},
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "CCC": {
    "series": {
@@ -1479,8 +2724,25 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019"
+    ],
+    "ebitda": [
+     "2018",
+     "2019"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "CWAN": {
    "series": {
@@ -1494,16 +2756,25 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "DSGX": {
    "series": {},
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {},
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ENFN": {
    "series": {
@@ -1525,8 +2796,25 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "IOT": {
    "series": {
@@ -1547,16 +2835,30 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019"
+    ],
+    "grossProfit": [
+     "2019"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "MANH": {
    "series": {},
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {},
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PCOR": {
    "series": {
@@ -1586,8 +2888,31 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018"
+    ],
+    "grossProfit": [
+     "2018"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SPNS": {
    "series": {
@@ -1603,24 +2928,35 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "ebitda": [
+     "2026"
+    ],
+    "eps": [
+     "2026"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SPSC": {
    "series": {},
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {},
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "TTAN": {
    "series": {},
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {},
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "U": {
    "series": {
@@ -1642,8 +2978,25 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019"
+    ],
+    "ebitda": [
+     "2018",
+     "2019"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "VEEV": {
    "series": {
@@ -1654,16 +3007,20 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "eps": [
+     "2018"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "XZO": {
    "series": {},
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {},
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "AI": {
    "series": {
@@ -1689,8 +3046,29 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "AMSWA": {
    "series": {
@@ -1704,8 +3082,17 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "APP": {
    "series": {
@@ -1721,8 +3108,19 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "APPF": {
    "series": {
@@ -1732,8 +3130,13 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ASAN": {
    "series": {
@@ -1758,8 +3161,28 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019"
+    ],
+    "ebitda": [
+     "2018",
+     "2019"
+    ],
+    "eps": [
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "AVPT": {
    "series": {
@@ -1790,8 +3213,34 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "AVT": {
    "series": {
@@ -1801,8 +3250,13 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "grossProfit": [
+     "2024",
+     "2025"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "CFLT": {
    "series": {
@@ -1828,8 +3282,29 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "CGNT": {
    "series": {
@@ -1856,8 +3331,30 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019"
+    ],
+    "grossProfit": [
+     "2019"
+    ],
+    "ebitda": [
+     "2019"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "CLBT": {
    "series": {
@@ -1883,8 +3380,29 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "CMRC": {
    "series": {
@@ -1910,8 +3428,29 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019"
+    ],
+    "ebitda": [
+     "2018",
+     "2019"
+    ],
+    "eps": [
+     "2018",
+     "2019"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "COUR": {
    "series": {
@@ -1937,8 +3476,29 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019"
+    ],
+    "ebitda": [
+     "2018",
+     "2019"
+    ],
+    "eps": [
+     "2019"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "CRWD": {
    "series": {
@@ -1956,8 +3516,21 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017"
+    ],
+    "grossProfit": [
+     "2018"
+    ],
+    "ebitda": [
+     "2018"
+    ],
+    "fcf": [
+     "2018"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "DDOG": {
    "series": {
@@ -1979,8 +3552,25 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018"
+    ],
+    "grossProfit": [
+     "2018"
+    ],
+    "ebitda": [
+     "2018"
+    ],
+    "eps": [
+     "2018"
+    ],
+    "fcf": [
+     "2018"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "DNA": {
    "series": {
@@ -1999,8 +3589,22 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2020"
+    ],
+    "grossProfit": [
+     "2020"
+    ],
+    "ebitda": [
+     "2020"
+    ],
+    "fcf": [
+     "2020",
+     "2021"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "DOCN": {
    "series": {
@@ -2010,8 +3614,13 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "DOMO": {
    "series": {
@@ -2032,8 +3641,24 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017"
+    ],
+    "grossProfit": [
+     "2018"
+    ],
+    "ebitda": [
+     "2018"
+    ],
+    "eps": [
+     "2018"
+    ],
+    "fcf": [
+     "2018"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "DT": {
    "series": {
@@ -2054,8 +3679,24 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018"
+    ],
+    "grossProfit": [
+     "2018"
+    ],
+    "ebitda": [
+     "2018"
+    ],
+    "eps": [
+     "2018"
+    ],
+    "fcf": [
+     "2018"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ERIC": {
    "series": {
@@ -2066,8 +3707,14 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ESTC": {
    "series": {
@@ -2078,8 +3725,14 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "EVCM": {
    "series": {
@@ -2103,8 +3756,27 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "EXFY": {
    "series": {
@@ -2118,8 +3790,17 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "FFIV": {
    "series": {
@@ -2129,8 +3810,13 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "ebitda": [
+     "2024",
+     "2025"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "FROG": {
    "series": {
@@ -2156,8 +3842,29 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019"
+    ],
+    "ebitda": [
+     "2018",
+     "2019"
+    ],
+    "eps": [
+     "2018",
+     "2019"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "FRSH": {
    "series": {
@@ -2179,8 +3886,25 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "GTLB": {
    "series": {
@@ -2206,8 +3930,29 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "IAS": {
    "series": {
@@ -2225,8 +3970,21 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "JAMF": {
    "series": {
@@ -2255,8 +4013,32 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "LAW": {
    "series": {
@@ -2282,8 +4064,29 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "LEE": {
    "series": {
@@ -2313,8 +4116,33 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "LZ": {
    "series": {
@@ -2340,8 +4168,29 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "MSTR": {
    "series": {
@@ -2369,8 +4218,31 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "grossProfit": [
+     "2018",
+     "2019"
+    ],
+    "ebitda": [
+     "2018",
+     "2019"
+    ],
+    "eps": [
+     "2024",
+     "2025"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "NABL": {
    "series": {
@@ -2401,8 +4273,34 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "NCNO": {
    "series": {
@@ -2413,8 +4311,14 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "NET": {
    "series": {
@@ -2435,8 +4339,24 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018"
+    ],
+    "grossProfit": [
+     "2018"
+    ],
+    "ebitda": [
+     "2018"
+    ],
+    "eps": [
+     "2018"
+    ],
+    "fcf": [
+     "2018"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "NTGR": {
    "series": {
@@ -2457,8 +4377,24 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018"
+    ],
+    "grossProfit": [
+     "2018"
+    ],
+    "ebitda": [
+     "2018"
+    ],
+    "eps": [
+     "2018"
+    ],
+    "fcf": [
+     "2018"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "NLSN": {
    "series": {
@@ -2493,8 +4429,38 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2022",
+     "2024",
+     "2025"
+    ],
+    "grossProfit": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "ebitda": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "eps": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "fcf": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "NRDS": {
    "series": {
@@ -2525,8 +4491,34 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "OS": {
    "series": {
@@ -2538,8 +4530,13 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PAR": {
    "series": {
@@ -2556,8 +4553,20 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017"
+    ],
+    "ebitda": [
+     "2018"
+    ],
+    "fcf": [
+     "2018",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PATH": {
    "series": {
@@ -2579,8 +4588,25 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PD": {
    "series": {
@@ -2611,8 +4637,34 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PLTR": {
    "series": {
@@ -2626,8 +4678,17 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PUBM": {
    "series": {
@@ -2641,8 +4702,17 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ],
+    "ebitda": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PYCR": {
    "series": {
@@ -2667,8 +4737,28 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "S": {
    "series": {
@@ -2686,8 +4776,21 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SEMR": {
    "series": {
@@ -2706,8 +4809,22 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2019"
+    ],
+    "ebitda": [
+     "2019"
+    ],
+    "fcf": [
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SNOW": {
    "series": {
@@ -2732,8 +4849,28 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019"
+    ],
+    "ebitda": [
+     "2019"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SPCX": {
    "series": {
@@ -2754,8 +4891,24 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "grossProfit": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "eps": [
+     "2023",
+     "2024",
+     "2025"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SWI": {
    "series": {
@@ -2764,8 +4917,12 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "TENB": {
    "series": {
@@ -2774,8 +4931,12 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "TOST": {
    "series": {
@@ -2797,8 +4958,25 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "UDMY": {
    "series": {
@@ -2824,8 +5002,29 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "VERX": {
    "series": {
@@ -2855,8 +5054,33 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "VSURE-OME": {
    "series": {},
@@ -2864,8 +5088,8 @@
     "cash": 0,
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {},
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "WEAV": {
    "series": {
@@ -2891,8 +5115,29 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "WK": {
    "series": {
@@ -2903,8 +5148,14 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ZI": {
    "series": {
@@ -2921,8 +5172,20 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019"
+    ],
+    "fcf": [
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ZIP": {
    "series": {
@@ -2945,8 +5208,26 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ZS": {
    "series": {
@@ -2955,8 +5236,12 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "AVLR": {
    "series": {
@@ -3005,8 +5290,48 @@
     "cash": 1460.594,
     "debt": 1018.725
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "CSOD": {
    "series": {
@@ -3042,8 +5367,35 @@
     "cash": 147.025,
     "debt": 1142.843
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "CTXS": {
    "series": {
@@ -3092,8 +5444,48 @@
     "cash": 872.799,
     "debt": 3466.871
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ECOM": {
    "series": {
@@ -3144,8 +5536,50 @@
     "cash": 88.115,
     "debt": 4.787
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "EVBG": {
    "series": {
@@ -3187,8 +5621,45 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "IS": {
    "series": {
@@ -3231,8 +5702,42 @@
     "cash": 386.513,
     "debt": 38.446
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PLAN": {
    "series": {
@@ -3273,8 +5778,40 @@
     "cash": 304.021,
     "debt": 49.272
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PRSM-GB": {
    "series": {
@@ -3309,8 +5846,34 @@
     "cash": 74.1,
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "USER": {
    "series": {
@@ -3358,8 +5921,47 @@
     "cash": 164.435,
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "eps": [
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "XM": {
    "series": {
@@ -3388,8 +5990,30 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ZEN": {
    "series": {
@@ -3440,8 +6064,50 @@
     "cash": 1660.7559999999999,
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "CPLF-TSE": {
    "series": {
@@ -3473,8 +6139,33 @@
    "balance": {
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SQSP": {
    "series": {
@@ -3505,8 +6196,34 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "INST": {
    "series": {
@@ -3533,8 +6250,30 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "WKME": {
    "series": {
@@ -3552,8 +6291,21 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "MIXT": {
    "series": {
@@ -3599,8 +6351,45 @@
     "cash": 26.280961861,
     "debt": 24.8060201235
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SPLK": {
    "series": {
@@ -3651,8 +6440,50 @@
     "cash": 1689.708,
     "debt": 3261.761
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "HRT": {
    "series": {
@@ -3687,8 +6518,34 @@
     "cash": 77.285,
     "debt": 742.241
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "STER": {
    "series": {
@@ -3723,8 +6580,34 @@
     "cash": 74.182,
     "debt": 562.24
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "BNFT": {
    "series": {
@@ -3767,8 +6650,42 @@
     "cash": 55.124,
     "debt": 196.559
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "COUP": {
    "series": {
@@ -3809,8 +6726,40 @@
     "cash": 860.128,
     "debt": 2198.05
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PWSC": {
    "series": {
@@ -3853,8 +6802,42 @@
     "cash": 20.678,
     "debt": 1021.23
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "AYX": {
    "series": {
@@ -3904,8 +6887,49 @@
     "cash": 725,
     "debt": 1306
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "LVOX": {
    "series": {
@@ -3938,8 +6962,32 @@
     "cash": 57.4,
     "debt": 58.105
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "grossProfit": [
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "ebitda": [
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "eps": [
+     "2021",
+     "2022"
+    ],
+    "fcf": [
+     "2021",
+     "2022"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "DCT": {
    "series": {
@@ -3973,8 +7021,33 @@
     "cash": 263.888,
     "debt": 21.329
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "eps": [
+     "2020",
+     "2021"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "AHC": {
    "series": {
@@ -4001,8 +7074,30 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019"
+    ],
+    "ebitda": [
+     "2018",
+     "2019"
+    ],
+    "eps": [
+     "2018",
+     "2019"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "EBIX": {
    "series": {
@@ -4041,8 +7136,42 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "EPAY": {
    "series": {
@@ -4078,8 +7207,35 @@
     "cash": 118.569,
     "debt": 163.718
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "KLR": {
    "series": {
@@ -4119,8 +7275,39 @@
     "cash": 64.984,
     "debt": 218.337
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "grossProfit": [
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "eps": [
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "KNBE": {
    "series": {
@@ -4162,8 +7349,41 @@
     "cash": 343.936,
     "debt": 14.519
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "ebitda": [
+     "2020",
+     "2021"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "MDP": {
    "series": {
@@ -4194,8 +7414,30 @@
     "cash": 269,
     "debt": 3209.1
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "MIME": {
    "series": {
@@ -4231,8 +7473,35 @@
     "cash": 416.173000003972,
     "debt": 208.706000001992
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "NEWR": {
    "series": {
@@ -4278,8 +7547,45 @@
     "cash": 436.572,
     "debt": 42.728
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PFPT": {
    "series": {
@@ -4315,8 +7621,35 @@
     "cash": 936.884,
     "debt": 1118.725
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PRFT": {
    "series": {
@@ -4365,8 +7698,48 @@
     "cash": 112.937,
     "debt": 422.038
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "PS": {
    "series": {
@@ -4401,8 +7774,34 @@
     "cash": 399.615,
     "debt": 582.076
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SHSP": {
    "series": {
@@ -4438,8 +7837,35 @@
     "cash": 25.15724,
     "debt": 10.006617
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SOW-DE": {
    "series": {
@@ -4489,8 +7915,49 @@
     "cash": 144.856071151257,
     "debt": 18.6785271983147
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SUMO": {
    "series": {
@@ -4533,8 +8000,42 @@
     "cash": 302.439,
     "debt": 1.663
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SVMK": {
    "series": {
@@ -4580,8 +8081,45 @@
     "cash": 199.653,
     "debt": 230.248
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "TPCO": {
    "series": {
@@ -4610,8 +8148,28 @@
     "cash": 222.409,
     "debt": 69.431
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "TWOU": {
    "series": {
@@ -4659,8 +8217,47 @@
     "cash": 34.889,
     "debt": 999.311
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "TWTR": {
    "series": {
@@ -4701,8 +8298,40 @@
     "cash": 6128.686,
     "debt": 6717.224
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "VCRA": {
    "series": {
@@ -4742,8 +8371,39 @@
     "cash": 332.393,
     "debt": 275.836
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "VG": {
    "series": {},
@@ -4752,8 +8412,8 @@
     "cash": 4905,
     "debt": 27722
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {},
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "VMW": {
    "series": {
@@ -4799,8 +8459,45 @@
     "cash": 6822,
     "debt": 11428
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "WIFI": {
    "series": {
@@ -4835,8 +8532,34 @@
     "cash": 36.272,
     "debt": 216.418
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020"
+    ],
+    "fcf": [
+     "2018",
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "SMAR": {
    "series": {
@@ -4901,8 +8624,64 @@
     "cash": 761.127,
     "debt": 39.758
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "AZPN": {
    "series": {
@@ -4967,8 +8746,64 @@
     "cash": 221.093,
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "OLO": {
    "series": {
@@ -5017,8 +8852,48 @@
     "cash": 377.444,
     "debt": 12.727
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "ebitda": [
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "BASE": {
    "series": {
@@ -5075,8 +8950,56 @@
     "cash": 142.222,
     "debt": 8.184
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "eps": [
+     "2019",
+     "2020",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "HCP": {
    "series": {
@@ -5125,8 +9048,48 @@
     "cash": 1346.401,
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "ebitda": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ],
+    "eps": [
+     "2019",
+     "2020",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "fcf": [
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ALTR": {
    "series": {
@@ -5187,8 +9150,60 @@
     "cash": 507.008,
     "debt": 226.518
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ANSS": {
    "series": {
@@ -5249,8 +9264,60 @@
     "cash": 1070.609,
     "debt": 210.165
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "GLOO": {
    "series": {
@@ -5259,8 +9326,12 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "fcf": [
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "GRRR": {
    "series": {
@@ -5269,8 +9340,12 @@
     }
    },
    "balance": {},
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "fcf": [
+     "2019"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   },
   "ONTF": {
    "series": {
@@ -5340,8 +9415,69 @@
     "cash": 167.529,
     "debt": 0
    },
-   "imported": true,
-   "note": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
+   "imported": {
+    "revenue": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026",
+     "2027"
+    ],
+    "grossProfit": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026",
+     "2027"
+    ],
+    "ebitda": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026",
+     "2027"
+    ],
+    "eps": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026",
+     "2027"
+    ],
+    "fcf": [
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026",
+     "2027"
+    ]
+   },
+   "importNote": "Hard-coded cell imported from d2d88bc2-Software_Valuation_File.xlsx"
   }
  }
 }

@@ -65,6 +65,32 @@ def cell_value(value):
     return None
 
 
+# Sector Summary FY27 columns: the group label, its member count, and the
+# median 2027 EV/Revenue the sheet published for it.
+SUMMARY_COLUMNS = {"group": 2, "n": 4, "evRevenue": 10}
+SUMMARY_ROWS = (7, 42)
+
+
+def read_sector_summary(workbook) -> dict:
+    """Published group medians, for checking the peer-group roll-ups."""
+    sheet = workbook["Sector Summary FY27"]
+    groups: dict[str, dict] = {}
+    for row in sheet.iter_rows(
+        min_row=SUMMARY_ROWS[0], max_row=SUMMARY_ROWS[1], max_col=12, values_only=True
+    ):
+        label = row[SUMMARY_COLUMNS["group"] - 1]
+        if not isinstance(label, str) or not label.strip():
+            continue
+        median = cell_value(row[SUMMARY_COLUMNS["evRevenue"] - 1])
+        if not isinstance(median, (int, float)):
+            continue
+        groups[label.strip()] = {
+            "n": cell_value(row[SUMMARY_COLUMNS["n"] - 1]),
+            "evRevenueMedian": median,
+        }
+    return groups
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("workbook", type=Path)
@@ -110,6 +136,11 @@ def main() -> None:
     target = args.out / "master-software-expected.json"
     target.write_text(json.dumps(expected, indent=1) + "\n")
     print(f"captured {len(expected)} tickers -> {target}")
+
+    summary = read_sector_summary(workbook)
+    summary_target = args.out / "sector-summary-expected.json"
+    summary_target.write_text(json.dumps(summary, indent=1) + "\n")
+    print(f"captured {len(summary)} groups  -> {summary_target}")
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ import path from 'node:path'
 import type {
   CompanyMeta,
   FactSetCache,
+  MetricKey,
   OverrideEntry,
   OverrideStore,
   OwnModel,
@@ -135,9 +136,51 @@ export class DataStore {
     return next
   }
 
-  async clearOverrides(ticker: string): Promise<void> {
+  /**
+   * Drop the overrides an analyst entered here, keeping the cells carried over
+   * from the source workbook.
+   *
+   * Those imported cells are almost all reported actuals, so wiping them would
+   * silently delete history the analyst never chose to override. Pass
+   * `includeImported` to clear them too.
+   */
+  async clearOverrides(ticker: string, includeImported = false): Promise<void> {
     const store = await this.loadOverrides()
-    delete store.companies[ticker]
+    const current = store.companies[ticker]
+    if (!current) return
+
+    if (includeImported || !current.imported) {
+      delete store.companies[ticker]
+      await this.saveOverrides(store)
+      return
+    }
+
+    const series: Record<string, Record<string, number | null>> = {}
+    for (const [metric, years] of Object.entries(current.series ?? {})) {
+      const keep = new Set(current.imported[metric as MetricKey] ?? [])
+      const kept: Record<string, number | null> = {}
+      for (const [year, value] of Object.entries(years ?? {})) {
+        if (keep.has(year) && value !== undefined) kept[year] = value
+      }
+      if (Object.keys(kept).length) series[metric] = kept
+    }
+
+    if (!Object.keys(series).length) delete store.companies[ticker]
+    else store.companies[ticker] = { ...current, series, updatedAt: new Date().toISOString() }
+
     await this.saveOverrides(store)
+  }
+
+  /** Count of override cells an analyst entered here, ignoring imported ones. */
+  static analystOverrideCount(entry: OverrideEntry | undefined): number {
+    if (!entry) return 0
+    let count = 0
+    for (const [metric, years] of Object.entries(entry.series ?? {})) {
+      const imported = new Set(entry.imported?.[metric as MetricKey] ?? [])
+      for (const year of Object.keys(years ?? {})) {
+        if (!imported.has(year)) count += 1
+      }
+    }
+    return count
   }
 }

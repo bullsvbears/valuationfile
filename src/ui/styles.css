@@ -1,0 +1,336 @@
+/*
+ * A dense, desk-oriented palette: neutral ground, restrained colour, and one
+ * accent per data tier so provenance is legible at a glance without turning
+ * the grid into a heat map.
+ */
+:root {
+  color-scheme: light;
+
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #fbfbfd;
+  --border: #e3e6ec;
+  --border-strong: #cdd3dd;
+
+  --text: #16191f;
+  --text-muted: #5d6470;
+  --text-faint: #878e9b;
+
+  --accent: #2f5fd8;
+  --accent-soft: #eaf0fd;
+
+  /* One hue per tier, reused everywhere provenance is shown. */
+  --tier-factset: #6b7280;
+  --tier-factset-soft: #f0f1f3;
+  --tier-model: #7a4bc4;
+  --tier-model-soft: #f2ecfb;
+  --tier-override: #b45309;
+  --tier-override-soft: #fdf1e1;
+
+  --positive: #157347;
+  --negative: #b42318;
+
+  --radius: 7px;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #101216;
+    --surface: #171a20;
+    --surface-2: #1c2027;
+    --border: #272c35;
+    --border-strong: #363d49;
+    --text: #e8eaee;
+    --text-muted: #9aa2b1;
+    --text-faint: #6f7787;
+    --accent: #6f9bff;
+    --accent-soft: #1a2540;
+    --tier-factset: #98a0ae;
+    --tier-factset-soft: #21252d;
+    --tier-model: #b795ee;
+    --tier-model-soft: #241d33;
+    --tier-override: #e0a458;
+    --tier-override-soft: #2e2415;
+    --positive: #4ac07f;
+    --negative: #f0736a;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select { font: inherit; color: inherit; }
+
+/* ---------- Layout ---------- */
+
+.app { display: flex; flex-direction: column; min-height: 100vh; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 20px;
+  height: 52px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.topbar h1 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.tabs { display: flex; gap: 2px; }
+
+.tab {
+  background: none;
+  border: 0;
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-weight: 500;
+}
+.tab:hover { background: var(--surface-2); color: var(--text); }
+.tab[aria-selected='true'] { background: var(--accent-soft); color: var(--accent); }
+
+.spacer { flex: 1; }
+
+.asof { color: var(--text-faint); font-size: 12px; white-space: nowrap; }
+
+.content { padding: 16px 20px 48px; }
+
+/* ---------- Controls ---------- */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 5px 9px;
+}
+.control label { color: var(--text-muted); font-size: 12px; }
+.control select, .control input[type='text'] {
+  background: none;
+  border: 0;
+  outline: none;
+  min-width: 90px;
+}
+.control input[type='text'] { min-width: 170px; }
+.control input[type='checkbox'] { margin: 0; }
+.control label { cursor: pointer; }
+
+.count { color: var(--text-faint); font-size: 12px; }
+
+/* ---------- Tables ---------- */
+
+.table-wrap {
+  overflow: auto;
+  max-height: calc(100vh - 190px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+table { border-collapse: separate; border-spacing: 0; width: 100%; }
+
+th, td {
+  padding: 6px 10px;
+  text-align: right;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border-strong);
+  cursor: pointer;
+  user-select: none;
+}
+thead th:hover { color: var(--text); }
+thead th.group-head {
+  top: 0;
+  text-align: center;
+  cursor: default;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-faint);
+}
+thead tr:nth-child(2) th { top: 25px; }
+
+th.left, td.left { text-align: left; }
+
+/* The ticker column stays visible while the metric columns scroll. */
+th.sticky-col, td.sticky-col {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+thead th.sticky-col { z-index: 4; background: var(--surface-2); }
+tbody tr:hover td { background: var(--surface-2); }
+tbody tr:hover td.sticky-col { background: var(--surface-2); }
+
+td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12px; }
+td.nm { color: var(--text-faint); }
+.pos { color: var(--positive); }
+.neg { color: var(--negative); }
+
+.ticker-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  font-family: var(--mono);
+}
+.ticker-btn:hover { text-decoration: underline; }
+
+.company-name { color: var(--text-muted); font-size: 12px; }
+
+/* ---------- Tier badges ---------- */
+
+.tier-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+.tier-dot.factset { background: var(--tier-factset); }
+.tier-dot.model { background: var(--tier-model); }
+.tier-dot.override { background: var(--tier-override); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.badge.factset { background: var(--tier-factset-soft); color: var(--tier-factset); }
+.badge.model { background: var(--tier-model-soft); color: var(--tier-model); }
+.badge.override { background: var(--tier-override-soft); color: var(--tier-override); }
+.badge.covered { background: var(--accent-soft); color: var(--accent); }
+
+.legend { display: flex; gap: 14px; align-items: center; color: var(--text-muted); font-size: 12px; }
+.legend span { display: flex; align-items: center; gap: 5px; }
+
+/* ---------- Company detail ---------- */
+
+.detail { display: grid; gap: 14px; }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.panel h2 { margin: 0 0 2px; font-size: 14px; font-weight: 600; }
+.panel h3 { margin: 0 0 10px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.panel .sub { color: var(--text-muted); font-size: 12px; margin: 0 0 12px; }
+
+.stat-row { display: flex; flex-wrap: wrap; gap: 22px; }
+.stat .label { color: var(--text-faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+.stat .value { font-family: var(--mono); font-size: 16px; font-weight: 600; margin-top: 2px; }
+
+.back {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+.back:hover { background: var(--surface-2); color: var(--text); }
+
+/* ---------- Editable input grid ---------- */
+
+.cell-input {
+  width: 100%;
+  min-width: 84px;
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 3px 5px;
+}
+.cell-input:hover { border-color: var(--border-strong); }
+.cell-input:focus { border-color: var(--accent); background: var(--surface); outline: none; }
+.cell-input.tier-model { color: var(--tier-model); }
+.cell-input.tier-override { color: var(--tier-override); font-weight: 600; }
+.cell-input.dirty { background: var(--accent-soft); }
+
+.row-label { font-weight: 500; color: var(--text-muted); }
+
+.actions { display: flex; gap: 8px; align-items: center; margin-top: 12px; }
+
+.btn {
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 6px 13px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.btn:hover:not(:disabled) { background: var(--surface-2); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover:not(:disabled) { filter: brightness(1.08); }
+
+.hint { color: var(--text-faint); font-size: 12px; }
+
+.status { padding: 10px 14px; border-radius: var(--radius); margin-bottom: 12px; }
+.status.error { background: var(--tier-override-soft); color: var(--tier-override); }
+
+.loading { padding: 48px; text-align: center; color: var(--text-muted); }
+
+.editor-scroll { overflow-x: auto; }
+.editor-table th { cursor: default; }
+.editor-table td:first-child, .editor-table th:first-child { text-align: left; }
+
+/* An imported cell is workbook history, not an edit made here: shown in the
+   override hue but muted, so real edits still stand out against it. */
+.cell-input.imported { color: var(--text-muted); font-weight: 400; font-style: italic; }

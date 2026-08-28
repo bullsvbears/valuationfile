@@ -71,8 +71,13 @@ app.patch('/api/company/:ticker/override', route(async (req, res) => {
   res.json(entry)
 }))
 
+/**
+ * Clear overrides for a company. By default this keeps the cells imported from
+ * the source workbook, which are reported actuals rather than analyst edits;
+ * `?includeImported=true` clears those as well.
+ */
 app.delete('/api/company/:ticker/override', route(async (req, res) => {
-  await store.clearOverrides(tickerParam(req))
+  await store.clearOverrides(tickerParam(req), req.query.includeImported === 'true')
   res.json({ ok: true })
 }))
 

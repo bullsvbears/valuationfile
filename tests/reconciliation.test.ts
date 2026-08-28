@@ -185,7 +185,7 @@ describe('importer vs the workbook', () => {
   const byTicker = new Map(dashboard.companies.map((c) => [c.meta.ticker, c]))
 
   it('imports the full universe across all three tiers', () => {
-    expect(universe.companies.length).toBe(336)
+    expect(universe.companies.length).toBe(335)
     expect(Object.keys(models).length).toBeGreaterThan(40)
     expect(Object.keys(factset.companies).length).toBeGreaterThan(200)
   })
@@ -236,5 +236,60 @@ describe('importer vs the workbook', () => {
         expect(view.resolved.series.revenue[year]?.tier).toBe('model')
       }
     }
+  })
+})
+
+describe('peer-group roll-ups vs the Sector Summary sheet', () => {
+  const universe = read<Universe>('data/universe.json')
+  const summaryExpected = read<Record<string, { n: number | null; evRevenueMedian: number }>>(
+    'tests/fixtures/sector-summary-expected.json',
+  )
+  const groups: Record<string, string[]> = { ...universe.sectors, ...universe.peerGroups }
+
+  /**
+   * Groups whose published median covers fewer names than the group itself
+   * holds, because the summary formula's range was never extended when members
+   * were added. Security Software publishes the 6th of 13 sorted values, which
+   * is the median of an eleven-name group, not a thirteen-name one.
+   */
+  const RANGE_LAGS_MEMBERSHIP = ['15%-20% Growth', 'Security Software'] as const
+
+  function medianEvRevenue(members: string[]): number | null {
+    const values = members
+      .map((t) => expected[t]?.metrics['2027']?.evRevenue)
+      .filter((v): v is number => typeof v === 'number')
+      .sort((a, b) => a - b)
+    if (!values.length) return null
+    const mid = Math.floor(values.length / 2)
+    return values.length % 2 ? values[mid]! : (values[mid - 1]! + values[mid]!) / 2
+  }
+
+  it('reproduces the published median for every group whose range is current', () => {
+    const mismatches: string[] = []
+    const lagging: string[] = []
+    let compared = 0
+
+    for (const [group, published] of Object.entries(summaryExpected)) {
+      const members = groups[group]
+      if (!members) continue
+      const ours = medianEvRevenue(members)
+      if (ours === null) continue
+
+      compared += 1
+      const differs =
+        Math.abs(ours - published.evRevenueMedian) / Math.abs(published.evRevenueMedian) > TOLERANCE
+      if (!differs) continue
+
+      if ((RANGE_LAGS_MEMBERSHIP as readonly string[]).includes(group)) lagging.push(group)
+      else {
+        mismatches.push(
+          `${group}: sheet ${published.evRevenueMedian.toFixed(3)}, ours ${ours.toFixed(3)}`,
+        )
+      }
+    }
+
+    expect(compared).toBeGreaterThan(25)
+    expect(mismatches).toEqual([])
+    expect(lagging.sort()).toEqual([...RANGE_LAGS_MEMBERSHIP])
   })
 })

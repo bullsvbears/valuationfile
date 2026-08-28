@@ -131,6 +131,8 @@ def main() -> None:
             peers_by_ticker.setdefault(ticker, []).append(name)
 
     companies: list[dict] = []
+    seen: set[str] = set()
+    duplicates: list[str] = []
     factset: dict[str, dict] = {}
     overrides: dict[str, dict] = {}
     models: dict[str, dict] = {}
@@ -151,6 +153,14 @@ def main() -> None:
             continue
 
         ticker = str(ticker).strip()
+        if ticker in seen:
+            # The workbook looked companies up with VLOOKUP, which only ever
+            # reaches the first matching row, so a repeated ticker was already
+            # dead weight there. Carrying it forward would give two rows the
+            # same identity.
+            duplicates.append(f"{ticker} (row {index + 1})")
+            continue
+        seen.add(ticker)
         covered = bool(coverage and "Covered" in coverage and "Non-Covered" not in coverage)
 
         for metric, (first_col, last_col) in METRIC_BLOCKS.items():
@@ -201,10 +211,18 @@ def main() -> None:
         "companies": factset,
     })
 
+    # Every override produced by this import is marked cell by cell, so an
+    # analyst clearing their own edits never disturbs the imported history.
     imported_note = f"Hard-coded cell imported from {args.workbook.name}"
     write(args.out / "overrides.json", {
         "companies": {
-            ticker: {**entry, "imported": True, "note": imported_note}
+            ticker: {
+                **entry,
+                "imported": {
+                    metric: sorted(years, key=int) for metric, years in entry["series"].items()
+                },
+                "importNote": imported_note,
+            }
             for ticker, entry in overrides.items()
         }
     })
@@ -213,6 +231,8 @@ def main() -> None:
         write(args.out / "models" / f"{ticker}.json", {"ticker": ticker, **entry})
 
     print(f"companies        {len(companies)}")
+    if duplicates:
+        print(f"skipped repeats  {', '.join(duplicates)}")
     print(f"factset tier     {len(factset)} companies")
     print(f"override tier    {len(overrides)} companies")
     print(f"model tier       {len(models)} companies")

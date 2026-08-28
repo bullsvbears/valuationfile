@@ -68,7 +68,7 @@ function toNumber(v: unknown): number | null {
  * Returns are reported by FactSet in percentage points, so they are divided by
  * 100 here to match the fractions the rest of the app works in.
  */
-export function parseCompanyRow(row: FormulaResponseRow): CompanyFacts {
+export function parseCompanyRow(row: FormulaResponseRow): Required<Pick<CompanyFacts, 'series'>> & CompanyFacts {
   const series: Partial<Record<MetricKey, Record<string, number | null>>> = {}
 
   for (const [field, raw] of Object.entries(row)) {

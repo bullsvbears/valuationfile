@@ -1,0 +1,118 @@
+{
+ "Adtech": {
+  "n": 13,
+  "evRevenueMedian": 2.3867568438551814
+ },
+ "Communication Software": {
+  "n": 6,
+  "evRevenueMedian": 2.5595157823901964
+ },
+ "E-Commerce/Website Builders": {
+  "n": 5,
+  "evRevenueMedian": 2.8159499491165816
+ },
+ "Front Office": {
+  "n": 19,
+  "evRevenueMedian": 2.44095789983625
+ },
+ "HCM": {
+  "n": 4,
+  "evRevenueMedian": 4.384045679547585
+ },
+ "Hyperscalers": {
+  "n": 4,
+  "evRevenueMedian": 5.934499332105509
+ },
+ "Infrastructure and Data Software": {
+  "n": 26,
+  "evRevenueMedian": 5.849884003154385
+ },
+ "Mega Cap Tech": {
+  "n": 7,
+  "evRevenueMedian": 8.790452796954279
+ },
+ "Office of the CFO/ERP": {
+  "n": 10,
+  "evRevenueMedian": 3.299780828327438
+ },
+ "Security Software": {
+  "n": 13,
+  "evRevenueMedian": 6.366673229757091
+ },
+ "SMB Software": {
+  "n": 25,
+  "evRevenueMedian": 3.098726429320456
+ },
+ "Supply Chain and Logistics": {
+  "n": 6,
+  "evRevenueMedian": 6.606932994678491
+ },
+ "Technical Software": {
+  "n": 6,
+  "evRevenueMedian": 6.306499633155525
+ },
+ "Vertical Software": {
+  "n": 27,
+  "evRevenueMedian": 4.232370217620546
+ },
+ "Workflow & Project Management": {
+  "n": 10,
+  "evRevenueMedian": 3.4474282940472527
+ },
+ "Neoclouds": {
+  "n": 3,
+  "evRevenueMedian": 3.9170903677529534
+ },
+ "Core Software Group": {
+  "n": 75,
+  "evRevenueMedian": 5.446129195481824
+ },
+ "Software Group": {
+  "n": 110,
+  "evRevenueMedian": 4.453975160409392
+ },
+ "Fast Growth Peers": {
+  "n": 14,
+  "evRevenueMedian": 7.892147258356525
+ },
+ "50%+ Growth": {
+  "n": 5,
+  "evRevenueMedian": 5.736929056438905
+ },
+ "30%-40% Growth": {
+  "n": 7,
+  "evRevenueMedian": 9.93574737685073
+ },
+ "20%-30% Growth": {
+  "n": 16,
+  "evRevenueMedian": 7.701479797087786
+ },
+ "15%-20% Growth": {
+  "n": 18,
+  "evRevenueMedian": 5.037372059070288
+ },
+ "10%-15% Growth": {
+  "n": 19,
+  "evRevenueMedian": 4.232370217620546
+ },
+ "5%-10% Growth": {
+  "n": 23,
+  "evRevenueMedian": 3.5773008209111823
+ },
+ "0%-5% Growth": {
+  "n": 7,
+  "evRevenueMedian": 3.225550104335363
+ },
+ "<0% Growth": {
+  "n": 11,
+  "evRevenueMedian": 1.943750129397912
+ },
+ "Large Cap Software Peers": {
+  "n": 16,
+  "evRevenueMedian": 5.538070840741623
+ },
+ "High FCF Margin Peers": {
+  "n": 20,
+  "evRevenueMedian": 6.111383955290275
+ }
+}

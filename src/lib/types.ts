@@ -75,6 +75,18 @@ export interface OverrideEntry extends CompanyFacts {
   /** Why the override exists, surfaced in the UI so edits stay auditable. */
   notes?: Partial<Record<string, string>>
   updatedAt?: string
+  /**
+   * Cells carried over from the source workbook rather than entered here,
+   * as `metric -> years`.
+   *
+   * The workbook's hand-typed cells were overwhelmingly reported actuals, not
+   * deliberate departures from consensus, but a spreadsheet cannot tell the two
+   * apart: both are just a number someone typed. Marking them keeps "clear my
+   * overrides" from silently discarding a decade of reported history.
+   */
+  imported?: Partial<Record<MetricKey, string[]>>
+  /** Provenance note for the imported cells. */
+  importNote?: string
 }
 
 /** The model tier: a full owned model for a covered company. */
