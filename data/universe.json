@@ -1,0 +1,5560 @@
+{
+ "companies": [
+  {
+   "ticker": "ADBE",
+   "name": "Adobe, Inc.",
+   "fiscalYearEnd": 11,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Front Office"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth",
+    "Large Cap Software Peers",
+    "Mature State Software",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": -0.22389209999999998,
+   "priorYearReturn": -0.21293968
+  },
+  {
+   "ticker": "AMPL",
+   "name": "Amplitude, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Front Office"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": 0.126079445,
+   "priorYearReturn": 0.09763026
+  },
+  {
+   "ticker": "BAND",
+   "name": "Bandwidth, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Communication Software"
+   ],
+   "peerGroups": [
+    "Software Group"
+   ],
+   "ytdReturn": 2.0679613,
+   "priorYearReturn": -0.09224444
+  },
+  {
+   "ticker": "BRZE",
+   "name": "Braze, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Front Office",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth"
+   ],
+   "ytdReturn": -0.107903185,
+   "priorYearReturn": -0.18123208999999998
+  },
+  {
+   "ticker": "CRM",
+   "name": "Salesforce, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Front Office"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth",
+    "Large Cap Software Peers",
+    "Mature State Software",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": -0.23007809999999998,
+   "priorYearReturn": -0.2076391
+  },
+  {
+   "ticker": "CXM",
+   "name": "Sprinklr, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Front Office"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "0%-5% Growth"
+   ],
+   "ytdReturn": -0.044344482000000005,
+   "priorYearReturn": -0.079289913
+  },
+  {
+   "ticker": "DV",
+   "name": "Doubleverify Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Adtech",
+    "Front Office",
+    "Vertical + Rule of 60",
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": 0.16302454,
+   "priorYearReturn": -0.40447679999999997
+  },
+  {
+   "ticker": "FIVN",
+   "name": "Five9, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Front Office"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth"
+   ],
+   "ytdReturn": 0.5735661000000001,
+   "priorYearReturn": -0.5066437
+  },
+  {
+   "ticker": "GDDY",
+   "name": "Godaddy, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "E-Commerce/Website Builders",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": -0.23025465,
+   "priorYearReturn": -0.37133299999999997
+  },
+  {
+   "ticker": "HUBS",
+   "name": "Hubspot, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Front Office",
+    "SMB Software",
+    "FUNCTIONAL"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": -0.41103912000000004,
+   "priorYearReturn": -0.42405678
+  },
+  {
+   "ticker": "IDCC",
+   "name": "Interdigital, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.08849489,
+   "priorYearReturn": 0.643506
+  },
+  {
+   "ticker": "INTU",
+   "name": "Intuit, Inc.",
+   "fiscalYearEnd": 7,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Office of the CFO/ERP",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth",
+    "Large Cap Software Peers",
+    "Mature State Software",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": -0.48006546,
+   "priorYearReturn": 0.05396974
+  },
+  {
+   "ticker": "KVYO",
+   "name": "Klaviyo, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Front Office",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth"
+   ],
+   "ytdReturn": -0.4496458,
+   "priorYearReturn": -0.21265762
+  },
+  {
+   "ticker": "MNDY",
+   "name": "Monday.Com Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "SMB Software",
+    "Workflow & Project Management"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": -0.37808352999999995,
+   "priorYearReturn": -0.3732586
+  },
+  {
+   "ticker": "NICE",
+   "name": "Nice Ltd. (Israel)",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Front Office"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": -0.11526895,
+   "priorYearReturn": -0.33443237000000003
+  },
+  {
+   "ticker": "NOW",
+   "name": "Servicenow, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Workflow & Project Management",
+    "Vertical + Rule of 60",
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth",
+    "Large Cap Software Peers",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": -0.18297535,
+   "priorYearReturn": -0.27748744999999997
+  },
+  {
+   "ticker": "OOMA",
+   "name": "Ooma, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Communication Software",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group"
+   ],
+   "ytdReturn": 0.73657295,
+   "priorYearReturn": -0.16571844
+  },
+  {
+   "ticker": "RDCM",
+   "name": "Radcom Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Vertical Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.20871555,
+   "priorYearReturn": 0.058252454
+  },
+  {
+   "ticker": "SHOP",
+   "name": "Shopify, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "E-Commerce/Website Builders",
+    "SMB Software",
+    "Leading Vertical Software",
+    "TTAN Comp Group",
+    "FUNCTIONAL",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth"
+   ],
+   "ytdReturn": -0.059731664999999996,
+   "priorYearReturn": 0.5138718999999999
+  },
+  {
+   "ticker": "SMWB",
+   "name": "Similarweb Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Front Office"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "10%-15% Growth"
+   ],
+   "ytdReturn": 0.20894539,
+   "priorYearReturn": -0.47141849999999996
+  },
+  {
+   "ticker": "SPT",
+   "name": "Sprout Social, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Front Office",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": -0.05190772,
+   "priorYearReturn": -0.63301853
+  },
+  {
+   "ticker": "TEAM",
+   "name": "Atlassian Corp.",
+   "fiscalYearEnd": 6,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "SMB Software",
+    "Workflow & Project Management",
+    "Vertical + Rule of 60"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth",
+    "Large Cap Software Peers"
+   ],
+   "ytdReturn": 0.04030466,
+   "priorYearReturn": -0.333799
+  },
+  {
+   "ticker": "THRY",
+   "name": "Thryv Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Front Office",
+    "SMB Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.6884298,
+   "priorYearReturn": -0.5912162
+  },
+  {
+   "ticker": "TWLO",
+   "name": "Twilio, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Communication Software",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": 0.58984802,
+   "priorYearReturn": 0.3160622
+  },
+  {
+   "ticker": "WIX",
+   "name": "Wix.Com Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "E-Commerce/Website Builders",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth"
+   ],
+   "ytdReturn": -0.19761282000000002,
+   "priorYearReturn": -0.51577724
+  },
+  {
+   "ticker": "ZETA",
+   "name": "Zeta Global Holdings Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Adtech",
+    "Front Office"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "Fast Growth Peers",
+    "30%-40% Growth"
+   ],
+   "ytdReturn": 0.38722347,
+   "priorYearReturn": 0.13118399
+  },
+  {
+   "ticker": "ZM",
+   "name": "Zoom Communications, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Communication Software",
+    "SMB Software",
+    "Blended AdTech and Rule of 40",
+    "FUNCTIONAL"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "0%-5% Growth",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": 0.08627879999999999,
+   "priorYearReturn": 0.057345867
+  },
+  {
+   "ticker": "FIG",
+   "name": "Figma, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Bhatia - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Workflow & Project Management"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "Fast Growth Peers",
+    "30%-40% Growth"
+   ],
+   "ytdReturn": -0.27388275,
+   "priorYearReturn": 0.13242424242424233
+  },
+  {
+   "ticker": "ADSK",
+   "name": "Autodesk, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Technical Software",
+    "Leading Vertical Software",
+    "ROP Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth",
+    "Large Cap Software Peers",
+    "Mature State Software",
+    "High FCF Margin Peers",
+    "High Margin Rule of 40"
+   ],
+   "ytdReturn": -0.14744436,
+   "priorYearReturn": 0.0014886856000000002
+  },
+  {
+   "ticker": "AIOT",
+   "name": "Powerfleet, Inc.",
+   "fiscalYearEnd": 3,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Supply Chain and Logistics"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.43796993,
+   "priorYearReturn": -0.20120113
+  },
+  {
+   "ticker": "ARLO",
+   "name": "Arlo Technologies, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.06433165,
+   "priorYearReturn": 0.25022339
+  },
+  {
+   "ticker": "BLND",
+   "name": "Blend Labs, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Vertical Software",
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [
+    "Software Group"
+   ],
+   "ytdReturn": -0.5148026,
+   "priorYearReturn": -0.27790976
+  },
+  {
+   "ticker": "BSY",
+   "name": "Bentley Systems, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Technical Software",
+    "ROP Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth",
+    "High FCF Margin Peers",
+    "High Margin Rule of 40"
+   ],
+   "ytdReturn": -0.04008913,
+   "priorYearReturn": -0.18276232
+  },
+  {
+   "ticker": "CCC",
+   "name": "Ccc Intelligent Solutions Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Vertical Software",
+    "ROP Comp Group",
+    "XZO Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": -0.07913208,
+   "priorYearReturn": -0.3222506
+  },
+  {
+   "ticker": "CWAN",
+   "name": "Clearwater Analytics Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.12318319000000001,
+   "priorYearReturn": 0.37393906
+  },
+  {
+   "ticker": "DSGX",
+   "name": "The Descartes Systems Group, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Supply Chain and Logistics",
+    "Leading Vertical Software",
+    "ROP Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth",
+    "Mature State Software",
+    "High FCF Margin Peers",
+    "High Margin Rule of 40"
+   ],
+   "ytdReturn": -0.12885016,
+   "priorYearReturn": -0.22834503
+  },
+  {
+   "ticker": "ENFN",
+   "name": "Enfusion, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": 0.061855674
+  },
+  {
+   "ticker": "EVLV",
+   "name": "Evolv Technologies Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.27025139,
+   "priorYearReturn": 0.81265816
+  },
+  {
+   "ticker": "GWRE",
+   "name": "Guidewire Software, Inc.",
+   "fiscalYearEnd": 7,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Vertical Software",
+    "Leading Vertical Software",
+    "Vertical + Rule of 60",
+    "SPNS Comp Group",
+    "TTAN Comp Group",
+    "XZO Comp Group",
+    "FUNCTIONAL",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": -0.05288291,
+   "priorYearReturn": 0.19237148
+  },
+  {
+   "ticker": "IOT",
+   "name": "Samsara, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Supply Chain and Logistics",
+    "Leading Vertical Software",
+    "Vertical + Rule of 60",
+    "FUNCTIONAL",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth"
+   ],
+   "ytdReturn": 0.11678421,
+   "priorYearReturn": -0.1886015
+  },
+  {
+   "ticker": "KARO",
+   "name": "Karooooo Ltd.",
+   "fiscalYearEnd": 2,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Supply Chain and Logistics"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.40999996000000005,
+   "priorYearReturn": 0.0077519417
+  },
+  {
+   "ticker": "MANH",
+   "name": "Manhattan Associates, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Supply Chain and Logistics",
+    "Leading Vertical Software",
+    "TTAN Comp Group",
+    "XZO Comp Group",
+    "FUNCTIONAL"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": 0.24320591,
+   "priorYearReturn": -0.35868114
+  },
+  {
+   "ticker": "PCOR",
+   "name": "Procore Technologies, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Vertical Software",
+    "Leading Vertical Software",
+    "Vertical + Rule of 60",
+    "TTAN Comp Group",
+    "XZO Comp Group",
+    "FUNCTIONAL"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth"
+   ],
+   "ytdReturn": -0.16689579999999998,
+   "priorYearReturn": -0.029227316
+  },
+  {
+   "ticker": "ROP",
+   "name": "Roper Technologies, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Vertical Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": -0.075416207,
+   "priorYearReturn": -0.14373374
+  },
+  {
+   "ticker": "SPNS",
+   "name": "Sapiens International Corp. Nv",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "MGIC Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "SPSC",
+   "name": "Sps Commerce, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "SMB Software",
+    "Supply Chain and Logistics",
+    "Leading Vertical Software",
+    "FUNCTIONAL"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": -0.09974194,
+   "priorYearReturn": -0.5155715
+  },
+  {
+   "ticker": "TTAN",
+   "name": "Servicetitan, Inc.",
+   "fiscalYearEnd": 11,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "SMB Software",
+    "Vertical Software",
+    "Leading Vertical Software",
+    "FUNCTIONAL",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": -0.14901411,
+   "priorYearReturn": 0.03528726
+  },
+  {
+   "ticker": "U",
+   "name": "Unity Software, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Adtech",
+    "Vertical Software",
+    "Leading Vertical Software",
+    "Vertical + Rule of 60",
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": 0.014376283,
+   "priorYearReturn": 0.9657321
+  },
+  {
+   "ticker": "VEEV",
+   "name": "Veeva Systems, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [
+    "Vertical Software",
+    "Leading Vertical Software",
+    "Vertical + Rule of 60",
+    "TTAN Comp Group",
+    "Blended AdTech and Rule of 40",
+    "XZO Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": 0.10547411000000001,
+   "priorYearReturn": 0.061735990000000004
+  },
+  {
+   "ticker": "XZO",
+   "name": "Exzeo Group, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Becker - Covered Companies",
+   "covered": true,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.29381443,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "005930-KR",
+   "name": "Samsung Electronics Co., Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 1.1809843,
+   "priorYearReturn": 0.41952979999999995
+  },
+  {
+   "ticker": "066570-KR",
+   "name": "Lg Electronics, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 1.1817193000000001,
+   "priorYearReturn": 0.17687857
+  },
+  {
+   "ticker": "532540-IN",
+   "name": "Tata Consultancy Services Ltd.",
+   "fiscalYearEnd": 3,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "SPNS Comp Group",
+    "MGIC Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.29158545,
+   "priorYearReturn": 0.1643629
+  },
+  {
+   "ticker": "763-HK",
+   "name": "Zte Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.12822401,
+   "priorYearReturn": 0.013953447
+  },
+  {
+   "ticker": "AAPL",
+   "name": "Apple, Inc.",
+   "fiscalYearEnd": 9,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Mega Cap Tech"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.15004051000000002,
+   "priorYearReturn": 0.48179794000000004
+  },
+  {
+   "ticker": "ACIW",
+   "name": "Aci Worldwide, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "ACN",
+   "name": "Accenture Plc",
+   "fiscalYearEnd": 8,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "SPNS Comp Group",
+    "MGIC Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.32290344,
+   "priorYearReturn": 0.31505775
+  },
+  {
+   "ticker": "ADP",
+   "name": "Automatic Data Processing, Inc.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "ADT",
+   "name": "Adt, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "ARLO Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.08302348999999999,
+   "priorYearReturn": 0.16787265999999998
+  },
+  {
+   "ticker": "AGYS",
+   "name": "Agilysis, Inc.",
+   "fiscalYearEnd": 3,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software",
+    "Leading Vertical Software",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": -0.038707495,
+   "priorYearReturn": -0.09771471999999999
+  },
+  {
+   "ticker": "AI",
+   "name": "C3.Ai, Inc.",
+   "fiscalYearEnd": 4,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "<0% Growth"
+   ],
+   "ytdReturn": -0.28857565,
+   "priorYearReturn": -0.608481
+  },
+  {
+   "ticker": "ALKT",
+   "name": "Alkami Technology, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.134373665,
+   "priorYearReturn": -0.37104689999999996
+  },
+  {
+   "ticker": "ALRM",
+   "name": "Alarm.com Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software",
+    "ARLO Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.10525285999999999,
+   "priorYearReturn": -0.16085523999999998
+  },
+  {
+   "ticker": "AMSWA",
+   "name": "Logility Supply Chain Solutions, Inc.",
+   "fiscalYearEnd": 4,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": -0.019469023000000002
+  },
+  {
+   "ticker": "AMZN",
+   "name": "Amazon.Com, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Hyperscalers",
+    "Mega Cap Tech"
+   ],
+   "peerGroups": [
+    "Large Cap Software Peers"
+   ],
+   "ytdReturn": 0.126678705,
+   "priorYearReturn": 0.05209899
+  },
+  {
+   "ticker": "ANET",
+   "name": "Arista Networks, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.5005723,
+   "priorYearReturn": 0.18546999
+  },
+  {
+   "ticker": "APP",
+   "name": "Applovin Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Adtech",
+    "Vertical Software",
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.5403669,
+   "priorYearReturn": 1.08078316
+  },
+  {
+   "ticker": "APPF",
+   "name": "Appfolio, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "SMB Software",
+    "Vertical Software",
+    "Leading Vertical Software",
+    "TTAN Comp Group",
+    "FUNCTIONAL",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": -0.04545456,
+   "priorYearReturn": -0.057028236
+  },
+  {
+   "ticker": "APPN",
+   "name": "Appian Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Workflow & Project Management"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": 0.10573125,
+   "priorYearReturn": 0.073984146
+  },
+  {
+   "ticker": "APPS",
+   "name": "Digital Turbine, Inc.",
+   "fiscalYearEnd": 3,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Adtech",
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 1.1600001,
+   "priorYearReturn": -0.54986877
+  },
+  {
+   "ticker": "ARW",
+   "name": "Arrow Electronics, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "ARX",
+   "name": "Accelerant Holdings",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "VERTICAL"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.20336390000000001,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "ASAN",
+   "name": "Asana, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Workflow & Project Management"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": -0.31619257,
+   "priorYearReturn": -0.323631
+  },
+  {
+   "ticker": "ASGN",
+   "name": "Everforth, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "MGIC Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.35603070000000003,
+   "priorYearReturn": -0.42200626
+  },
+  {
+   "ticker": "AVGO",
+   "name": "Broadcom Inc.",
+   "fiscalYearEnd": 11,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.019040704,
+   "priorYearReturn": 0.996405
+  },
+  {
+   "ticker": "AVPT",
+   "name": "Avepoint, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.05579555,
+   "priorYearReturn": -0.1586917
+  },
+  {
+   "ticker": "AVT",
+   "name": "Avnet, Inc.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "AXON",
+   "name": "Axon Enterprise, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software",
+    "Leading Vertical Software",
+    "FUNCTIONAL",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.05383146,
+   "priorYearReturn": -0.044403734
+  },
+  {
+   "ticker": "BABA",
+   "name": "Alibaba Group Holding Ltd.",
+   "fiscalYearEnd": 3,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.17546803,
+   "priorYearReturn": 0.7287416
+  },
+  {
+   "ticker": "BILL",
+   "name": "Bill Holdings, Inc.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Office of the CFO/ERP",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "10%-15% Growth"
+   ],
+   "ytdReturn": -0.13237995,
+   "priorYearReturn": -0.35615627000000005
+  },
+  {
+   "ticker": "BKNG",
+   "name": "Booking Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.015746951,
+   "priorYearReturn": 0.76016235
+  },
+  {
+   "ticker": "BL",
+   "name": "Blackline, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Office of the CFO/ERP"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": -0.43714959999999997,
+   "priorYearReturn": -0.09002632
+  },
+  {
+   "ticker": "BLKB",
+   "name": "Blackbaud, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "0%-5% Growth",
+    "PEGA"
+   ],
+   "ytdReturn": -0.26358180999999997,
+   "priorYearReturn": -0.14339823000000002
+  },
+  {
+   "ticker": "BLZE",
+   "name": "Backblaze, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 2.2296138,
+   "priorYearReturn": -0.22591364
+  },
+  {
+   "ticker": "BOX",
+   "name": "Box, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": 0.10264122,
+   "priorYearReturn": -0.053481045
+  },
+  {
+   "ticker": "BRO",
+   "name": "Brown & Brown, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "VERTICAL"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.08281052000000001,
+   "priorYearReturn": 0.24820077999999998
+  },
+  {
+   "ticker": "CDNS",
+   "name": "Cadence Design Systems, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Technical Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth",
+    "Large Cap Software Peers",
+    "Mature State Software",
+    "High Margin Rule of 40"
+   ],
+   "ytdReturn": 0.069950104,
+   "priorYearReturn": 0.04033816
+  },
+  {
+   "ticker": "CDW",
+   "name": "Cdw Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "CEVA",
+   "name": "Ceva, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.26998138,
+   "priorYearReturn": -0.11219704
+  },
+  {
+   "ticker": "CFLT",
+   "name": "Confluent, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.07474971,
+   "priorYearReturn": 0.19487179000000002
+  },
+  {
+   "ticker": "CGNT",
+   "name": "Cognyte Software Ltd.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "CHGG",
+   "name": "Chegg, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.15064514,
+   "priorYearReturn": -0.42236023
+  },
+  {
+   "ticker": "CHKP",
+   "name": "Check Point Software Technologies Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.30804056,
+   "priorYearReturn": -0.0061060786
+  },
+  {
+   "ticker": "CLBT",
+   "name": "Cellebrite Di Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.37049366,
+   "priorYearReturn": -0.18157059
+  },
+  {
+   "ticker": "CMCSA",
+   "name": "Comcast Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.03524375,
+   "priorYearReturn": 0.25393188
+  },
+  {
+   "ticker": "CMRC",
+   "name": "Commerce.Com, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "E-Commerce/Website Builders"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "<0% Growth"
+   ],
+   "ytdReturn": -0.43932037,
+   "priorYearReturn": -0.32679737000000003
+  },
+  {
+   "ticker": "COUR",
+   "name": "Coursera, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": -0.18614138,
+   "priorYearReturn": -0.1341176
+  },
+  {
+   "ticker": "CRTO",
+   "name": "Criteo Sa",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Adtech"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.17151869,
+   "priorYearReturn": -0.02839601
+  },
+  {
+   "ticker": "CRWD",
+   "name": "Crowdstrike Holdings, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": 0.6077309799999999,
+   "priorYearReturn": 0.37000239999999995
+  },
+  {
+   "ticker": "CRWV",
+   "name": "Coreweave, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Neoclouds"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Fast Growth Peers",
+    "50%+ Growth"
+   ],
+   "ytdReturn": 0.21554243,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "CSC",
+   "name": "Csc Collective Holdings Ltd.",
+   "fiscalYearEnd": null,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "CSCO",
+   "name": "Cisco Systems, Inc.",
+   "fiscalYearEnd": 7,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.44800735,
+   "priorYearReturn": 0.30118238
+  },
+  {
+   "ticker": "CSGS",
+   "name": "Csg Systems International, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": 0.50048912
+  },
+  {
+   "ticker": "CSU-CA",
+   "name": "Constellation Software, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "ROP Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.067668257,
+   "priorYearReturn": -0.25726282
+  },
+  {
+   "ticker": "CTAS",
+   "name": "Cintas Corp.",
+   "fiscalYearEnd": 5,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "CTSH",
+   "name": "Cognizant Technology Solutions Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "SPNS Comp Group",
+    "MGIC Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.26180720999999996,
+   "priorYearReturn": 0.3206854
+  },
+  {
+   "ticker": "CVLT",
+   "name": "Commvault Systems, Inc.",
+   "fiscalYearEnd": 3,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.0605855,
+   "priorYearReturn": -0.16930622
+  },
+  {
+   "ticker": "CYBR",
+   "name": "Cyberark Software Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": 0.33891644
+  },
+  {
+   "ticker": "DASTY",
+   "name": "Dassault Syst\u00e8mes Se",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Technical Software"
+   ],
+   "peerGroups": [
+    "Large Cap Software Peers",
+    "Mature State Software",
+    "High Margin Rule of 40"
+   ],
+   "ytdReturn": -0.062466564,
+   "priorYearReturn": -0.19285648
+  },
+  {
+   "ticker": "DAVA",
+   "name": "Endava Plc",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "SPNS Comp Group",
+    "MGIC Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.49841774,
+   "priorYearReturn": 0.017647028
+  },
+  {
+   "ticker": "DBX",
+   "name": "Dropbox, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "<0% Growth",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": 0.2568345,
+   "priorYearReturn": -0.07456731999999999
+  },
+  {
+   "ticker": "DDOG",
+   "name": "Datadog, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "Fast Growth Peers",
+    "30%-40% Growth",
+    "Fast Growth W/ Margin"
+   ],
+   "ytdReturn": 0.6921464500000001,
+   "priorYearReturn": -0.04828882
+  },
+  {
+   "ticker": "DLB",
+   "name": "Dolby Laboratories, Inc.",
+   "fiscalYearEnd": 9,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.028807163,
+   "priorYearReturn": 0.2217182
+  },
+  {
+   "ticker": "DNA",
+   "name": "Ginkgo Bioworks Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.11672688,
+   "priorYearReturn": 0
+  },
+  {
+   "ticker": "DOCN",
+   "name": "Digitalocean Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 1.3651288,
+   "priorYearReturn": 0.4123863
+  },
+  {
+   "ticker": "DOCU",
+   "name": "Docusign, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Workflow & Project Management"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth",
+    "High FCF Margin Peers",
+    "PEGA"
+   ],
+   "ytdReturn": -0.12470764000000001,
+   "priorYearReturn": -0.239493
+  },
+  {
+   "ticker": "DOMO",
+   "name": "Domo, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "<0% Growth"
+   ],
+   "ytdReturn": -0.55931202,
+   "priorYearReturn": 0.190678
+  },
+  {
+   "ticker": "DSP",
+   "name": "Viant Technology, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Adtech"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.019933581,
+   "priorYearReturn": 0.71393036
+  },
+  {
+   "ticker": "DT",
+   "name": "Dynatrace, Inc.",
+   "fiscalYearEnd": 3,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software",
+    "Vertical + Rule of 60",
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": 0.17881859,
+   "priorYearReturn": -0.20257586
+  },
+  {
+   "ticker": "EBAY",
+   "name": "Ebay, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.20505165000000003,
+   "priorYearReturn": 0.051844597
+  },
+  {
+   "ticker": "EGHT",
+   "name": "8X8, Inc.",
+   "fiscalYearEnd": 3,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Communication Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.04060918,
+   "priorYearReturn": -0.26217228
+  },
+  {
+   "ticker": "EPAM",
+   "name": "Epam Systems, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "SPNS Comp Group",
+    "MGIC Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.47220325,
+   "priorYearReturn": -0.09275645
+  },
+  {
+   "ticker": "ERIC",
+   "name": "Telefonaktiebolaget Lm Ericsson",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.038342,
+   "priorYearReturn": 0.07876718
+  },
+  {
+   "ticker": "ESTC",
+   "name": "Elastic Nv",
+   "fiscalYearEnd": 4,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": 0.057794333,
+   "priorYearReturn": -0.23859507000000002
+  },
+  {
+   "ticker": "EVCM",
+   "name": "Evercommerce, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "SMB Software",
+    "Vertical Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "0%-5% Growth"
+   ],
+   "ytdReturn": -0.26341862,
+   "priorYearReturn": 0.09990907
+  },
+  {
+   "ticker": "EXFY",
+   "name": "Expensify, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Office of the CFO/ERP",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "<0% Growth"
+   ],
+   "ytdReturn": 0.7715231,
+   "priorYearReturn": -0.54925373
+  },
+  {
+   "ticker": "EXLS",
+   "name": "Exlservice Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "SPNS Comp Group",
+    "MGIC Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.11498583,
+   "priorYearReturn": -0.08959442
+  },
+  {
+   "ticker": "FFIV",
+   "name": "F5, Inc.",
+   "fiscalYearEnd": 9,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.53721703,
+   "priorYearReturn": 0.015071392
+  },
+  {
+   "ticker": "FISV",
+   "name": "Fiserv, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "FROG",
+   "name": "Jfrog Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth"
+   ],
+   "ytdReturn": 0.4849504,
+   "priorYearReturn": 1.1237674
+  },
+  {
+   "ticker": "FRSH",
+   "name": "Freshworks, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Front Office",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": 0.046938777,
+   "priorYearReturn": -0.24242423999999999
+  },
+  {
+   "ticker": "FTNT",
+   "name": "Fortinet, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.9797255,
+   "priorYearReturn": -0.15950465
+  },
+  {
+   "ticker": "GDYN",
+   "name": "Grid Dynamics Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "SPNS Comp Group",
+    "MGIC Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.15337759,
+   "priorYearReturn": 0.18805706
+  },
+  {
+   "ticker": "GLBE",
+   "name": "Global-E Online Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "E-Commerce/Website Builders"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Fast Growth Peers",
+    "30%-40% Growth",
+    "Fast Growth W/ Margin"
+   ],
+   "ytdReturn": -0.004706204,
+   "priorYearReturn": 0.9200583
+  },
+  {
+   "ticker": "GLOB",
+   "name": "Globant Sa",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "SPNS Comp Group",
+    "MGIC Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.40936214,
+   "priorYearReturn": 0.41519974
+  },
+  {
+   "ticker": "GOOG",
+   "name": "Alphabet, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Hyperscalers",
+    "Mega Cap Tech"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.08086359,
+   "priorYearReturn": 0.58830143
+  },
+  {
+   "ticker": "GRPN",
+   "name": "Groupon, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.08915388,
+   "priorYearReturn": 0.49650350000000004
+  },
+  {
+   "ticker": "GSHD",
+   "name": "Goosehead Insurance, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "VERTICAL"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.025933504,
+   "priorYearReturn": 1.2073386000000002
+  },
+  {
+   "ticker": "GTLB",
+   "name": "Gitlab, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": 0.10098589000000001,
+   "priorYearReturn": -0.33398403000000004
+  },
+  {
+   "ticker": "HCKT",
+   "name": "The Hackett Group, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "HGTY",
+   "name": "Hagerty, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "VERTICAL"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.0007439851999999999,
+   "priorYearReturn": -0.072532654
+  },
+  {
+   "ticker": "IAS",
+   "name": "Integral Ad Science Holding Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0,
+   "priorYearReturn": -0.0095784664
+  },
+  {
+   "ticker": "IBM",
+   "name": "International Business Machines Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.22404713,
+   "priorYearReturn": 0.34745026
+  },
+  {
+   "ticker": "INFA",
+   "name": "Informatica, Inc. (California)",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": -0.08665018999999999
+  },
+  {
+   "ticker": "INTA",
+   "name": "Intapp, Inc.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software",
+    "Leading Vertical Software",
+    "XZO Comp Group",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth"
+   ],
+   "ytdReturn": -0.11523348,
+   "priorYearReturn": -0.28506786
+  },
+  {
+   "ticker": "IREN",
+   "name": "Iren Ltd.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Neoclouds"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Fast Growth Peers",
+    "50%+ Growth"
+   ],
+   "ytdReturn": 0.065374613,
+   "priorYearReturn": 2.8462322999999996
+  },
+  {
+   "ticker": "JAMF",
+   "name": "Jamf Holding Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.0030745267999999996,
+   "priorYearReturn": -0.07402134
+  },
+  {
+   "ticker": "JCOM",
+   "name": "Ziff Davis, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.5671406999999999,
+   "priorYearReturn": -0.35314686
+  },
+  {
+   "ticker": "KNSL",
+   "name": "Kinsale Capital Group, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "VERTICAL"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.003860712,
+   "priorYearReturn": 0.28062868
+  },
+  {
+   "ticker": "LAW",
+   "name": "Cs Disco, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software",
+    "Vertical + Rule of 60"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "10%-15% Growth"
+   ],
+   "ytdReturn": -0.4677835,
+   "priorYearReturn": 0.55511032
+  },
+  {
+   "ticker": "LEE",
+   "name": "Lee Enterprises, Inc.",
+   "fiscalYearEnd": 9,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.7432151,
+   "priorYearReturn": -0.5759698
+  },
+  {
+   "ticker": "LPSN",
+   "name": "Liveperson, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Front Office"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "<0% Growth"
+   ],
+   "ytdReturn": -0.28940565,
+   "priorYearReturn": -0.8302630999999999
+  },
+  {
+   "ticker": "LZ",
+   "name": "Legalzoom.Com, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Office of the CFO/ERP",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": -0.4083585,
+   "priorYearReturn": 0.322237
+  },
+  {
+   "ticker": "M",
+   "name": "Macy's, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.033106685,
+   "priorYearReturn": -0.02566582
+  },
+  {
+   "ticker": "MCHX",
+   "name": "Marchex, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "MDB",
+   "name": "Mongodb, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth"
+   ],
+   "ytdReturn": -0.037956595,
+   "priorYearReturn": 0.8027146999999999
+  },
+  {
+   "ticker": "META",
+   "name": "Meta Platforms, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Mega Cap Tech"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.11651463,
+   "priorYearReturn": 1.9413329
+  },
+  {
+   "ticker": "MGIC",
+   "name": "Magic Software Enterprises Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "MGNI",
+   "name": "Magnite, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Adtech"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.44054222000000004,
+   "priorYearReturn": -0.11803585
+  },
+  {
+   "ticker": "MITK",
+   "name": "Mitek Systems, Inc.",
+   "fiscalYearEnd": 9,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": 0.6691943,
+   "priorYearReturn": -0.052111387
+  },
+  {
+   "ticker": "MLNK",
+   "name": "Meridianlink, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "MSFT",
+   "name": "Microsoft Corp.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Hyperscalers",
+    "Mega Cap Tech"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth",
+    "Large Cap Software Peers",
+    "Mature State Software"
+   ],
+   "ytdReturn": 0.024171830000000002,
+   "priorYearReturn": 0.14737844
+  },
+  {
+   "ticker": "MSTR",
+   "name": "Strategy, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.19858568000000001,
+   "priorYearReturn": -0.475347
+  },
+  {
+   "ticker": "NABL",
+   "name": "N-Able, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.50467915,
+   "priorYearReturn": -0.19914347
+  },
+  {
+   "ticker": "NAVN",
+   "name": "Navan, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Office of the CFO/ERP",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "Fast Growth Peers",
+    "20%-30% Growth"
+   ],
+   "ytdReturn": 0.70784546,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "NBIS",
+   "name": "Nebius Group Nv",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Neoclouds"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Fast Growth Peers",
+    "50%+ Growth"
+   ],
+   "ytdReturn": 1.5787586999999998,
+   "priorYearReturn": 2.0218411
+  },
+  {
+   "ticker": "NCNO",
+   "name": "Ncino, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software",
+    "Leading Vertical Software",
+    "Vertical + Rule of 60",
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": -0.17043679999999997,
+   "priorYearReturn": -0.23645031
+  },
+  {
+   "ticker": "NCR",
+   "name": "Ncr Voyix Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "NET",
+   "name": "Cloudflare, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "Fast Growth Peers",
+    "30%-40% Growth"
+   ],
+   "ytdReturn": 0.43946243,
+   "priorYearReturn": 0.83088776
+  },
+  {
+   "ticker": "NTGR",
+   "name": "Netgear, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "ARLO Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.12556051999999998,
+   "priorYearReturn": -0.11984211
+  },
+  {
+   "ticker": "NFLX",
+   "name": "Netflix, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "NLSN",
+   "name": "Nielsen Holdings Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "NOK",
+   "name": "Nokia Oyj",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.57109737,
+   "priorYearReturn": -0.26293098
+  },
+  {
+   "ticker": "NP",
+   "name": "Neptune Insurance Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "VERTICAL"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.16941011,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "NRDS",
+   "name": "Nerdwallet, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "NSP",
+   "name": "Insperity, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "HCM Legacy"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.33651850000000005,
+   "priorYearReturn": 0.031866193
+  },
+  {
+   "ticker": "NSSC",
+   "name": "Napco Security Technologies, Inc.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "ARLO Comp Group",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.14496409999999998,
+   "priorYearReturn": 0.246361
+  },
+  {
+   "ticker": "NTAP",
+   "name": "Netapp, Inc.",
+   "fiscalYearEnd": 4,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.7886825000000001,
+   "priorYearReturn": -0.07744664
+  },
+  {
+   "ticker": "NTNX",
+   "name": "Nutanix, Inc.",
+   "fiscalYearEnd": 7,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.27036179,
+   "priorYearReturn": -0.15511608000000002
+  },
+  {
+   "ticker": "NTSK",
+   "name": "Netskope, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth"
+   ],
+   "ytdReturn": -0.22405933,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "NVDA",
+   "name": "Nvidia Corp.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Mega Cap Tech"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.13308358,
+   "priorYearReturn": 2.3886684
+  },
+  {
+   "ticker": "NWSA",
+   "name": "News Corp.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.179173,
+   "priorYearReturn": 0.34890102
+  },
+  {
+   "ticker": "NYT",
+   "name": "The New York Times Co.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.009075165,
+   "priorYearReturn": 0.5092423
+  },
+  {
+   "ticker": "OKTA",
+   "name": "Okta, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": 0.49543190000000004,
+   "priorYearReturn": 0.09733498000000002
+  },
+  {
+   "ticker": "OLED",
+   "name": "Universal Display Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.25946218000000004,
+   "priorYearReturn": 0.7702701999999999
+  },
+  {
+   "ticker": "ORCL",
+   "name": "Oracle Corp.",
+   "fiscalYearEnd": 5,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Hyperscalers",
+    "Office of the CFO/ERP"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Fast Growth Peers",
+    "20%-30% Growth",
+    "Large Cap Software Peers",
+    "Mature State Software"
+   ],
+   "ytdReturn": -0.24000818,
+   "priorYearReturn": 0.16964722
+  },
+  {
+   "ticker": "OS",
+   "name": "Onestream, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.28509258,
+   "priorYearReturn": -0.35554004999999994
+  },
+  {
+   "ticker": "OTEX",
+   "name": "Open Text Corp.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "PANW",
+   "name": "Palo Alto Networks, Inc.",
+   "fiscalYearEnd": 7,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": 0.8445169,
+   "priorYearReturn": 1.1132293
+  },
+  {
+   "ticker": "PAR",
+   "name": "Par Technology Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "10%-15% Growth"
+   ],
+   "ytdReturn": -0.47932743,
+   "priorYearReturn": -0.50075687
+  },
+  {
+   "ticker": "PATH",
+   "name": "Uipath, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Workflow & Project Management"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth"
+   ],
+   "ytdReturn": 0.030811548,
+   "priorYearReturn": 0.28953575
+  },
+  {
+   "ticker": "PAYC",
+   "name": "Paycom Software, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "HCM",
+    "SMB Software",
+    "Vertical + Rule of 60"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": 0.447948,
+   "priorYearReturn": -0.22252035
+  },
+  {
+   "ticker": "PAYX",
+   "name": "Paychex, Inc.",
+   "fiscalYearEnd": 5,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "HCM Legacy"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.11098229999999999,
+   "priorYearReturn": 0.030719995
+  },
+  {
+   "ticker": "PAYX",
+   "name": "Paychex, Inc.",
+   "fiscalYearEnd": 5,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "HCM Legacy"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.11098229999999999,
+   "priorYearReturn": 0.030719995
+  },
+  {
+   "ticker": "PCTY",
+   "name": "Paylocity Holding Corp.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "HCM",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": -0.004786849,
+   "priorYearReturn": -0.235474
+  },
+  {
+   "ticker": "PD",
+   "name": "Pagerduty, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Workflow & Project Management"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "0%-5% Growth"
+   ],
+   "ytdReturn": -0.07246375,
+   "priorYearReturn": -0.28203726
+  },
+  {
+   "ticker": "PEGA",
+   "name": "Pegasystems, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Workflow & Project Management"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth",
+    "PEGA"
+   ],
+   "ytdReturn": -0.43318824999999994,
+   "priorYearReturn": 0.28154516
+  },
+  {
+   "ticker": "PLMR",
+   "name": "Palomar Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "VERTICAL"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.020703435,
+   "priorYearReturn": 0.22896374000000003
+  },
+  {
+   "ticker": "PLTR",
+   "name": "Palantir Technologies, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "Fast Growth Peers",
+    "50%+ Growth",
+    "Fast Growth W/ Margin",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": -0.015808701999999997,
+   "priorYearReturn": 1.3502579
+  },
+  {
+   "ticker": "PRGS",
+   "name": "Progress Software Corp.",
+   "fiscalYearEnd": 11,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "PSTG",
+   "name": "Everpure, Inc.",
+   "fiscalYearEnd": 2,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.6212505,
+   "priorYearReturn": 0.09083509
+  },
+  {
+   "ticker": "PTC",
+   "name": "Ptc, Inc.",
+   "fiscalYearEnd": 9,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Technical Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "0%-5% Growth",
+    "High FCF Margin Peers",
+    "High Margin Rule of 40"
+   ],
+   "ytdReturn": -0.13592791999999998,
+   "priorYearReturn": -0.052537084
+  },
+  {
+   "ticker": "PUBM",
+   "name": "Pubmatic, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Adtech"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.8455469499999999,
+   "priorYearReturn": 0.27322399999999997
+  },
+  {
+   "ticker": "PYCR",
+   "name": "Paycor Hcm, Inc.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": -0.13987959
+  },
+  {
+   "ticker": "PYPL",
+   "name": "Paypal Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.056012389999999995,
+   "priorYearReturn": -0.13774222
+  },
+  {
+   "ticker": "QCOM",
+   "name": "Qualcomm, Inc.",
+   "fiscalYearEnd": 9,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.063022494,
+   "priorYearReturn": 0.31553577
+  },
+  {
+   "ticker": "QLYS",
+   "name": "Qualys, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth",
+    "Mature State Software",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": 0.33570362000000004,
+   "priorYearReturn": -0.052203712
+  },
+  {
+   "ticker": "QRVO",
+   "name": "Qorvo, Inc.",
+   "fiscalYearEnd": 3,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.10603356,
+   "priorYearReturn": 0.24238754
+  },
+  {
+   "ticker": "QTWO",
+   "name": "Q2 Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software",
+    "Leading Vertical Software",
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "10%-15% Growth"
+   ],
+   "ytdReturn": -0.11571508,
+   "priorYearReturn": -0.28306007
+  },
+  {
+   "ticker": "RAMP",
+   "name": "Liveramp Holdings, Inc.",
+   "fiscalYearEnd": 3,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Adtech"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.28209055,
+   "priorYearReturn": -0.032927214999999996
+  },
+  {
+   "ticker": "RBRK",
+   "name": "Rubrik, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth"
+   ],
+   "ytdReturn": 0.23045242,
+   "priorYearReturn": 0.17013466000000002
+  },
+  {
+   "ticker": "RDZN",
+   "name": "Roadzen, Inc.",
+   "fiscalYearEnd": 3,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.3755187,
+   "priorYearReturn": 0.10550463
+  },
+  {
+   "ticker": "RMBS",
+   "name": "Rambus, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.02905649,
+   "priorYearReturn": 0.9053601
+  },
+  {
+   "ticker": "RNG",
+   "name": "Ringcentral, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Communication Software",
+    "SMB Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth"
+   ],
+   "ytdReturn": 1.26765915,
+   "priorYearReturn": -0.17509281000000002
+  },
+  {
+   "ticker": "ROKU",
+   "name": "Roku, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.46492756,
+   "priorYearReturn": 1.25208855
+  },
+  {
+   "ticker": "RPD",
+   "name": "Rapid7, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.22138155,
+   "priorYearReturn": -0.6221725
+  },
+  {
+   "ticker": "RYAN",
+   "name": "Ryan Specialty Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "VERTICAL"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.14507073,
+   "priorYearReturn": 0.036376834
+  },
+  {
+   "ticker": "S",
+   "name": "Sentinelone, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group"
+   ],
+   "ytdReturn": 0.36399997999999995,
+   "priorYearReturn": -0.32432437999999997
+  },
+  {
+   "ticker": "SABR",
+   "name": "Sabre Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "SAIL",
+   "name": "Sailpoint, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": -0.11937713999999999,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "SANG",
+   "name": "Sangoma Technologies Corp.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "SAP",
+   "name": "Sap Se",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Office of the CFO/ERP"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "0%-5% Growth",
+    "Large Cap Software Peers",
+    "Mature State Software"
+   ],
+   "ytdReturn": -0.13494712,
+   "priorYearReturn": -0.013403176999999999
+  },
+  {
+   "ticker": "SCHL",
+   "name": "Scholastic Corp.",
+   "fiscalYearEnd": 5,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.36550797,
+   "priorYearReturn": -0.0446021
+  },
+  {
+   "ticker": "SEMR",
+   "name": "Semrush Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.008417547,
+   "priorYearReturn": -0.13030744
+  },
+  {
+   "ticker": "SNOW",
+   "name": "Snowflake, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "Fast Growth Peers",
+    "30%-40% Growth",
+    "Fast Growth W/ Margin",
+    "Large Cap Software Peers"
+   ],
+   "ytdReturn": 0.43829773000000005,
+   "priorYearReturn": 0.4206333
+  },
+  {
+   "ticker": "SNPS",
+   "name": "Synopsys, Inc.",
+   "fiscalYearEnd": 10,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Technical Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "Fast Growth Peers",
+    "30%-40% Growth",
+    "Fast Growth W/ Margin",
+    "Large Cap Software Peers",
+    "Mature State Software",
+    "High Margin Rule of 40"
+   ],
+   "ytdReturn": -0.12939626,
+   "priorYearReturn": -0.032223463
+  },
+  {
+   "ticker": "SPCX",
+   "name": "Space Exploration Technologies Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Mega Cap Tech"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Fast Growth Peers",
+    "50%+ Growth",
+    "Large Cap Software Peers"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "SQ",
+   "name": "Block, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "SSNC",
+   "name": "Ss&C Technologies Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "SSTI",
+   "name": "Soundthinking, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.23910332,
+   "priorYearReturn": -0.38514553
+  },
+  {
+   "ticker": "SWI",
+   "name": "Solarwinds Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "T",
+   "name": "At&T, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.041666627,
+   "priorYearReturn": -0.08853876
+  },
+  {
+   "ticker": "TBLA",
+   "name": "Taboola.Com Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Adtech"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.19848162,
+   "priorYearReturn": 0.4058442
+  },
+  {
+   "ticker": "TDC",
+   "name": "Teradata Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "<0% Growth"
+   ],
+   "ytdReturn": -0.11103815,
+   "priorYearReturn": -0.022792935
+  },
+  {
+   "ticker": "TENB",
+   "name": "Tenable Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.41563965,
+   "priorYearReturn": -0.40248860000000003
+  },
+  {
+   "ticker": "TNET",
+   "name": "Trinet Group, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "HCM Legacy"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.17216301,
+   "priorYearReturn": 0.7541298000000001
+  },
+  {
+   "ticker": "TOST",
+   "name": "Toast, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "SMB Software",
+    "Vertical Software",
+    "Leading Vertical Software",
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth"
+   ],
+   "ytdReturn": 0.026189803999999997,
+   "priorYearReturn": -0.025788844000000002
+  },
+  {
+   "ticker": "TRMB",
+   "name": "Trimble, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.24205488,
+   "priorYearReturn": 0.10883093
+  },
+  {
+   "ticker": "TSLA",
+   "name": "Tesla, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.23574669,
+   "priorYearReturn": 1.0172105
+  },
+  {
+   "ticker": "TTD",
+   "name": "The Trade Desk, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Adtech",
+    "Vertical + Rule of 60",
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "<0% Growth"
+   ],
+   "ytdReturn": -0.6551607,
+   "priorYearReturn": -0.67701866
+  },
+  {
+   "ticker": "TTGT",
+   "name": "Techtarget, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Adtech"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.2962963,
+   "priorYearReturn": -0.7275479
+  },
+  {
+   "ticker": "TWFG",
+   "name": "Twfg, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "VERTICAL"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.07055962,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "TYL",
+   "name": "Tyler Technologies, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Vertical Software",
+    "Leading Vertical Software",
+    "TTAN Comp Group"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "5%-10% Growth",
+    "High Margin Rule of 40"
+   ],
+   "ytdReturn": -0.22495871999999997,
+   "priorYearReturn": -0.21276706999999997
+  },
+  {
+   "ticker": "UDMY",
+   "name": "Udemy, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": -0.28918589
+  },
+  {
+   "ticker": "UPLD",
+   "name": "Upland Software, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Front Office"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "<0% Growth"
+   ],
+   "ytdReturn": -0.6778042000000001,
+   "priorYearReturn": -0.6705070000000001
+  },
+  {
+   "ticker": "VERX",
+   "name": "Vertex, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Office of the CFO/ERP"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth",
+    "PEGA"
+   ],
+   "ytdReturn": -0.32949417,
+   "priorYearReturn": -0.62567947
+  },
+  {
+   "ticker": "VMEO",
+   "name": "Vimeo, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0,
+   "priorYearReturn": 0.632653
+  },
+  {
+   "ticker": "VRNS",
+   "name": "Varonis Systems, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Infrastructure and Data Software"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.25579262,
+   "priorYearReturn": -0.26176012
+  },
+  {
+   "ticker": "VRSK",
+   "name": "Verisk Analytics, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "VERTICAL"
+   ],
+   "peerGroups": [
+    "High Margin Rule of 40"
+   ],
+   "ytdReturn": -0.16431225000000002,
+   "priorYearReturn": 0.35392807
+  },
+  {
+   "ticker": "VRSN",
+   "name": "Verisign, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.21033132999999998,
+   "priorYearReturn": 0.0025311708
+  },
+  {
+   "ticker": "VSURE-OME",
+   "name": "Verisure Plc",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "ARLO Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.35857147,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "VZ",
+   "name": "Verizon Communications, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "WDAY",
+   "name": "Workday, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "HCM"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "10%-15% Growth",
+    "Large Cap Software Peers",
+    "High FCF Margin Peers"
+   ],
+   "ytdReturn": -0.11453581,
+   "priorYearReturn": -0.1676162
+  },
+  {
+   "ticker": "WEAV",
+   "name": "Weave Communications, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.039525687999999996,
+   "priorYearReturn": -0.5232412
+  },
+  {
+   "ticker": "WIT",
+   "name": "Wipro Ltd.",
+   "fiscalYearEnd": 3,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "WK",
+   "name": "Workiva, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Office of the CFO/ERP"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "15%-20% Growth"
+   ],
+   "ytdReturn": -0.14086956,
+   "priorYearReturn": -0.2123288
+  },
+  {
+   "ticker": "WMT",
+   "name": "Walmart, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.063055396,
+   "priorYearReturn": 0.23309362
+  },
+  {
+   "ticker": "YEXT",
+   "name": "Yext, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Front Office"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "<0% Growth"
+   ],
+   "ytdReturn": -0.19913155,
+   "priorYearReturn": 0.26729559999999997
+  },
+  {
+   "ticker": "ZI",
+   "name": "Zoominfo Technologies, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Front Office",
+    "Vertical + Rule of 60",
+    "Blended AdTech and Rule of 40"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "<0% Growth"
+   ],
+   "ytdReturn": -0.62684364,
+   "priorYearReturn": -0.032350183000000005
+  },
+  {
+   "ticker": "ZIP",
+   "name": "Ziprecruiter, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "HCM"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.09871793000000001,
+   "priorYearReturn": -0.46132595000000004
+  },
+  {
+   "ticker": "ZS",
+   "name": "Zscaler, Inc.",
+   "fiscalYearEnd": 7,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "Security Software"
+   ],
+   "peerGroups": [
+    "Software Group",
+    "Core Software Group",
+    "20%-30% Growth"
+   ],
+   "ytdReturn": -0.25537968,
+   "priorYearReturn": 0.24671577
+  },
+  {
+   "ticker": "ZUO",
+   "name": "Zuora, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": 0.055319190000000004
+  },
+  {
+   "ticker": "MSI",
+   "name": "Motorola Solutions, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": 0.2694354,
+   "priorYearReturn": 0.21489275
+  },
+  {
+   "ticker": "OSIS",
+   "name": "Osi Systems, Inc.",
+   "fiscalYearEnd": 6,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.1839959,
+   "priorYearReturn": 0.62286232
+  },
+  {
+   "ticker": "DETX",
+   "name": "Liberty Defense Holdings Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.48046284,
+   "priorYearReturn": -0.34057499999999996
+  },
+  {
+   "ticker": "XTRAF",
+   "name": "Xtract One Technologies, Inc.",
+   "fiscalYearEnd": 7,
+   "coverage": "Non-Covered Companies",
+   "covered": false,
+   "sectors": [
+    "EVLV Comp Group"
+   ],
+   "peerGroups": [],
+   "ytdReturn": -0.24984718,
+   "priorYearReturn": 0.47434055
+  },
+  {
+   "ticker": "AVLR",
+   "name": "Avalara, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "CSOD",
+   "name": "Cornerstone Ondemand, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "CTXS",
+   "name": "Citrix Systems, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "CVT",
+   "name": "Cvent, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "ECOM",
+   "name": "Channeladvisor Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "EVBG",
+   "name": "Everbridge, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": -0.17816089999999998
+  },
+  {
+   "ticker": "IS",
+   "name": "Ironsource Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "PLAN",
+   "name": "Anaplan, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "PRSM-GB",
+   "name": "Blue Prism Group Plc",
+   "fiscalYearEnd": 10,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "USER",
+   "name": "Usertesting, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "XM",
+   "name": "Qualtrics International, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "ZEN",
+   "name": "Zendesk, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "CPLF-TSE",
+   "name": "Copperleaf Technologies, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": 0.052264809999999995
+  },
+  {
+   "ticker": "SQSP",
+   "name": "Squarespace, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": 0.48894894
+  },
+  {
+   "ticker": "INST",
+   "name": "Instructure Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "WKME",
+   "name": "Walkme Ltd.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": -0.04561716
+  },
+  {
+   "ticker": "MIXT",
+   "name": "Mix Telematics Ltd.",
+   "fiscalYearEnd": 3,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": 0.224751
+  },
+  {
+   "ticker": "SPLK",
+   "name": "Splunk Llc",
+   "fiscalYearEnd": 1,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": 0.7696597
+  },
+  {
+   "ticker": "HRT",
+   "name": "Hireright Holdings Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": 0.13406408
+  },
+  {
+   "ticker": "STER",
+   "name": "Sterling Check Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": -0.10019391999999999
+  },
+  {
+   "ticker": "BNFT",
+   "name": "Benefitfocus, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "COUP",
+   "name": "Coupa Software, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "PWSC",
+   "name": "Powerschool Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "AYX",
+   "name": "Alteryx, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": -0.069271746
+  },
+  {
+   "ticker": "LVOX",
+   "name": "Livevox Holdings, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "DCT",
+   "name": "Duck Creek Technologies, Inc.",
+   "fiscalYearEnd": 8,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "AHC",
+   "name": "Dallasnews Corp.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": 0.10046614
+  },
+  {
+   "ticker": "EBIX",
+   "name": "Ebix, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": -0.9478958
+  },
+  {
+   "ticker": "EPAY",
+   "name": "Bottomline Technologies, Inc.",
+   "fiscalYearEnd": 6,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "KLR",
+   "name": "Kaleyra, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "KNBE",
+   "name": "Knowbe4, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "MDP",
+   "name": "Meredith Corp.",
+   "fiscalYearEnd": 6,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "MIME",
+   "name": "Mimecast Uk Ltd.",
+   "fiscalYearEnd": 3,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "NEWR",
+   "name": "New Relic, Inc.",
+   "fiscalYearEnd": 3,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies",
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "PFPT",
+   "name": "Proofpoint, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "PRFT",
+   "name": "Perficient, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": -0.057425203
+  },
+  {
+   "ticker": "PS",
+   "name": "Pluralsight, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "SHSP",
+   "name": "Sharpspring, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "SOW-DE",
+   "name": "Software Ag",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "SUMO",
+   "name": "Sumo Logic, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "SVMK",
+   "name": "Surveymonkey Global, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "TPCO",
+   "name": "Tribune Publishing Co.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "TWOU",
+   "name": "2U, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "TWTR",
+   "name": "X Corp. (United States)",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "VCRA",
+   "name": "Vocera Communications, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "VG",
+   "name": "Venture Global, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "VMW",
+   "name": "Vmware Llc",
+   "fiscalYearEnd": 2,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "WIFI",
+   "name": "Boingo Wireless, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "SMAR",
+   "name": "Smartsheet, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": 0.0076744555999999995,
+   "priorYearReturn": 0.17168545000000002
+  },
+  {
+   "ticker": "AZPN",
+   "name": "Aspen Technology, Inc.",
+   "fiscalYearEnd": 6,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": 0.058887124,
+   "priorYearReturn": 0.13390875
+  },
+  {
+   "ticker": "OLO",
+   "name": "Olo, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": 0.33593760000000006,
+   "priorYearReturn": 0.3426573
+  },
+  {
+   "ticker": "BASE",
+   "name": "Couchbase, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": 0.57216167,
+   "priorYearReturn": -0.3077265
+  },
+  {
+   "ticker": "HCP",
+   "name": "Hashicorp, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": null,
+   "priorYearReturn": 0.44712353
+  },
+  {
+   "ticker": "ALTR",
+   "name": "Altair Engineering, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": 0.025112271000000002,
+   "priorYearReturn": 0.29661322
+  },
+  {
+   "ticker": "ANSS",
+   "name": "Ansys, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [
+    "Acquired Companies"
+   ],
+   "ytdReturn": 0.10959588999999999,
+   "priorYearReturn": -0.070409
+  },
+  {
+   "ticker": "GLOO",
+   "name": "Gloo Holdings, Inc.",
+   "fiscalYearEnd": 1,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": -0.42003517,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "GRRR",
+   "name": "Gorilla Technology Group, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.30448711,
+   "priorYearReturn": -0.9334895
+  },
+  {
+   "ticker": "ONTF",
+   "name": "On24, Inc.",
+   "fiscalYearEnd": 12,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": 0.017588019,
+   "priorYearReturn": 0.23219812
+  },
+  {
+   "ticker": "Jan",
+   "name": "35",
+   "fiscalYearEnd": null,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "Feb",
+   "name": "2",
+   "fiscalYearEnd": null,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "Mar",
+   "name": "12",
+   "fiscalYearEnd": null,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "Apr",
+   "name": "4",
+   "fiscalYearEnd": null,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "May",
+   "name": "5",
+   "fiscalYearEnd": null,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "Jun",
+   "name": "15",
+   "fiscalYearEnd": null,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "Jul",
+   "name": "7",
+   "fiscalYearEnd": null,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "Aug",
+   "name": "1",
+   "fiscalYearEnd": null,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "Sep",
+   "name": "7",
+   "fiscalYearEnd": null,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "Oct",
+   "name": "2",
+   "fiscalYearEnd": null,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "Nov",
+   "name": "3",
+   "fiscalYearEnd": null,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  },
+  {
+   "ticker": "Dec",
+   "name": "184",
+   "fiscalYearEnd": null,
+   "coverage": "Acquired Companies",
+   "covered": false,
+   "sectors": [],
+   "peerGroups": [],
+   "ytdReturn": null,
+   "priorYearReturn": null
+  }
+ ],
+ "sectors": {
+  "Adtech": [
+   "APP",
+   "APPS",
+   "CRTO",
+   "DSP",
+   "DV",
+   "MGNI",
+   "PUBM",
+   "RAMP",
+   "TBLA",
+   "TTD",
+   "TTGT",
+   "U",
+   "ZETA"
+  ],
+  "Communication Software": [
+   "BAND",
+   "EGHT",
+   "OOMA",
+   "RNG",
+   "TWLO",
+   "ZM"
+  ],
+  "E-Commerce/Website Builders": [
+   "CMRC",
+   "GDDY",
+   "GLBE",
+   "SHOP",
+   "WIX"
+  ],
+  "Front Office": [
+   "ADBE",
+   "AMPL",
+   "BRZE",
+   "CRM",
+   "CXM",
+   "DV",
+   "FIVN",
+   "FRSH",
+   "HUBS",
+   "KVYO",
+   "LPSN",
+   "NICE",
+   "SMWB",
+   "SPT",
+   "THRY",
+   "UPLD",
+   "YEXT",
+   "ZETA",
+   "ZI"
+  ],
+  "HCM": [
+   "PAYC",
+   "PCTY",
+   "WDAY",
+   "ZIP"
+  ],
+  "HCM Legacy": [
+   "NSP",
+   "PAYX",
+   "TNET"
+  ],
+  "Hyperscalers": [
+   "AMZN",
+   "GOOG",
+   "MSFT",
+   "ORCL"
+  ],
+  "Infrastructure and Data Software": [
+   "AI",
+   "AVPT",
+   "BLZE",
+   "BOX",
+   "CVLT",
+   "DBX",
+   "DDOG",
+   "DOCN",
+   "DOMO",
+   "DT",
+   "ESTC",
+   "FFIV",
+   "FROG",
+   "GTLB",
+   "MDB",
+   "MSTR",
+   "NABL",
+   "NET",
+   "NTAP",
+   "NTNX",
+   "PLTR",
+   "PSTG",
+   "RBRK",
+   "SNOW",
+   "TDC",
+   "VRNS"
+  ],
+  "Mega Cap Tech": [
+   "AAPL",
+   "AMZN",
+   "GOOG",
+   "META",
+   "MSFT",
+   "NVDA",
+   "SPCX"
+  ],
+  "Neoclouds": [
+   "CRWV",
+   "IREN",
+   "NBIS"
+  ],
+  "Office of the CFO/ERP": [
+   "BILL",
+   "BL",
+   "EXFY",
+   "INTU",
+   "LZ",
+   "NAVN",
+   "ORCL",
+   "SAP",
+   "VERX",
+   "WK"
+  ],
+  "Security Software": [
+   "CHKP",
+   "CLBT",
+   "CRWD",
+   "FTNT",
+   "NTSK",
+   "OKTA",
+   "PANW",
+   "QLYS",
+   "RPD",
+   "S",
+   "SAIL",
+   "TENB",
+   "ZS"
+  ],
+  "SMB Software": [
+   "APPF",
+   "BILL",
+   "EVCM",
+   "EXFY",
+   "FRSH",
+   "GDDY",
+   "HUBS",
+   "INTU",
+   "KVYO",
+   "LZ",
+   "MNDY",
+   "OOMA",
+   "PAYC",
+   "PCTY",
+   "RNG",
+   "SHOP",
+   "SPSC",
+   "SPT",
+   "TEAM",
+   "THRY",
+   "TOST",
+   "TTAN",
+   "TWLO",
+   "WIX",
+   "ZM"
+  ],
+  "Supply Chain and Logistics": [
+   "DSGX",
+   "IOT",
+   "KARO",
+   "MANH",
+   "AIOT",
+   "SPSC"
+  ],
+  "Technical Software": [
+   "ADSK",
+   "BSY",
+   "CDNS",
+   "DASTY",
+   "PTC",
+   "SNPS"
+  ],
+  "Vertical Software": [
+   "ALRM",
+   "APP",
+   "AGYS",
+   "APPF",
+   "AXON",
+   "BLKB",
+   "BLND",
+   "CCC",
+   "CHGG",
+   "COUR",
+   "EVCM",
+   "GWRE",
+   "INTA",
+   "LAW",
+   "NCNO",
+   "PAR",
+   "PCOR",
+   "QTWO",
+   "RDCM",
+   "ROP",
+   "SSTI",
+   "TOST",
+   "TRMB",
+   "TTAN",
+   "TYL",
+   "U",
+   "VEEV"
+  ],
+  "Workflow & Project Management": [
+   "APPN",
+   "ASAN",
+   "DOCU",
+   "FIG",
+   "MNDY",
+   "NOW",
+   "PATH",
+   "PD",
+   "PEGA",
+   "TEAM"
+  ],
+  "Leading Vertical Software": [
+   "ADSK",
+   "AGYS",
+   "APPF",
+   "AXON",
+   "DSGX",
+   "GWRE",
+   "INTA",
+   "IOT",
+   "MANH",
+   "NCNO",
+   "PCOR",
+   "QTWO",
+   "SHOP",
+   "SPSC",
+   "TOST",
+   "TTAN",
+   "TYL",
+   "U",
+   "VEEV"
+  ],
+  "Vertical + Rule of 60": [
+   "IOT",
+   "GWRE",
+   "NCNO",
+   "LAW",
+   "PCOR",
+   "U",
+   "VEEV",
+   "DT",
+   "DV",
+   "NOW",
+   "PAYC",
+   "TEAM",
+   "TTD",
+   "ZI"
+  ],
+  "SPNS Comp Group": [
+   "ACN",
+   "532540-IN",
+   "CTSH",
+   "EXLS",
+   "DAVA",
+   "EPAM",
+   "GDYN",
+   "GLOB",
+   "GWRE"
+  ],
+  "MGIC Comp Group": [
+   "ASGN",
+   "ACN",
+   "532540-IN",
+   "CTSH",
+   "EXLS",
+   "DAVA",
+   "EPAM",
+   "GDYN",
+   "GLOB",
+   "SPNS"
+  ],
+  "TTAN Comp Group": [
+   "APPF",
+   "GWRE",
+   "MANH",
+   "PCOR",
+   "SHOP",
+   "TYL",
+   "VEEV"
+  ],
+  "Blended AdTech and Rule of 40": [
+   "APP",
+   "APPS",
+   "DV",
+   "TTD",
+   "U",
+   "DT",
+   "NOW",
+   "VEEV",
+   "ZI",
+   "ZM",
+   "BLND",
+   "ALKT",
+   "MLNK",
+   "NCNO",
+   "QTWO"
+  ],
+  "ROP Comp Group": [
+   "ADSK",
+   "BSY",
+   "CCC",
+   "CSU-CA",
+   "DSGX"
+  ],
+  "XZO Comp Group": [
+   "CCC",
+   "GWRE",
+   "INTA",
+   "MANH",
+   "PCOR",
+   "VEEV"
+  ],
+  "VERTICAL": [
+   "ARX",
+   "BRO",
+   "GSHD",
+   "HGTY",
+   "KNSL",
+   "NP",
+   "PLMR",
+   "RYAN",
+   "TWFG",
+   "VRSK"
+  ],
+  "FUNCTIONAL": [
+   "APPF",
+   "AXON",
+   "GWRE",
+   "HUBS",
+   "IOT",
+   "MANH",
+   "PCOR",
+   "SHOP",
+   "SPSC",
+   "TTAN",
+   "ZM"
+  ],
+  "BLENDED": [],
+  "ARLO Comp Group": [
+   "ADT",
+   "ALRM",
+   "NSSC",
+   "NTGR",
+   "VSURE-OME"
+  ],
+  "CONSUMER/SMB AND VERTICAL": [],
+  "EVLV Comp Group": [
+   "AXON",
+   "MSI",
+   "NSSC",
+   "OSIS",
+   "DETX",
+   "SSTI",
+   "XTRAF",
+   "AGYS",
+   "APPF",
+   "BRZE",
+   "GWRE",
+   "INTA",
+   "IOT",
+   "NAVN",
+   "NTSK",
+   "RBRK",
+   "SHOP",
+   "TOST",
+   "TTAN"
+  ]
+ },
+ "peerGroups": {
+  "Software Group": [
+   "ADBE",
+   "ADSK",
+   "AGYS",
+   "AI",
+   "AMPL",
+   "APPF",
+   "APPN",
+   "ASAN",
+   "BAND",
+   "BILL",
+   "BL",
+   "BLKB",
+   "BLND",
+   "BOX",
+   "BRZE",
+   "BSY",
+   "CCC",
+   "CDNS",
+   "CMRC",
+   "COUR",
+   "CRM",
+   "CRWD",
+   "CRWV",
+   "CXM",
+   "DBX",
+   "DDOG",
+   "DOCU",
+   "DOMO",
+   "DSGX",
+   "DT",
+   "DV",
+   "ESTC",
+   "EVCM",
+   "EXFY",
+   "FIG",
+   "FIVN",
+   "FROG",
+   "FRSH",
+   "GDDY",
+   "GLBE",
+   "GTLB",
+   "GWRE",
+   "HUBS",
+   "INTA",
+   "INTU",
+   "IOT",
+   "IREN",
+   "KVYO",
+   "LAW",
+   "LPSN",
+   "LZ",
+   "MANH",
+   "MDB",
+   "MITK",
+   "MNDY",
+   "MSFT",
+   "NAVN",
+   "NBIS",
+   "NCNO",
+   "NET",
+   "NICE",
+   "NOW",
+   "NTSK",
+   "OKTA",
+   "OOMA",
+   "ORCL",
+   "PANW",
+   "PAR",
+   "PATH",
+   "PAYC",
+   "PCOR",
+   "PCTY",
+   "PD",
+   "PEGA",
+   "PLTR",
+   "PTC",
+   "QLYS",
+   "QTWO",
+   "RBRK",
+   "RNG",
+   "ROP",
+   "S",
+   "SAIL",
+   "SAP",
+   "SHOP",
+   "SMWB",
+   "SNOW",
+   "SNPS",
+   "SPCX",
+   "SPSC",
+   "SPT",
+   "TDC",
+   "TEAM",
+   "TOST",
+   "TTAN",
+   "TTD",
+   "TWLO",
+   "TYL",
+   "U",
+   "UPLD",
+   "VEEV",
+   "VERX",
+   "WDAY",
+   "WIX",
+   "WK",
+   "YEXT",
+   "ZETA",
+   "ZI",
+   "ZM",
+   "ZS"
+  ],
+  "Core Software Group": [
+   "ZI",
+   "PD",
+   "PTC",
+   "CXM",
+   "ZM",
+   "SAP",
+   "RNG",
+   "GDDY",
+   "MANH",
+   "PAYC",
+   "NICE",
+   "PEGA",
+   "SPT",
+   "ROP",
+   "DOCU",
+   "PCTY",
+   "ASAN",
+   "BL",
+   "TYL",
+   "OKTA",
+   "CCC",
+   "QLYS",
+   "FIVN",
+   "PATH",
+   "INTU",
+   "VERX",
+   "CRM",
+   "ADBE",
+   "WDAY",
+   "BSY",
+   "WIX",
+   "VEEV",
+   "ADSK",
+   "PCOR",
+   "INTA",
+   "FRSH",
+   "ESTC",
+   "DT",
+   "GTLB",
+   "APPN",
+   "GWRE",
+   "HUBS",
+   "MSFT",
+   "WK",
+   "TWLO",
+   "APPF",
+   "TTAN",
+   "SAIL",
+   "MNDY",
+   "AMPL",
+   "CDNS",
+   "S",
+   "MDB",
+   "ZS",
+   "TOST",
+   "BRZE",
+   "NOW",
+   "FROG",
+   "PANW",
+   "TEAM",
+   "CRWD",
+   "KVYO",
+   "IOT",
+   "NTSK",
+   "RBRK",
+   "NAVN",
+   "SHOP",
+   "SNOW",
+   "DDOG",
+   "SNPS",
+   "NET",
+   "FIG",
+   "ZETA",
+   "PLTR",
+   "DSGX"
+  ],
+  "Fast Growth Peers": [
+   "ORCL",
+   "NAVN",
+   "SNOW",
+   "DDOG",
+   "SNPS",
+   "NET",
+   "GLBE",
+   "FIG",
+   "ZETA",
+   "PLTR",
+   "SPCX",
+   "CRWV",
+   "IREN",
+   "NBIS"
+  ],
+  "50%+ Growth": [
+   "PLTR",
+   "SPCX",
+   "CRWV",
+   "IREN",
+   "NBIS"
+  ],
+  "40%+ Growth": [],
+  "30%-40% Growth": [
+   "DDOG",
+   "SNOW",
+   "SNPS",
+   "NET",
+   "GLBE",
+   "FIG",
+   "ZETA"
+  ],
+  "20%-30% Growth": [
+   "MDB",
+   "ZS",
+   "TOST",
+   "BRZE",
+   "NOW",
+   "PANW",
+   "FROG",
+   "TEAM",
+   "CRWD",
+   "KVYO",
+   "IOT",
+   "NTSK",
+   "RBRK",
+   "ORCL",
+   "NAVN",
+   "SHOP"
+  ],
+  "15%-20% Growth": [
+   "FRSH",
+   "ESTC",
+   "DT",
+   "AGYS",
+   "TTAN",
+   "GTLB",
+   "APPN",
+   "GWRE",
+   "HUBS",
+   "MSFT",
+   "WK",
+   "TWLO",
+   "SAIL",
+   "APPF",
+   "U",
+   "MNDY",
+   "AMPL",
+   "CDNS"
+  ],
+  "10%-15% Growth": [
+   "FIVN",
+   "PATH",
+   "INTU",
+   "VERX",
+   "CRM",
+   "QTWO",
+   "ADBE",
+   "WDAY",
+   "SMWB",
+   "BILL",
+   "LAW",
+   "BSY",
+   "WIX",
+   "PAR",
+   "VEEV",
+   "ADSK",
+   "PCOR",
+   "INTA",
+   "DSGX"
+  ],
+  "5%-10% Growth": [
+   "RNG",
+   "SPSC",
+   "GDDY",
+   "LZ",
+   "MANH",
+   "PAYC",
+   "NICE",
+   "PEGA",
+   "SPT",
+   "ROP",
+   "DV",
+   "NCNO",
+   "DOCU",
+   "PCTY",
+   "BOX",
+   "ASAN",
+   "BL",
+   "TYL",
+   "OKTA",
+   "MITK",
+   "CCC",
+   "QLYS",
+   "COUR"
+  ],
+  "0%-5% Growth": [
+   "PD",
+   "PTC",
+   "CXM",
+   "EVCM",
+   "BLKB",
+   "ZM",
+   "SAP"
+  ],
+  "<0% Growth": [
+   "AI",
+   "UPLD",
+   "EXFY",
+   "ZI",
+   "TTD",
+   "DOMO",
+   "TDC",
+   "YEXT",
+   "CMRC",
+   "DBX",
+   "LPSN"
+  ],
+  "Fast Growth W/ Margin": [
+   "SNPS",
+   "SNOW",
+   "GLBE",
+   "DDOG",
+   "PLTR"
+  ],
+  "Large Cap Software Peers": [
+   "ADBE",
+   "ADSK",
+   "AMZN",
+   "CDNS",
+   "CRM",
+   "DASTY",
+   "INTU",
+   "MSFT",
+   "NOW",
+   "ORCL",
+   "SAP",
+   "SNOW",
+   "SNPS",
+   "SPCX",
+   "TEAM",
+   "WDAY"
+  ],
+  "Mature State Software": [
+   "ADBE",
+   "ADSK",
+   "CDNS",
+   "CRM",
+   "DASTY",
+   "DSGX",
+   "INTU",
+   "MSFT",
+   "ORCL",
+   "QLYS",
+   "SAP",
+   "SNPS"
+  ],
+  "High FCF Margin Peers": [
+   "WDAY",
+   "CRWD",
+   "ROP",
+   "BSY",
+   "INTU",
+   "PTC",
+   "DOCU",
+   "CRM",
+   "MANH",
+   "ZM",
+   "ADSK",
+   "NOW",
+   "DSGX",
+   "GDDY",
+   "PANW",
+   "DBX",
+   "ADBE",
+   "QLYS",
+   "VEEV",
+   "PLTR"
+  ],
+  "Acquired Companies": [
+   "ALTR",
+   "ANSS",
+   "AVLR",
+   "AYX",
+   "AZPN",
+   "COUP",
+   "CPLF-TSE",
+   "CVT",
+   "ECOM",
+   "EVBG",
+   "INST",
+   "IS",
+   "KNBE",
+   "NEWR",
+   "NEWR",
+   "PLAN",
+   "SMAR",
+   "SPLK",
+   "SQSP",
+   "SUMO",
+   "SVMK",
+   "USER",
+   "WKME",
+   "XM",
+   "ZEN",
+   "OLO",
+   "BASE",
+   "HCP"
+  ],
+  "PEGA": [
+   "BLKB",
+   "DOCU",
+   "VERX",
+   "PEGA"
+  ],
+  "High Margin Rule of 40": [
+   "VRSK",
+   "SNPS",
+   "TYL",
+   "DASTY",
+   "ADSK",
+   "BSY",
+   "CDNS",
+   "PTC",
+   "DSGX"
+  ]
+ }
+}
