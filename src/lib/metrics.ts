@@ -130,8 +130,11 @@ export function computeMetrics(company: ResolvedCompany): CompanyMetrics {
   const years = companyYears(company)
   const byYear: Record<string, YearMetrics> = {}
 
-  years.forEach((year, i) => {
-    const prevYear = i > 0 ? years[i - 1] : undefined
+  years.forEach((year) => {
+    // The prior calendar year specifically, not merely the previous year that
+    // happens to be present: a gap in the data must break the growth chain
+    // rather than quietly compare 2025 against 2023.
+    const prevYear = String(Number(year) - 1)
 
     const revenue = seriesValue(company, 'revenue', year)
     const grossProfit = seriesValue(company, 'grossProfit', year)

@@ -37,7 +37,8 @@ export type Series = Partial<Record<string, number | null>>
 
 /** One tier's contribution for a single company. */
 export interface CompanyFacts {
-  series: Partial<Record<MetricKey, Series>>
+  /** Absent when a tier contributes only balance sheet items or a price. */
+  series?: Partial<Record<MetricKey, Series>>
   balance?: Partial<Record<BalanceKey, number | null>>
   price?: number | null
 }
