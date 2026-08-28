@@ -114,8 +114,14 @@ app.post('/api/refresh', route(async (_req, res) => {
   res.json({ ok: true, asOf: cache.asOf, companies: Object.keys(cache.companies).length })
 }))
 
+/**
+ * Serve the built UI when it exists. In development Vite serves it instead and
+ * proxies /api here, so an absent build is normal rather than an error - but
+ * say so, since `npm start` without a build otherwise just 404s the page.
+ */
 const dist = path.join(root, 'dist')
-if (existsSync(dist)) {
+const hasBuild = existsSync(path.join(dist, 'index.html'))
+if (hasBuild) {
   app.use(express.static(dist))
   app.get('*', (_req, res) => res.sendFile(path.join(dist, 'index.html')))
 }
@@ -126,5 +132,11 @@ app.use(((err, _req, res, _next) => {
 }) as express.ErrorRequestHandler)
 
 app.listen(port, () => {
-  console.log(`Valuation dashboard API on http://localhost:${port}`)
+  if (hasBuild) {
+    console.log(`Valuation dashboard on http://localhost:${port}`)
+  } else {
+    console.log(`Valuation dashboard API on http://localhost:${port}`)
+    console.log('No UI build found. Run `npm run dev` for development, or')
+    console.log('`npm run build` first to serve the UI from this process.')
+  }
 })
