@@ -1,0 +1,41 @@
+# Fly.io deployment for a single-analyst dashboard.
+#
+#   fly launch --no-deploy --copy-config
+#   fly volumes create valuation_data --size 1
+#   fly secrets set DASHBOARD_PASSWORD_HASH='...' SESSION_SECRET='...'
+#   fly deploy
+#
+# Set app and primary_region during `fly launch`.
+
+app = "valuation-dashboard"
+primary_region = "iad"
+
+[build]
+
+[env]
+  DATA_DIR = "/data"
+  PORT = "8080"
+
+# Overrides and own models are written here, so this volume is the live data,
+# not a cache. A redeploy replaces the image and leaves the volume alone.
+[[mounts]]
+  source = "valuation_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # One analyst, one session: keeping a single machine means the volume has a
+  # single writer and there is no state to share between instances.
+  auto_stop_machines = "suspend"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 40
+    hard_limit = 80
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

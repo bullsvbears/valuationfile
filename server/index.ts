@@ -4,17 +4,35 @@ import { fileURLToPath } from 'node:url'
 import { existsSync } from 'node:fs'
 
 import { DataStore } from '../src/lib/store.js'
+import { assertProductionAuth, authConfigFromEnv, createAuth } from './auth.js'
+import { seedDataDir } from './seed.js'
 import { buildDashboard, type DashboardInputs } from '../src/lib/dashboard.js'
 import { credentialsFromEnv, fetchFactSet } from '../src/factset/client.js'
 import type { OverrideEntry, OwnModel } from '../src/lib/types.js'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(here, '..')
-const store = new DataStore(process.env.DATA_DIR ?? path.join(root, 'data'))
+const bundledData = path.join(root, 'data')
+const dataDir = process.env.DATA_DIR ?? bundledData
+const store = new DataStore(dataDir)
 const port = Number(process.env.PORT ?? 8787)
 
+const authConfig = authConfigFromEnv()
+if (process.env.ALLOW_OPEN_ACCESS !== 'true') assertProductionAuth(authConfig)
+const auth = createAuth(authConfig)
+
 const app = express()
+// Behind Fly's proxy the client address arrives in X-Forwarded-For; without
+// this the login rate limiter would see every request as one address.
+app.set('trust proxy', true)
 app.use(express.json({ limit: '4mb' }))
+
+app.get('/api/session', auth.session)
+app.post('/api/login', auth.login)
+app.post('/api/logout', auth.logout)
+
+// Everything below requires a session when a password is configured.
+app.use('/api', auth.requireSession)
 
 async function loadInputs(): Promise<DashboardInputs> {
   const [universe, factset, overrides, models] = await Promise.all([
@@ -131,12 +149,25 @@ app.use(((err, _req, res, _next) => {
   res.status(500).json({ error: err instanceof Error ? err.message : String(err) })
 }) as express.ErrorRequestHandler)
 
-app.listen(port, () => {
-  if (hasBuild) {
-    console.log(`Valuation dashboard on http://localhost:${port}`)
-  } else {
-    console.log(`Valuation dashboard API on http://localhost:${port}`)
-    console.log('No UI build found. Run `npm run dev` for development, or')
-    console.log('`npm run build` first to serve the UI from this process.')
-  }
+async function start(): Promise<void> {
+  const seeded = await seedDataDir(dataDir, bundledData)
+  if (seeded === 'seeded') console.log(`Seeded ${dataDir} from the bundled workbook import.`)
+
+  app.listen(port, () => {
+    if (!auth.enabled) {
+      console.log('WARNING: no DASHBOARD_PASSWORD_HASH set - the app is unprotected.')
+    }
+    if (hasBuild) {
+      console.log(`Valuation dashboard on http://localhost:${port}`)
+    } else {
+      console.log(`Valuation dashboard API on http://localhost:${port}`)
+      console.log('No UI build found. Run `npm run dev` for development, or')
+      console.log('`npm run build` first to serve the UI from this process.')
+    }
+  })
+}
+
+start().catch((error: unknown) => {
+  console.error(error instanceof Error ? error.message : error)
+  process.exit(1)
 })

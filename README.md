@@ -57,16 +57,78 @@ The bundled `data/factset-cache.json` holds the cached FDS values read out of
 the workbook. It is a starting point, not a live pull — run a refresh to make
 it current.
 
+## Hosting it
+
+The dashboard carries licensed FactSet estimates and your own models, so it is
+built to be reachable from anywhere but signed in to by one person. There is a
+single account, configured by environment variable — no user store, because
+there is only ever one user.
+
+Set a password before exposing it. In production the server refuses to start
+without `DASHBOARD_PASSWORD_HASH`, rather than quietly serving an open app.
+
+```bash
+npm run hash-password        # generates a strong password and prints both secrets
+```
+
+### Fly.io
+
+```bash
+fly launch --no-deploy --copy-config          # sets app name and region in fly.toml
+fly volumes create valuation_data --size 1
+fly secrets set DASHBOARD_PASSWORD_HASH='...' SESSION_SECRET='...'
+fly deploy
+```
+
+`fly.toml` mounts a volume at `/data` and points `DATA_DIR` there. That volume
+is the live data, not a cache: your overrides and models are written to it, and
+a redeploy replaces the image while leaving it alone. On first boot an empty
+volume is seeded once from the workbook import baked into the image, and never
+overwritten after that.
+
+To refresh FactSet on the deployed instance, set the credentials as secrets and
+run the refresh there:
+
+```bash
+fly secrets set FACTSET_USERNAME_SERIAL='...' FACTSET_API_KEY='...'
+fly ssh console -C "npx tsx scripts/refresh-factset.ts"
+```
+
+### What the auth does and does not do
+
+- The password is stored only as an scrypt hash; `SESSION_SECRET` signs session
+  cookies, and rotating it signs out every session at once.
+- Sessions last 12 hours, are `HttpOnly` and `SameSite=Lax`, and are `Secure` in
+  production. Cross-origin writes are refused even with a valid cookie.
+- Sign-in attempts are rate limited per address, with a lockout after 8 failures.
+- Sessions are a signed expiry rather than a server-side record, so a restart
+  does not sign you out. That also means an individual session cannot be revoked
+  without rotating the secret.
+- One account, one password. If colleagues need access, this wants real
+  per-user identity rather than a shared password.
+
+### Before you put it on a public host
+
+FactSet's licence generally covers you and other licensed users at your firm,
+not anonymous visitors. A login satisfies that for a single-user deployment, but
+if you are on a firm-wide agreement it is worth a word with compliance before
+consensus estimates leave your machine. Running it behind a Cloudflare Tunnel
+from hardware you control is the variant that keeps the data off a cloud host
+entirely.
+
+
 ## Layout
 
 ```
 src/lib/        resolver, metrics, peer-group roll-ups, persistence
 src/factset/    FQL builders and the Formula API client
-src/ui/         screener, company page, summaries
-server/         REST API over the three tiers
-scripts/        workbook importer, fixture builder, FactSet refresh
+src/ui/         screener, company page, summaries, sign in
+server/         REST API over the three tiers, auth, volume seeding
+scripts/        workbook importer, fixture builder, FactSet refresh, password hashing
 data/           the three tiers, one file per tier (models: one per ticker)
-tests/          unit tests plus reconciliation against the workbook
+tests/          unit tests, an end-to-end server test, reconciliation against the workbook
+Dockerfile      container image
+fly.toml        Fly.io deployment with a persistent volume
 ```
 
 ## Reconciliation

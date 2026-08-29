@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
-import { api } from './api.js'
+import { api, NotSignedInError, type SessionState } from './api.js'
+import { Login } from './Login.js'
 import type { Dashboard } from '../lib/dashboard.js'
 import { Screener } from './Screener.js'
 import { CompanyDetail } from './CompanyDetail.js'
@@ -13,6 +14,7 @@ export function App() {
   const [view, setView] = useState<View>('screener')
   const [selected, setSelected] = useState<string | null>(null)
   const [year, setYear] = useState<string | null>(null)
+  const [session, setSession] = useState<SessionState | null>(null)
 
   const load = useCallback(async (forYear?: string) => {
     try {
@@ -21,18 +23,42 @@ export function App() {
       setYear((current) => current ?? next.summaryYear)
       setError(null)
     } catch (e) {
+      // A session can lapse mid-use, so fall back to the login screen rather
+      // than showing the user an error they cannot act on.
+      if (e instanceof NotSignedInError) setSession({ authRequired: true, signedIn: false })
+      else setError(e instanceof Error ? e.message : String(e))
+    }
+  }, [])
+
+  const checkSession = useCallback(async () => {
+    try {
+      setSession(await api.session())
+    } catch (e) {
       setError(e instanceof Error ? e.message : String(e))
     }
   }, [])
 
-  useEffect(() => { void load() }, [load])
+  useEffect(() => { void checkSession() }, [checkSession])
+
+  useEffect(() => {
+    if (session?.signedIn) void load()
+  }, [session?.signedIn, load])
 
   // Reloading on year change keeps the peer summaries struck on the same year
   // the screener is showing.
   useEffect(() => {
-    if (year) void load(year)
-  }, [year, load])
+    if (year && session?.signedIn) void load(year)
+  }, [year, session?.signedIn, load])
 
+  const signOut = async () => {
+    await api.logout().catch(() => undefined)
+    setDashboard(null)
+    setYear(null)
+    await checkSession()
+  }
+
+  if (!session) return <div className="loading">…</div>
+  if (!session.signedIn) return <Login onSignedIn={() => void checkSession()} />
   if (error) return <div className="status error">{error}</div>
   if (!dashboard || !year) return <div className="loading">Loading valuation data…</div>
 
@@ -64,6 +90,9 @@ export function App() {
             ? `FactSet as of ${new Date(dashboard.asOf).toLocaleString()}`
             : dashboard.factsetSource}
         </span>
+        {session.authRequired && (
+          <button className="back" onClick={() => void signOut()}>Sign out</button>
+        )}
       </header>
 
       <main className="content">

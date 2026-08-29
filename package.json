@@ -14,7 +14,8 @@
     "preview": "vite preview",
     "start": "tsx server/index.ts",
     "test": "vitest run",
-    "refresh": "tsx scripts/refresh-factset.ts"
+    "refresh": "tsx scripts/refresh-factset.ts",
+    "hash-password": "tsx scripts/hash-password.ts"
   },
   "dependencies": {
     "express": "^4.21.2",

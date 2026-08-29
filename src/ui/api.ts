@@ -4,11 +4,20 @@ import type { CompanyFacts, OverrideEntry, OwnModel } from '../lib/types.js'
 
 /** Thin fetch wrappers over the dashboard API. */
 
+/** Thrown when the API reports no valid session, so the UI can show the login. */
+export class NotSignedInError extends Error {
+  constructor() {
+    super('Not signed in')
+    this.name = 'NotSignedInError'
+  }
+}
+
 async function json<T>(input: string, init?: RequestInit): Promise<T> {
   const res = await fetch(input, {
     ...init,
     headers: { 'Content-Type': 'application/json', ...(init?.headers ?? {}) },
   })
+  if (res.status === 401) throw new NotSignedInError()
   if (!res.ok) {
     const body = (await res.json().catch(() => ({}))) as { error?: string }
     throw new Error(body.error ?? `${res.status} ${res.statusText}`)
@@ -24,7 +33,16 @@ export interface CompanyDetail extends CompanyView {
   }
 }
 
+export interface SessionState {
+  authRequired: boolean
+  signedIn: boolean
+}
+
 export const api = {
+  session: () => json<SessionState>('/api/session'),
+
+  logout: () => json<{ ok: boolean }>('/api/logout', { method: 'POST' }),
+
   dashboard: (year?: string) =>
     json<Dashboard>(`/api/dashboard${year ? `?year=${encodeURIComponent(year)}` : ''}`),
 
