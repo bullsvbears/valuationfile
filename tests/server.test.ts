@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { spawn, type ChildProcess } from 'node:child_process'
+import { spawn, spawnSync, type ChildProcess } from 'node:child_process'
 import { createServer } from 'node:net'
 import { mkdtempSync, rmSync, readFileSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -17,6 +17,7 @@ import { hashPassword } from '../server/auth.js'
  */
 
 const root = path.resolve(__dirname, '..')
+const isWindows = process.platform === 'win32'
 const PASSWORD = 'a-test-password-for-ci'
 
 let server: ChildProcess
@@ -64,9 +65,11 @@ beforeAll(async () => {
   const port = await freePort()
   baseUrl = `http://127.0.0.1:${port}`
 
-  // Run the tsx binary directly rather than through npx: npx would be the
-  // child, and killing it would leave the actual server orphaned on the port.
-  server = spawn(path.join(root, 'node_modules', '.bin', 'tsx'), ['server/index.ts'], {
+  // Run tsx's JS entry point under this Node binary rather than the `.bin`
+  // shim: on Windows that shim is `tsx.cmd`, which spawn cannot launch without
+  // a shell, and going through npx would leave the real server orphaned.
+  const tsxCli = path.join(root, 'node_modules', 'tsx', 'dist', 'cli.mjs')
+  server = spawn(process.execPath, [tsxCli, 'server/index.ts'], {
     cwd: root,
     env: {
       ...process.env,
@@ -77,19 +80,36 @@ beforeAll(async () => {
       NODE_ENV: 'test',
     },
     stdio: 'ignore',
-    detached: true, // its own process group, so the whole tree can be signalled
+    // A process group lets the whole tree be signalled at once. Windows has no
+    // process groups, so it is handled with taskkill below instead.
+    detached: !isWindows,
   })
   await waitForReady()
 }, 60000)
 
+/**
+ * Stop the server and everything it started.
+ *
+ * tsx re-executes the script in a child process, so signalling only the
+ * process we spawned would leave the real server holding the port. Both
+ * branches below target the tree rather than the leader.
+ */
+function stopServer(child: ChildProcess): void {
+  if (!child.pid) return
+  if (isWindows) {
+    spawnSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio: 'ignore' })
+    return
+  }
+  try {
+    process.kill(-child.pid, 'SIGTERM')
+  } catch {
+    child.kill('SIGTERM')
+  }
+}
+
 afterAll(async () => {
-  if (server?.pid) {
-    // Signal the group, not just the leader, so nothing survives the run.
-    try {
-      process.kill(-server.pid, 'SIGTERM')
-    } catch {
-      server.kill('SIGTERM')
-    }
+  if (server) {
+    stopServer(server)
     await new Promise((r) => setTimeout(r, 300))
   }
   if (dataDir) rmSync(dataDir, { recursive: true, force: true })

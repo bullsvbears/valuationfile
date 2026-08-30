@@ -36,6 +36,11 @@ npm install
 npm run dev          # API on :8787, UI on :5173
 ```
 
+Run these from the repository folder, the one containing `package.json`; `npm
+run` has no idea what project you mean from anywhere else. Node 20 or newer.
+Everything works the same on Windows, macOS and Linux — where a command differs
+by shell, both forms are given.
+
 `npm run build && npm start` serves the built UI from the API process.
 
 ### Refreshing FactSet
@@ -47,6 +52,15 @@ only inside Excel. The Formula API takes the same FQL strings over HTTP, so
 ```bash
 npx tsx scripts/refresh-factset.ts --dry-run          # print the exact FQL
 FACTSET_USERNAME_SERIAL=... FACTSET_API_KEY=... npm run refresh
+```
+
+On Windows PowerShell, set the variables first — the inline `VAR=value command`
+form is shell syntax that PowerShell does not have:
+
+```powershell
+$env:FACTSET_USERNAME_SERIAL = "..."
+$env:FACTSET_API_KEY = "..."
+npm run refresh
 ```
 
 A refresh rewrites only the FactSet tier. Overrides and models are separate
