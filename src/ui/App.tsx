@@ -7,13 +7,14 @@ import { CompanyDetail } from './CompanyDetail.js'
 import { Summary } from './Summary.js'
 import { CompaniesMaster } from './CompaniesMaster.js'
 import { Changes } from './Changes.js'
+import { Overview } from './Overview.js'
 
-type View = 'master' | 'screener' | 'changes' | 'sectors' | 'peers'
+type View = 'summary' | 'master' | 'screener' | 'sectors' | 'peers' | 'changes'
 
 export function App() {
   const [dashboard, setDashboard] = useState<Dashboard | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [view, setView] = useState<View>('master')
+  const [view, setView] = useState<View>('summary')
   const [selected, setSelected] = useState<string | null>(null)
   const [year, setYear] = useState<string | null>(null)
   const [session, setSession] = useState<SessionState | null>(null)
@@ -71,11 +72,12 @@ export function App() {
         {!selected && (
           <nav className="tabs">
             {([
+              ['summary', 'Summary'],
               ['master', 'Master Input'],
               ['screener', 'Screen'],
-              ['changes', 'Changes'],
               ['sectors', 'Sector Peers'],
               ['peers', 'Financial Peers'],
+              ['changes', 'Changes'],
             ] as const).map(([key, label]) => (
               <button
                 key={key}
@@ -112,6 +114,8 @@ export function App() {
             year={year}
             onYearChange={setYear}
           />
+        ) : view === 'summary' ? (
+          <Overview dashboard={dashboard} />
         ) : view === 'master' ? (
           <CompaniesMaster dashboard={dashboard} onSaved={() => load(year)} />
         ) : view === 'changes' ? (

@@ -18,12 +18,22 @@ import { METRIC_KEYS, type MetricKey } from '../src/lib/types.js'
  * image.
  */
 
+/** The multiples worth tracking day over day. */
+const TRACKED_MULTIPLES = ['evRevenue', 'evEbitda', 'evFcf', 'pe'] as const
+type TrackedMultiple = (typeof TRACKED_MULTIPLES)[number]
+
 export interface SnapshotCompany {
   price: number | null
   shares: number | null
   cash: number | null
   debt: number | null
+  /** Resolved values: whatever tier was live when the snapshot was taken. */
   series: Partial<Record<MetricKey, Record<string, number>>>
+  /** The FactSet tier on its own, so estimate revisions are trackable even
+   *  where a model or override won the resolved cell. */
+  factset?: { price: number | null; series: Partial<Record<MetricKey, Record<string, number>>> }
+  /** Computed multiples by year, numbers only ("nm" and gaps are dropped). */
+  multiples?: Record<string, Partial<Record<TrackedMultiple, number>>>
 }
 
 export interface Snapshot {
@@ -53,12 +63,37 @@ export function buildSnapshot(dashboard: Dashboard, date: string): Snapshot {
       }
       if (Object.keys(years).length) series[metric] = years
     }
+    let factset: SnapshotCompany['factset']
+    if (company.factset) {
+      const vendorSeries: SnapshotCompany['series'] = {}
+      for (const metric of METRIC_KEYS) {
+        const years: Record<string, number> = {}
+        for (const [year, value] of Object.entries(company.factset.series[metric] ?? {})) {
+          if (typeof value === 'number') years[year] = value
+        }
+        if (Object.keys(years).length) vendorSeries[metric] = years
+      }
+      factset = { price: company.factset.price, series: vendorSeries }
+    }
+
+    const multiples: SnapshotCompany['multiples'] = {}
+    for (const [year, byYear] of Object.entries(company.metrics.byYear)) {
+      const entry: Partial<Record<TrackedMultiple, number>> = {}
+      for (const key of TRACKED_MULTIPLES) {
+        const value = byYear[key]
+        if (typeof value === 'number') entry[key] = value
+      }
+      if (Object.keys(entry).length) multiples[year] = entry
+    }
+
     companies[company.meta.ticker] = {
       price: company.metrics.price,
       shares: company.resolved.balance.shares.value,
       cash: company.resolved.balance.cash.value,
       debt: company.resolved.balance.debt.value,
       series,
+      factset,
+      multiples,
     }
   }
   return { date, takenAt: new Date().toISOString(), companies }

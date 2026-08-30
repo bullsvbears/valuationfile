@@ -5,9 +5,11 @@ import type { Universe } from './store.js'
 import type {
   CompanyMeta,
   FactSetCache,
+  MetricKey,
   OverrideStore,
   OwnModel,
   ResolvedCompany,
+  Series,
   Tier,
 } from './types.js'
 
@@ -28,6 +30,13 @@ export interface CompanyView {
   resolved: ResolvedCompany
   metrics: CompanyMetrics
   tierCounts: Record<Tier, number>
+  /**
+   * The FactSet tier on its own, alongside the resolved view. Where a model or
+   * override wins, the consensus it displaced is invisible in `resolved`, and
+   * tracking estimate revisions requires seeing the vendor number regardless
+   * of who won the cell.
+   */
+  factset: { price: number | null; series: Partial<Record<MetricKey, Series>> } | null
 }
 
 export interface Dashboard {
@@ -73,11 +82,13 @@ export function defaultSummaryYear(companies: CompanyView[]): string {
 export function buildDashboard(inputs: DashboardInputs, summaryYear?: string): Dashboard {
   const companies: CompanyView[] = inputs.universe.companies.map((meta) => {
     const resolved = resolveCompany(meta, tiersFor(meta.ticker, inputs))
+    const vendor = inputs.factset.companies[meta.ticker]
     return {
       meta,
       resolved,
       metrics: computeMetrics(resolved),
       tierCounts: tierBreakdown(resolved),
+      factset: vendor ? { price: vendor.price ?? null, series: vendor.series ?? {} } : null,
     }
   })
 

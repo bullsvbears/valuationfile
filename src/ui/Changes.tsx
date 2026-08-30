@@ -6,11 +6,14 @@ import { api, type HistorySnapshot } from './api.js'
 /**
  * Changes: how the key inputs have moved since an earlier snapshot.
  *
- * The server records the resolved state once per day, and this tab compares
- * the live numbers against any recorded date — the same question the source
- * workbook's Today / Last Week / % Delta columns answered, but against any
- * date the app has been running, and for any metric.
+ * The server records the state once per day, and this tab compares the live
+ * numbers against any recorded date. The default source is the FactSet tier —
+ * consensus revisions specifically, visible even where an own model or
+ * override wins the resolved cell — with "My live inputs" as the alternative
+ * for tracking what the dashboard actually resolves to.
  */
+
+type Source = 'factset' | 'resolved'
 
 const METRIC_TABS: { key: MetricKey | 'price'; label: string }[] = [
   { key: 'revenue', label: 'Revenue' },
@@ -59,6 +62,7 @@ export function Changes({ dashboard }: { dashboard: Dashboard }) {
   const [metric, setMetric] = useState<MetricKey | 'price'>('revenue')
   const [year, setYear] = useState(dashboard.summaryYear)
   const [search, setSearch] = useState('')
+  const [source, setSource] = useState<Source>('factset')
   const [sort, setSort] = useState<'moved' | 'ticker'>('moved')
   const [error, setError] = useState<string | null>(null)
 
@@ -98,14 +102,19 @@ export function Changes({ dashboard }: { dashboard: Dashboard }) {
       ) continue
 
       const past = snapshot.companies[ticker]
-      const then =
-        metric === 'price'
-          ? past?.price ?? null
-          : past?.series?.[metric]?.[year] ?? null
-      const now =
-        metric === 'price'
-          ? company.metrics.price
-          : company.resolved.series[metric][year]?.value ?? null
+      let then: number | null
+      let now: number | null
+      if (metric === 'price') {
+        // Price is a market fact, the same number under either source.
+        then = past?.price ?? null
+        now = company.metrics.price
+      } else if (source === 'factset') {
+        then = past?.factset?.series?.[metric]?.[year] ?? null
+        now = (company.factset?.series?.[metric]?.[year] as number | undefined) ?? null
+      } else {
+        then = past?.series?.[metric]?.[year] ?? null
+        now = company.resolved.series[metric][year]?.value ?? null
+      }
 
       const delta = then !== null && now !== null ? now - then : null
       const percent = delta !== null && then !== null && then !== 0 ? delta / Math.abs(then) : null
@@ -116,7 +125,7 @@ export function Changes({ dashboard }: { dashboard: Dashboard }) {
     // Biggest movers first; rows with nothing to compare sink to the bottom.
     const rank = (row: Row) => (row.percent === null ? -Infinity : Math.abs(row.percent))
     return out.sort((a, b) => rank(b) - rank(a) || a.ticker.localeCompare(b.ticker))
-  }, [dashboard, snapshot, metric, year, search, sort])
+  }, [dashboard, snapshot, metric, year, search, sort, source])
 
   const changed = rows.filter((r) => r.delta !== null && Math.abs(r.delta) > 1e-9).length
 
@@ -148,6 +157,17 @@ export function Changes({ dashboard }: { dashboard: Dashboard }) {
             </select>
           </div>
         )}
+        <div className="control">
+          <label htmlFor="chg-source">Source</label>
+          <select
+            id="chg-source"
+            value={source}
+            onChange={(e) => setSource(e.target.value as Source)}
+          >
+            <option value="factset">FactSet estimates</option>
+            <option value="resolved">My live inputs</option>
+          </select>
+        </div>
         <div className="control">
           <label htmlFor="chg-date">Compare to</label>
           <select

@@ -248,6 +248,20 @@ describe('writes land on the data directory', () => {
     expect(Object.keys(snapshot.companies).length).toBe(335)
     expect(snapshot.companies.ADBE?.series.revenue?.['2024']).toBe(21505)
 
+    // The FactSet tier is captured separately from the resolved values, so
+    // estimate revisions stay trackable where a model or override wins the
+    // cell. ADBE's resolved 2025 revenue comes from the model (23765); its
+    // vendor tier carries only the history years the workbook pulled live.
+    const adbe = snapshot.companies.ADBE as unknown as {
+      series: { revenue: Record<string, number> }
+      factset?: { series: { revenue?: Record<string, number> } }
+      multiples?: Record<string, { evRevenue?: number }>
+    }
+    expect(adbe.series.revenue['2025']).toBe(23765)
+    expect(adbe.factset?.series.revenue?.['2021']).toBe(15785)
+    expect(adbe.factset?.series.revenue?.['2025']).toBeUndefined()
+    expect(typeof adbe.multiples?.['2027']?.evRevenue).toBe('number')
+
     const list = await fetch(`${baseUrl}/api/history`, { headers: { cookie } })
     expect(((await list.json()) as { dates: string[] }).dates).toContain(today)
   })

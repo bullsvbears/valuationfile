@@ -47,6 +47,8 @@ export interface HistorySnapshot {
     cash: number | null
     debt: number | null
     series: Partial<Record<string, Record<string, number>>>
+    factset?: { price: number | null; series: Partial<Record<string, Record<string, number>>> }
+    multiples?: Record<string, Partial<Record<string, number>>>
   }>
 }
 
