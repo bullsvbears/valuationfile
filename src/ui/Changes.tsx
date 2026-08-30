@@ -7,10 +7,10 @@ import { api, type HistorySnapshot } from './api.js'
  * Changes: how the key inputs have moved since an earlier snapshot.
  *
  * The server records the state once per day, and this tab compares the live
- * numbers against any recorded date. The default source is the FactSet tier —
- * consensus revisions specifically, visible even where an own model or
- * override wins the resolved cell — with "My live inputs" as the alternative
- * for tracking what the dashboard actually resolves to.
+ * numbers against any recorded date. The default source is the master inputs
+ * (the resolved values — FactSet, model or override, whichever owns the
+ * cell); "FactSet estimates only" isolates consensus revisions, which stay
+ * visible even where a model or override wins the resolved cell.
  */
 
 type Source = 'factset' | 'resolved'
@@ -62,7 +62,7 @@ export function Changes({ dashboard }: { dashboard: Dashboard }) {
   const [metric, setMetric] = useState<MetricKey | 'price'>('revenue')
   const [year, setYear] = useState(dashboard.summaryYear)
   const [search, setSearch] = useState('')
-  const [source, setSource] = useState<Source>('factset')
+  const [source, setSource] = useState<Source>('resolved')
   const [sort, setSort] = useState<'moved' | 'ticker'>('moved')
   const [error, setError] = useState<string | null>(null)
 
@@ -164,8 +164,8 @@ export function Changes({ dashboard }: { dashboard: Dashboard }) {
             value={source}
             onChange={(e) => setSource(e.target.value as Source)}
           >
-            <option value="factset">FactSet estimates</option>
-            <option value="resolved">My live inputs</option>
+            <option value="resolved">Master inputs (any source)</option>
+            <option value="factset">FactSet estimates only</option>
           </select>
         </div>
         <div className="control">

@@ -4,13 +4,16 @@ import type { MetricKey } from '../lib/types.js'
 import { api, type HistorySnapshot } from './api.js'
 
 /**
- * Summary: the day's landing page — what moved.
+ * Summary: the day's landing page — what moved in the master inputs.
  *
- * Three panels of movers since a chosen snapshot date: FactSet estimate
- * revisions (the vendor tier specifically, so a revision shows even where an
- * own model or override wins the resolved cell), price moves, and EV/Revenue
- * re-ratings. Thresholds keep it to changes worth reading; the Changes tab
- * holds the full list.
+ * Changes are measured on the resolved values, the numbers the Master Input
+ * tab shows, so a FactSet revision, a model update and a hand override all
+ * count equally — the question is "which companies' data moved", not "who
+ * moved it". Each row still carries a source dot for the tier that owns the
+ * cell now. A fourth panel rolls the same changes up by comp group, so a
+ * sector-wide estimate reset reads as one line rather than twenty.
+ * Thresholds keep it to moves worth reading; the Changes tab holds the full
+ * list.
  */
 
 const ESTIMATE_METRICS: { key: MetricKey; label: string }[] = [
@@ -45,6 +48,16 @@ interface Mover {
   then: string
   now: string
   percent: number
+  /** Tier owning the cell now, shown as a source dot. */
+  tier?: string | null
+}
+
+interface GroupMover {
+  group: string
+  kind: 'Sector' | 'Financial'
+  changed: number
+  total: number
+  medianMove: number
 }
 
 function MoverTable({ title, sub, rows, empty }: {
@@ -74,6 +87,7 @@ function MoverTable({ title, sub, rows, empty }: {
               <tr key={`${row.ticker}-${row.detail}-${i}`}>
                 <td className="left">
                   <span className="master-ticker">{row.ticker}</span>
+                  {row.tier && <i className={`tier-dot ${row.tier}`} title={`Source: ${row.tier}`} />}
                   <span className="hint" style={{ marginLeft: 6 }}>{row.detail}</span>
                 </td>
                 <td className="num">{row.then}</td>
@@ -119,32 +133,54 @@ export function Overview({ dashboard }: { dashboard: Dashboard }) {
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
   }, [compareTo])
 
-  const { estimates, prices, multiples } = useMemo(() => {
+  const { estimates, prices, multiples, groups } = useMemo(() => {
     const estimates: Mover[] = []
     const prices: Mover[] = []
     const multiples: Mover[] = []
-    if (!snapshot) return { estimates, prices, multiples }
+    const groups: GroupMover[] = []
+    if (!snapshot) return { estimates, prices, multiples, groups }
+
+    /** Largest input move per ticker, for the group roll-up. */
+    const biggestMove = new Map<string, number>()
 
     for (const company of dashboard.companies) {
       const ticker = company.meta.ticker
       const past = snapshot.companies[ticker]
       if (!past) continue
 
-      // FactSet estimate revisions, vendor tier against vendor tier.
+      // Master-input changes: resolved then vs resolved now, any source.
+      // One row per company — its biggest move — so a name whose four inputs
+      // all shifted together cannot crowd everything else off the panel.
+      let best: Mover | null = null
+      let movedInputs = 0
       for (const { key, label } of ESTIMATE_METRICS) {
-        const then = past.factset?.series?.[key]?.[year]
-        const now = company.factset?.series?.[key]?.[year]
+        const then = past.series?.[key]?.[year]
+        const now = company.resolved.series[key][year]?.value ?? null
         if (typeof then !== 'number' || typeof now !== 'number' || then === 0) continue
         const move = (now - then) / Math.abs(then)
+        if (Math.abs(move) > Math.abs(biggestMove.get(ticker) ?? 0)) {
+          biggestMove.set(ticker, move)
+        }
         if (Math.abs(move) < ESTIMATE_THRESHOLD) continue
         const cents = key === 'eps'
-        estimates.push({
-          ticker,
-          detail: `${label} ${year}`,
-          then: money(then, cents),
-          now: money(now, cents),
-          percent: move,
-        })
+        // A change the formatting cannot show ($0.00 to $0.00) is noise here,
+        // whatever its percentage: the base is too small to matter.
+        if (money(then, cents) === money(now, cents)) continue
+        movedInputs += 1
+        if (!best || Math.abs(move) > Math.abs(best.percent)) {
+          best = {
+            ticker,
+            detail: `${label} ${year}`,
+            then: money(then, cents),
+            now: money(now, cents),
+            percent: move,
+            tier: company.resolved.series[key][year]?.tier,
+          }
+        }
+      }
+      if (best) {
+        if (movedInputs > 1) best.detail += ` · ${movedInputs} inputs moved`
+        estimates.push(best)
       }
 
       // Price moves.
@@ -180,11 +216,40 @@ export function Overview({ dashboard }: { dashboard: Dashboard }) {
       }
     }
 
+    // Roll the same input changes up by comp group: a name counts as changed
+    // when its largest input move for the year clears the threshold.
+    const summaries = [
+      ...dashboard.sectorSummaries.map((s) => ({ ...s, kind: 'Sector' as const })),
+      ...dashboard.peerSummaries.map((s) => ({ ...s, kind: 'Financial' as const })),
+    ]
+    for (const summary of summaries) {
+      const moves = summary.members
+        .map((t) => biggestMove.get(t) ?? null)
+        .filter((m): m is number => m !== null)
+      const changedMoves = moves.filter((m) => Math.abs(m) >= ESTIMATE_THRESHOLD)
+      if (!changedMoves.length) continue
+      const sorted = [...changedMoves].sort((a, b) => a - b)
+      const mid = Math.floor(sorted.length / 2)
+      const medianMove =
+        sorted.length % 2 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2
+      groups.push({
+        group: summary.group,
+        kind: summary.kind,
+        changed: changedMoves.length,
+        total: summary.members.length,
+        medianMove,
+      })
+    }
+    groups.sort(
+      (a, b) => b.changed / Math.max(b.total, 1) - a.changed / Math.max(a.total, 1) || b.changed - a.changed,
+    )
+
     const byMagnitude = (a: Mover, b: Mover) => Math.abs(b.percent) - Math.abs(a.percent)
     return {
       estimates: estimates.sort(byMagnitude).slice(0, MAX_ROWS),
       prices: prices.sort(byMagnitude).slice(0, MAX_ROWS),
       multiples: multiples.sort(byMagnitude).slice(0, MAX_ROWS),
+      groups: groups.slice(0, MAX_ROWS),
     }
   }, [dashboard, snapshot, year])
 
@@ -200,8 +265,9 @@ export function Overview({ dashboard }: { dashboard: Dashboard }) {
         <p className="sub">
           Nothing to summarise yet: today's snapshot is the first one recorded.
           The dashboard stores its state once per day it is used — from tomorrow,
-          this page will lead with the FactSet estimate revisions, price moves
-          and multiple re-ratings since a date you pick.
+          this page will lead with the input changes (from any source), the comp
+          groups seeing them, price moves and multiple re-ratings since a date
+          you pick.
         </p>
       </div>
     )
@@ -229,11 +295,42 @@ export function Overview({ dashboard }: { dashboard: Dashboard }) {
 
       <div className="overview-grid">
         <MoverTable
-          title="FactSet estimate revisions"
-          sub={`Consensus moves of 1%+ for ${year}, whether or not your model overrides them.`}
+          title="Input changes"
+          sub={`Master-input moves of 1%+ for ${year} — FactSet revisions, model updates and overrides alike; the dot marks the source.`}
           rows={estimates}
-          empty="No consensus estimate has moved 1% or more."
+          empty="No input has moved 1% or more."
         />
+        <div className="panel overview-panel">
+          <h3>Comp groups seeing changes</h3>
+          <p className="sub">
+            Groups ranked by how much of the membership has a changed input for {year}.
+          </p>
+          {groups.length === 0 ? (
+            <p className="hint">No group has a changed member.</p>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th className="left">Group</th>
+                  <th>Changed</th>
+                  <th>Median Δ</th>
+                </tr>
+              </thead>
+              <tbody>
+                {groups.map((g) => (
+                  <tr key={`${g.kind}-${g.group}`}>
+                    <td className="left">
+                      {g.group}
+                      <span className="hint" style={{ marginLeft: 6 }}>{g.kind}</span>
+                    </td>
+                    <td className="num">{g.changed} of {g.total}</td>
+                    <td className={`num ${g.medianMove > 0 ? 'pos' : 'neg'}`}>{pct(g.medianMove)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
         <MoverTable
           title="Price moves"
           sub="Shares that have moved 3% or more."
