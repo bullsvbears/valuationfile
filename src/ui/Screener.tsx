@@ -75,8 +75,8 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
   const [group, setGroup] = useState('All companies')
   const [coverageOnly, setCoverageOnly] = useState(false)
   const [sort, setSort] = useState<{ key: string; direction: 1 | -1 }>({
-    key: 'evRevenue',
-    direction: -1,
+    key: 'ticker',
+    direction: 1,
   })
 
   const groupOptions = useMemo(
@@ -104,6 +104,11 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
       )
     })
 
+    if (sort.key === 'ticker') {
+      return [...filtered].sort(
+        (a, b) => a.meta.ticker.localeCompare(b.meta.ticker) * sort.direction,
+      )
+    }
     const column = COLUMNS.find((c) => c.key === sort.key)
     if (!column) return filtered
     return [...filtered].sort((a, b) =>
@@ -117,7 +122,9 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
 
   const toggleSort = (key: string) =>
     setSort((prev) =>
-      prev.key === key ? { key, direction: prev.direction === 1 ? -1 : 1 } : { key, direction: -1 },
+      prev.key === key
+        ? { key, direction: prev.direction === 1 ? -1 : 1 }
+        : { key, direction: key === 'ticker' ? 1 : -1 },
     )
 
   const groups = [...new Set(COLUMNS.map((c) => c.group))]
@@ -185,7 +192,9 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
               ))}
             </tr>
             <tr>
-              <th className="left sticky-col" onClick={() => toggleSort('ticker')}>Company</th>
+              <th className="left sticky-col" onClick={() => toggleSort('ticker')}>
+                Company{sort.key === 'ticker' ? (sort.direction === 1 ? ' ▴' : ' ▾') : ''}
+              </th>
               {COLUMNS.map((column) => (
                 <th
                   key={column.key}

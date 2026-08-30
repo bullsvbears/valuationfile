@@ -18,6 +18,12 @@ always shows which:
 | `model` | `data/models/<TICKER>.json` | FactSet |
 | `override` | `data/overrides.json` | model, FactSet |
 
+All editing happens on the **Companies Master** tab — a spreadsheet-shaped
+grid, one metric at a time, every cell editable. Edits save as overrides, the
+top tier, so every other tab (screener, company pages, sector and peer
+summaries) follows the master without being editable itself. Each cell is
+colored by its source, and clearing a cell falls back to the tier beneath.
+
 A tier only speaks for the cells it fills. A model that forecasts 2026-2028
 leaves earlier years to FactSet, so a covered name gets vendor history and your
 forward view without anything being copied between them. Clearing an override
@@ -152,7 +158,7 @@ entirely.
 ```
 src/lib/        resolver, metrics, peer-group roll-ups, persistence
 src/factset/    FQL builders and the Formula API client
-src/ui/         screener, company page, summaries, sign in
+src/ui/         screener, Companies Master editor, company page, summaries, sign in
 server/         REST API over the three tiers, auth, volume seeding
 scripts/        workbook importer, fixture builder, FactSet refresh, password hashing
 data/           the three tiers, one file per tier (models: one per ticker)

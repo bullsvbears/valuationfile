@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { api, type CompanyDetail as Detail } from './api.js'
 import { METRIC_KEYS, type MetricKey } from '../lib/types.js'
 import {
@@ -10,12 +10,12 @@ import {
 } from './format.js'
 
 /**
- * Company page: the resolved view on top, then an editable input grid.
+ * Company page: a read-only view of one name.
  *
- * Editing writes to whichever tier the analyst is working in. For a covered
- * name that is their own model; for anything else it is a manual override on
- * top of FactSet. Both are shown side by side with the FactSet number they
- * replace, so an edit is never made blind to the consensus it departs from.
+ * All editing happens on the Companies Master tab, so every other view —
+ * this one included — is a pure function of what the master resolves. The
+ * inputs table still shows each cell's source, and for any cell where a
+ * higher tier won, the FactSet consensus it displaced.
  */
 
 const METRIC_LABELS: Record<MetricKey, string> = {
@@ -26,41 +26,16 @@ const METRIC_LABELS: Record<MetricKey, string> = {
   eps: 'EPS',
 }
 
-type EditTarget = 'model' | 'override'
-type Draft = Record<string, string>
-
-const cellId = (metric: string, year: string) => `${metric}:${year}`
-
-function parseCell(raw: string): number | null {
-  const trimmed = raw.trim()
-  if (!trimmed) return null
-  const value = Number(trimmed.replace(/,/g, ''))
-  return Number.isFinite(value) ? value : null
-}
-
 export function CompanyDetail({ ticker, onBack }: { ticker: string; onBack: () => void }) {
   const [detail, setDetail] = useState<Detail | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [target, setTarget] = useState<EditTarget>('override')
-  const [draft, setDraft] = useState<Draft>({})
-  const [saving, setSaving] = useState(false)
-
-  const load = async () => {
-    setError(null)
-    try {
-      const next = await api.company(ticker)
-      setDetail(next)
-      setDraft({})
-      // Default to editing the model for a name the analyst covers.
-      setTarget(next.meta.covered ? 'model' : 'override')
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e))
-    }
-  }
 
   useEffect(() => {
-    void load()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setDetail(null)
+    api
+      .company(ticker)
+      .then(setDetail)
+      .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
   }, [ticker])
 
   const years = useMemo(() => {
@@ -76,86 +51,6 @@ export function CompanyDetail({ ticker, onBack }: { ticker: string; onBack: () =
   if (!detail) return <div className="loading">Loading {ticker}…</div>
 
   const { meta, metrics, resolved, tiers } = detail
-  const dirty = Object.keys(draft).length > 0
-
-  /** True when this override cell was carried in from the workbook import. */
-  const isImported = (metric: MetricKey, year: string): boolean =>
-    Boolean(tiers.override?.imported?.[metric]?.includes(year))
-
-  const analystOverrides = Object.entries(tiers.override?.series ?? {}).reduce(
-    (total, [metric, years]) =>
-      total +
-      Object.keys(years ?? {}).filter((year) => !isImported(metric as MetricKey, year)).length,
-    0,
-  )
-
-  /** The value currently stored in the tier being edited, as a string. */
-  const storedValue = (metric: MetricKey, year: string): string => {
-    const facts = target === 'model' ? tiers.model : tiers.override
-    const value = facts?.series?.[metric]?.[year]
-    return typeof value === 'number' ? String(value) : ''
-  }
-
-  const cellValue = (metric: MetricKey, year: string): string => {
-    const id = cellId(metric, year)
-    return id in draft ? (draft[id] as string) : storedValue(metric, year)
-  }
-
-  const save = async () => {
-    setSaving(true)
-    setError(null)
-    try {
-      const series: Record<string, Record<string, number | null>> = {}
-      for (const [id, raw] of Object.entries(draft)) {
-        const [metric, year] = id.split(':') as [MetricKey, string]
-        series[metric] ??= {}
-        series[metric]![year] = parseCell(raw)
-      }
-
-      if (target === 'model') {
-        // A model is stored whole, so merge the draft onto what is already there.
-        const merged: Record<string, Record<string, number | null>> = {}
-        for (const metric of METRIC_KEYS) {
-          const existing: Record<string, number | null> = {}
-          for (const [year, value] of Object.entries(tiers.model?.series?.[metric] ?? {})) {
-            if (value !== undefined) existing[year] = value
-          }
-          merged[metric] = existing
-        }
-        for (const [metric, entries] of Object.entries(series)) {
-          for (const [year, value] of Object.entries(entries)) {
-            if (value === null) delete merged[metric]![year]
-            else merged[metric]![year] = value
-          }
-        }
-        await api.saveModel(ticker, {
-          ...(tiers.model ?? {}),
-          ticker,
-          series: merged,
-          balance: tiers.model?.balance,
-        })
-      } else {
-        await api.saveOverride(ticker, { series })
-      }
-      await load()
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e))
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  const clearOverrides = async () => {
-    setSaving(true)
-    try {
-      await api.clearOverrides(ticker)
-      await load()
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e))
-    } finally {
-      setSaving(false)
-    }
-  }
 
   return (
     <div className="detail">
@@ -165,11 +60,6 @@ export function CompanyDetail({ ticker, onBack }: { ticker: string; onBack: () =
           <div className="spacer" />
           {meta.covered && <span className="badge covered">Covered · {meta.coverage}</span>}
           {tiers.model && <span className="badge model">Own model</span>}
-          {analystOverrides > 0 && (
-            <span className="badge override">
-              {analystOverrides} override{analystOverrides === 1 ? '' : 's'}
-            </span>
-          )}
         </div>
 
         <h2>{meta.ticker} · {meta.name}</h2>
@@ -256,25 +146,10 @@ export function CompanyDetail({ ticker, onBack }: { ticker: string; onBack: () =
 
       <div className="panel">
         <h3>Inputs</h3>
-        <div className="controls">
-          <div className="control">
-            <label htmlFor="target">Editing</label>
-            <select
-              id="target"
-              value={target}
-              onChange={(e) => { setTarget(e.target.value as EditTarget); setDraft({}) }}
-            >
-              <option value="model">My model</option>
-              <option value="override">Manual override</option>
-            </select>
-          </div>
-          <span className="hint">
-            {target === 'model'
-              ? 'Your model supplies the years you fill in; the rest fall back to FactSet.'
-              : 'An override wins over both your model and FactSet. Clear a cell to fall back.'}
-          </span>
-        </div>
-
+        <p className="sub">
+          Read-only here — edit on the Companies Master tab. The dot marks each
+          cell's source; hover a cell to see the FactSet consensus it replaced.
+        </p>
         <div className="editor-scroll">
           <table className="editor-table">
             <thead>
@@ -285,81 +160,32 @@ export function CompanyDetail({ ticker, onBack }: { ticker: string; onBack: () =
             </thead>
             <tbody>
               {METRIC_KEYS.map((metric) => (
-                <Fragment key={metric}>
-                  <tr>
-                    <td className="left row-label">{METRIC_LABELS[metric]}</td>
-                    {years.map((year) => {
-                      const cell = resolved.series[metric][year]
-                      return (
-                        <td key={year} className="num">
-                          {cell?.value === null || cell?.value === undefined
-                            ? '—'
-                            : formatNumber(cell.value, 1)}
-                          {cell?.tier && <i className={`tier-dot ${cell.tier}`} title={cell.tier} />}
-                        </td>
-                      )
-                    })}
-                  </tr>
-                  <tr>
-                    <td className="left hint">
-                      {target === 'model' ? 'my model' : 'override'}
-                    </td>
-                    {years.map((year) => {
-                      const id = cellId(metric, year)
-                      const factsetValue = tiers.factset?.series?.[metric]?.[year]
-                      return (
-                        <td key={year}>
-                          <input
-                            className={[
-                              'cell-input',
-                              `tier-${target}`,
-                              id in draft ? 'dirty' : '',
-                              target === 'override' && isImported(metric, year) ? 'imported' : '',
-                            ].filter(Boolean).join(' ')}
-                            value={cellValue(metric, year)}
-                            placeholder={
-                              typeof factsetValue === 'number'
-                                ? formatNumber(factsetValue, 1)
-                                : '—'
-                            }
-                            title={[
-                              typeof factsetValue === 'number'
-                                ? `FactSet: ${factsetValue}`
-                                : 'No FactSet estimate',
-                              target === 'override' && isImported(metric, year)
-                                ? tiers.override?.importNote ?? 'Imported from the workbook'
-                                : '',
-                            ].filter(Boolean).join(' · ')}
-                            onChange={(e) =>
-                              setDraft((prev) => ({ ...prev, [id]: e.target.value }))
-                            }
-                          />
-                        </td>
-                      )
-                    })}
-                  </tr>
-                </Fragment>
+                <tr key={metric}>
+                  <td className="left row-label">{METRIC_LABELS[metric]}</td>
+                  {years.map((year) => {
+                    const cell = resolved.series[metric][year]
+                    const consensus = tiers.factset?.series?.[metric]?.[year]
+                    const displaced =
+                      cell?.tier && cell.tier !== 'factset' && typeof consensus === 'number'
+                        ? ` · FactSet: ${formatNumber(consensus, 1)}`
+                        : ''
+                    return (
+                      <td
+                        key={year}
+                        className="num"
+                        title={cell?.tier ? `Source: ${cell.tier}${displaced}` : 'No data'}
+                      >
+                        {cell?.value === null || cell?.value === undefined
+                          ? '—'
+                          : formatNumber(cell.value, 1)}
+                        {cell?.tier && <i className={`tier-dot ${cell.tier}`} title={cell.tier} />}
+                      </td>
+                    )
+                  })}
+                </tr>
               ))}
             </tbody>
           </table>
-        </div>
-
-        <div className="actions">
-          <button className="btn primary" disabled={!dirty || saving} onClick={() => void save()}>
-            {saving ? 'Saving…' : `Save ${Object.keys(draft).length || ''} change${Object.keys(draft).length === 1 ? '' : 's'}`.trim()}
-          </button>
-          <button className="btn" disabled={!dirty || saving} onClick={() => setDraft({})}>
-            Discard
-          </button>
-          {analystOverrides > 0 && (
-            <button className="btn" disabled={saving} onClick={() => void clearOverrides()}>
-              Clear my {analystOverrides} override{analystOverrides === 1 ? '' : 's'}
-            </button>
-          )}
-          <span className="hint">
-            Placeholder shows the FactSet estimate the cell replaces. Reported actuals
-            imported from the workbook are kept when you clear overrides.
-          </span>
         </div>
       </div>
     </div>

@@ -5,8 +5,9 @@ import type { Dashboard } from '../lib/dashboard.js'
 import { Screener } from './Screener.js'
 import { CompanyDetail } from './CompanyDetail.js'
 import { Summary } from './Summary.js'
+import { CompaniesMaster } from './CompaniesMaster.js'
 
-type View = 'screener' | 'sectors' | 'peers'
+type View = 'screener' | 'master' | 'sectors' | 'peers'
 
 export function App() {
   const [dashboard, setDashboard] = useState<Dashboard | null>(null)
@@ -70,6 +71,7 @@ export function App() {
           <nav className="tabs">
             {([
               ['screener', 'Screener'],
+              ['master', 'Companies Master'],
               ['sectors', 'Sectors'],
               ['peers', 'Peer groups'],
             ] as const).map(([key, label]) => (
@@ -108,6 +110,8 @@ export function App() {
             year={year}
             onYearChange={setYear}
           />
+        ) : view === 'master' ? (
+          <CompaniesMaster dashboard={dashboard} onSaved={() => load(year)} />
         ) : view === 'sectors' ? (
           <Summary title="Sectors" summaries={dashboard.sectorSummaries} year={year} />
         ) : (

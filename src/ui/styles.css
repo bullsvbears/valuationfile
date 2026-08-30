@@ -1,61 +1,65 @@
 /*
- * A dense, desk-oriented palette: neutral ground, restrained colour, and one
- * accent per data tier so provenance is legible at a glance without turning
- * the grid into a heat map.
+ * Visual language: a quiet, modern desk tool. One typeface stack, tabular
+ * numerals for every figure, soft elevation instead of hard borders, and one
+ * accent hue per data tier so provenance stays legible without turning the
+ * grid into a heat map.
  */
 :root {
   color-scheme: light;
 
-  --bg: #f6f7f9;
+  --bg: #f3f5f8;
   --surface: #ffffff;
-  --surface-2: #fbfbfd;
-  --border: #e3e6ec;
-  --border-strong: #cdd3dd;
+  --surface-2: #f8f9fb;
+  --border: #e6e9ef;
+  --border-strong: #d4d9e2;
 
-  --text: #16191f;
-  --text-muted: #5d6470;
-  --text-faint: #878e9b;
+  --text: #14171d;
+  --text-muted: #5b6472;
+  --text-faint: #8a92a1;
 
-  --accent: #2f5fd8;
-  --accent-soft: #eaf0fd;
+  --accent: #3060e0;
+  --accent-soft: #e9effd;
 
   /* One hue per tier, reused everywhere provenance is shown. */
   --tier-factset: #6b7280;
-  --tier-factset-soft: #f0f1f3;
+  --tier-factset-soft: #f0f1f4;
   --tier-model: #7a4bc4;
-  --tier-model-soft: #f2ecfb;
+  --tier-model-soft: #f3edfb;
   --tier-override: #b45309;
-  --tier-override-soft: #fdf1e1;
+  --tier-override-soft: #fdf2e3;
 
-  --positive: #157347;
-  --negative: #b42318;
+  --positive: #127a4b;
+  --negative: #bb2b1c;
 
-  --radius: 7px;
+  --radius: 10px;
+  --radius-sm: 7px;
+  --shadow: 0 1px 2px rgba(20, 23, 29, 0.05), 0 2px 8px rgba(20, 23, 29, 0.04);
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --bg: #101216;
-    --surface: #171a20;
-    --surface-2: #1c2027;
-    --border: #272c35;
-    --border-strong: #363d49;
-    --text: #e8eaee;
+    --bg: #0e1014;
+    --surface: #16191f;
+    --surface-2: #1b1f26;
+    --border: #262b34;
+    --border-strong: #343b47;
+    --text: #e9ebef;
     --text-muted: #9aa2b1;
-    --text-faint: #6f7787;
-    --accent: #6f9bff;
-    --accent-soft: #1a2540;
+    --text-faint: #6e7787;
+    --accent: #7aa2ff;
+    --accent-soft: #1b2745;
     --tier-factset: #98a0ae;
     --tier-factset-soft: #21252d;
     --tier-model: #b795ee;
-    --tier-model-soft: #241d33;
+    --tier-model-soft: #251d34;
     --tier-override: #e0a458;
-    --tier-override-soft: #2e2415;
+    --tier-override-soft: #2f2516;
     --positive: #4ac07f;
     --negative: #f0736a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 10px rgba(0, 0, 0, 0.25);
   }
 }
 
@@ -65,12 +69,15 @@ body {
   margin: 0;
   font-family: var(--sans);
   font-size: 13px;
+  line-height: 1.45;
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
 }
 
 button, input, select { font: inherit; color: inherit; }
+
+::selection { background: var(--accent-soft); }
 
 /* ---------- Layout ---------- */
 
@@ -79,10 +86,12 @@ button, input, select { font: inherit; color: inherit; }
 .topbar {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 0 20px;
-  height: 52px;
-  background: var(--surface);
+  gap: 18px;
+  padding: 0 22px;
+  height: 54px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
@@ -91,31 +100,45 @@ button, input, select { font: inherit; color: inherit; }
 
 .topbar h1 {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 650;
   margin: 0;
   letter-spacing: -0.01em;
   white-space: nowrap;
 }
 
-.tabs { display: flex; gap: 2px; }
+/* Tabs as a segmented control. */
+.tabs {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
 
 .tab {
   background: none;
   border: 0;
-  padding: 6px 12px;
-  border-radius: var(--radius);
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
   color: var(--text-muted);
   cursor: pointer;
   font-weight: 500;
+  transition: color 120ms, background 120ms, box-shadow 120ms;
 }
-.tab:hover { background: var(--surface-2); color: var(--text); }
-.tab[aria-selected='true'] { background: var(--accent-soft); color: var(--accent); }
+.tab:hover { color: var(--text); }
+.tab[aria-selected='true'] {
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: var(--shadow);
+}
 
 .spacer { flex: 1; }
 
 .asof { color: var(--text-faint); font-size: 12px; white-space: nowrap; }
 
-.content { padding: 16px 20px 48px; }
+.content { padding: 16px 22px 56px; }
 
 /* ---------- Controls ---------- */
 
@@ -130,11 +153,16 @@ button, input, select { font: inherit; color: inherit; }
 .control {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 5px 9px;
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  transition: border-color 120ms, box-shadow 120ms;
+}
+.control:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 .control label { color: var(--text-muted); font-size: 12px; }
 .control select, .control input[type='text'] {
@@ -144,7 +172,8 @@ button, input, select { font: inherit; color: inherit; }
   min-width: 90px;
 }
 .control input[type='text'] { min-width: 170px; }
-.control input[type='checkbox'] { margin: 0; }
+.control input[type='text']::placeholder { color: var(--text-faint); }
+.control input[type='checkbox'] { margin: 0; accent-color: var(--accent); }
 .control label { cursor: pointer; }
 
 .count { color: var(--text-faint); font-size: 12px; }
@@ -153,20 +182,22 @@ button, input, select { font: inherit; color: inherit; }
 
 .table-wrap {
   overflow: auto;
-  max-height: calc(100vh - 190px);
+  max-height: calc(100vh - 200px);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 table { border-collapse: separate; border-spacing: 0; width: 100%; }
 
 th, td {
-  padding: 6px 10px;
+  padding: 7px 11px;
   text-align: right;
   white-space: nowrap;
   border-bottom: 1px solid var(--border);
 }
+tbody tr:last-child td { border-bottom: 0; }
 
 thead th {
   position: sticky;
@@ -177,7 +208,7 @@ thead th {
   font-weight: 600;
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   border-bottom: 1px solid var(--border-strong);
   cursor: pointer;
   user-select: none;
@@ -190,11 +221,11 @@ thead th.group-head {
   border-bottom: 1px solid var(--border);
   color: var(--text-faint);
 }
-thead tr:nth-child(2) th { top: 25px; }
+thead tr:nth-child(2) th { top: 27px; }
 
 th.left, td.left { text-align: left; }
 
-/* The ticker column stays visible while the metric columns scroll. */
+/* The company column stays visible while the metric columns scroll. */
 th.sticky-col, td.sticky-col {
   position: sticky;
   left: 0;
@@ -204,7 +235,6 @@ th.sticky-col, td.sticky-col {
 }
 thead th.sticky-col { z-index: 4; background: var(--surface-2); }
 tbody tr:hover td { background: var(--surface-2); }
-tbody tr:hover td.sticky-col { background: var(--surface-2); }
 
 td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12px; }
 td.nm { color: var(--text-faint); }
@@ -215,14 +245,21 @@ td.nm { color: var(--text-faint); }
   background: none;
   border: 0;
   padding: 0;
-  font-weight: 600;
+  font-weight: 650;
   color: var(--accent);
   cursor: pointer;
   font-family: var(--mono);
+  font-size: 12.5px;
 }
 .ticker-btn:hover { text-decoration: underline; }
 
-.company-name { color: var(--text-muted); font-size: 12px; }
+.company-name {
+  color: var(--text-muted);
+  font-size: 11.5px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* ---------- Tier badges ---------- */
 
@@ -242,7 +279,7 @@ td.nm { color: var(--text-faint); }
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 2px 7px;
+  padding: 2px 8px;
   border-radius: 20px;
   font-size: 11px;
   font-weight: 600;
@@ -255,6 +292,7 @@ td.nm { color: var(--text-faint); }
 
 .legend { display: flex; gap: 14px; align-items: center; color: var(--text-muted); font-size: 12px; }
 .legend span { display: flex; align-items: center; gap: 5px; }
+.legend .tier-dot { margin-left: 0; }
 
 /* ---------- Company detail ---------- */
 
@@ -264,76 +302,126 @@ td.nm { color: var(--text-faint); }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
 }
-.panel h2 { margin: 0 0 2px; font-size: 14px; font-weight: 600; }
-.panel h3 { margin: 0 0 10px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.panel h2 { margin: 0 0 2px; font-size: 15px; font-weight: 650; letter-spacing: -0.01em; }
+.panel h3 {
+  margin: 0 0 8px;
+  font-size: 11.5px;
+  font-weight: 650;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
 .panel .sub { color: var(--text-muted); font-size: 12px; margin: 0 0 12px; }
 
-.stat-row { display: flex; flex-wrap: wrap; gap: 22px; }
-.stat .label { color: var(--text-faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
-.stat .value { font-family: var(--mono); font-size: 16px; font-weight: 600; margin-top: 2px; }
+.stat-row { display: flex; flex-wrap: wrap; gap: 26px; }
+.stat .label {
+  color: var(--text-faint);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.stat .value {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 2px;
+}
 
 .back {
-  background: none;
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  padding: 5px 11px;
   cursor: pointer;
   color: var(--text-muted);
+  transition: color 120ms, border-color 120ms;
 }
-.back:hover { background: var(--surface-2); color: var(--text); }
+.back:hover { color: var(--text); border-color: var(--border-strong); }
 
 /* ---------- Editable input grid ---------- */
 
 .cell-input {
   width: 100%;
-  min-width: 84px;
+  min-width: 86px;
   text-align: right;
   font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
   font-size: 12px;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 4px;
-  padding: 3px 5px;
+  border-radius: 5px;
+  padding: 3px 6px;
+  transition: border-color 100ms, background 100ms, box-shadow 100ms;
 }
 .cell-input:hover { border-color: var(--border-strong); }
-.cell-input:focus { border-color: var(--accent); background: var(--surface); outline: none; }
+.cell-input:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.cell-input::placeholder { color: var(--text-faint); }
+.cell-input.tier-factset { color: var(--text-muted); }
 .cell-input.tier-model { color: var(--tier-model); }
 .cell-input.tier-override { color: var(--tier-override); font-weight: 600; }
-.cell-input.dirty { background: var(--accent-soft); }
+.cell-input.imported { color: var(--text-muted); font-weight: 400; font-style: italic; }
+.cell-input.dirty { background: var(--accent-soft); border-color: var(--accent); }
 
 .row-label { font-weight: 500; color: var(--text-muted); }
 
-.actions { display: flex; gap: 8px; align-items: center; margin-top: 12px; }
+.actions { display: flex; gap: 8px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
 
 .btn {
   border: 1px solid var(--border-strong);
   background: var(--surface);
-  border-radius: var(--radius);
-  padding: 6px 13px;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 550;
+  transition: background 120ms, filter 120ms, opacity 120ms;
 }
 .btn:hover:not(:disabled) { background: var(--surface-2); }
-.btn:disabled { opacity: 0.5; cursor: default; }
+.btn:disabled { opacity: 0.45; cursor: default; }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn.primary:hover:not(:disabled) { filter: brightness(1.08); }
 
 .hint { color: var(--text-faint); font-size: 12px; }
 
-.status { padding: 10px 14px; border-radius: var(--radius); margin-bottom: 12px; }
+.status { padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 12px; }
 .status.error { background: var(--tier-override-soft); color: var(--tier-override); }
 
-.loading { padding: 48px; text-align: center; color: var(--text-muted); }
+.loading { padding: 56px; text-align: center; color: var(--text-muted); }
 
 .editor-scroll { overflow-x: auto; }
 .editor-table th { cursor: default; }
 .editor-table td:first-child, .editor-table th:first-child { text-align: left; }
 
-/* An imported cell is workbook history, not an edit made here: shown in the
-   override hue but muted, so real edits still stand out against it. */
-.cell-input.imported { color: var(--text-muted); font-weight: 400; font-style: italic; }
+/* ---------- Companies Master ---------- */
+
+/* The metric picker reuses the segmented-control look at grid scale. */
+.metric-tabs { flex-wrap: wrap; }
+
+.master-grid { max-height: calc(100vh - 250px); }
+.master-grid td { padding: 2px 4px; }
+.master-grid td.sticky-col { padding: 5px 11px; }
+.master-grid .editor-table td:first-child { text-align: left; }
+
+.master-ticker { font-family: var(--mono); font-weight: 650; font-size: 12.5px; }
+
+/* The save bar stays visible beneath the scrolling grid. */
+.savebar {
+  position: sticky;
+  bottom: 0;
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 10px 2px;
+  margin-top: 8px;
+}
 
 /* ---------- Sign in ---------- */
 
@@ -350,11 +438,16 @@ td.nm { color: var(--text-faint); }
 }
 .login-card input {
   width: 100%;
-  padding: 8px 10px;
+  padding: 9px 11px;
   border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   background: var(--surface-2);
+  transition: border-color 120ms, box-shadow 120ms;
 }
-.login-card input:focus { outline: none; border-color: var(--accent); }
+.login-card input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
 .login-card .btn { width: 100%; margin-top: 14px; }
 .login-card .status { margin: 12px 0 0; font-size: 12px; }
