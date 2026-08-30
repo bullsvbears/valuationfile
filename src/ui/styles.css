@@ -451,3 +451,6 @@ td.nm { color: var(--text-faint); }
 }
 .login-card .btn { width: 100%; margin-top: 14px; }
 .login-card .status { margin: 12px 0 0; font-size: 12px; }
+
+/* Negative figures read red whatever their tier; the weight still carries it. */
+.cell-input.neg { color: var(--negative); }

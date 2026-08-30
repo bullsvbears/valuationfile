@@ -37,14 +37,52 @@ type Drafts = Record<string, string>
 const draftKey = (ticker: string, metric: string, column: string) =>
   `${ticker}|${metric}|${column}`
 
-function parseCell(raw: string): number | null {
-  const trimmed = raw.trim()
-  if (!trimmed) return null
-  const value = Number(trimmed.replace(/,/g, ''))
-  return Number.isFinite(value) ? value : null
+/**
+ * How a cell renders when it is not being edited.
+ *
+ * - `dollars0`  $1,250 — money in millions; the underlying value keeps up to
+ *               three decimals, the display rounds them away
+ * - `dollars2`  $10.25 — per-share figures, where cents are the point
+ * - `count`     1,250 — share counts: comma-grouped but not money
+ */
+type CellFormat = 'dollars0' | 'dollars2' | 'count'
+
+function formatFor(metric: MetricKey | 'balance', column: string): CellFormat {
+  if (metric === 'eps') return 'dollars2'
+  if (metric !== 'balance') return 'dollars0'
+  if (column === 'price') return 'dollars2'
+  if (column === 'shares') return 'count'
+  return 'dollars0'
 }
 
-/** Show stored values at full precision only when they carry it. */
+/** Display form, shown whenever the cell is not focused. */
+function formatCell(value: number | null | undefined, format: CellFormat): string {
+  if (value === null || value === undefined) return ''
+  const abs = Math.abs(value)
+  const sign = value < 0 ? '-' : ''
+  switch (format) {
+    case 'dollars0':
+      return `${sign}$${abs.toLocaleString('en-US', { maximumFractionDigits: 0 })}`
+    case 'dollars2':
+      return `${sign}$${abs.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+    case 'count':
+      return `${sign}${abs.toLocaleString('en-US', { maximumFractionDigits: 0 })}`
+  }
+}
+
+/** Accept what the display shows: dollar signs and commas are not typos. */
+function parseCell(raw: string): number | null {
+  const trimmed = raw.trim().replace(/[$,]/g, '')
+  if (!trimmed) return null
+  const value = Number(trimmed)
+  // Inputs carry at most three decimals; the display hides them, not more.
+  return Number.isFinite(value) ? Math.round(value * 1000) / 1000 : null
+}
+
+/** Editing form: the raw number, to three decimals, with nothing hidden. */
 function display(value: number | null | undefined): string {
   if (value === null || value === undefined) return ''
   return Number.isInteger(value) ? String(value) : String(Math.round(value * 1000) / 1000)
@@ -60,6 +98,7 @@ export function CompaniesMaster({
   const [metric, setMetric] = useState<MetricKey | 'balance'>('revenue')
   const [search, setSearch] = useState('')
   const [drafts, setDrafts] = useState<Drafts>({})
+  const [focused, setFocused] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -124,6 +163,9 @@ export function CompaniesMaster({
         for (const [key, raw] of Object.entries(edits)) {
           const [, editMetric, column] = key.split('|') as [string, string, string]
           const value = parseCell(raw)
+          // Only an emptied cell clears the override; text that fails to parse
+          // is a typo, and a typo must never silently delete a number.
+          if (value === null && raw.trim() !== '') continue
           if (editMetric === 'balance') {
             if (column === 'price') price = value
             else balance[column] = value
@@ -212,7 +254,18 @@ export function CompaniesMaster({
                   {columns.map((column) => {
                     const key = draftKey(ticker, metric, column.key)
                     const cell = currentValue(ticker, column.key)
-                    const value = key in drafts ? (drafts[key] as string) : display(cell.value)
+                    const format = formatFor(metric, column.key)
+                    const raw = key in drafts ? (drafts[key] as string) : display(cell.value)
+                    // A focused cell shows the raw number for editing; a
+                    // blurred one shows the formatted display, Excel-style.
+                    // Unparseable text stays visible as typed so it can be
+                    // fixed, rather than blurring away to a blank.
+                    const parsed = parseCell(raw)
+                    const shown =
+                      focused === key || (parsed === null && raw.trim() !== '')
+                        ? raw
+                        : formatCell(parsed, format)
+                    const negative = (parsed ?? 0) < 0
                     return (
                       <td key={column.key}>
                         <input
@@ -220,10 +273,13 @@ export function CompaniesMaster({
                             'cell-input',
                             cell.tier ? `tier-${cell.tier}` : '',
                             key in drafts ? 'dirty' : '',
+                            negative ? 'neg' : '',
                           ].filter(Boolean).join(' ')}
-                          value={value}
+                          value={shown}
                           placeholder="—"
                           title={cell.tier ? `Source: ${cell.tier}` : 'No data'}
+                          onFocus={() => setFocused(key)}
+                          onBlur={() => setFocused(null)}
                           onChange={(e) => edit(ticker, column.key, e.target.value)}
                         />
                       </td>
