@@ -38,8 +38,25 @@ export interface SessionState {
   signedIn: boolean
 }
 
+export interface HistorySnapshot {
+  date: string
+  takenAt: string
+  companies: Record<string, {
+    price: number | null
+    shares: number | null
+    cash: number | null
+    debt: number | null
+    series: Partial<Record<string, Record<string, number>>>
+  }>
+}
+
 export const api = {
   session: () => json<SessionState>('/api/session'),
+
+  historyDates: () => json<{ dates: string[] }>('/api/history'),
+
+  historySnapshot: (date: string) =>
+    json<HistorySnapshot>(`/api/history/${encodeURIComponent(date)}`),
 
   logout: () => json<{ ok: boolean }>('/api/logout', { method: 'POST' }),
 

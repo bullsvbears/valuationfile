@@ -6,6 +6,7 @@ import { existsSync } from 'node:fs'
 import { DataStore } from '../src/lib/store.js'
 import { assertProductionAuth, authConfigFromEnv, createAuth } from './auth.js'
 import { seedDataDir } from './seed.js'
+import { ensureDailySnapshot, listSnapshots, readSnapshot } from './history.js'
 import { buildDashboard, type DashboardInputs } from '../src/lib/dashboard.js'
 import { credentialsFromEnv, fetchFactSet } from '../src/factset/client.js'
 import type { OverrideEntry, OwnModel } from '../src/lib/types.js'
@@ -57,10 +58,31 @@ function tickerParam(req: express.Request): string {
   return String(Array.isArray(raw) ? raw[0] : (raw ?? '')).toUpperCase()
 }
 
+const historyDir = () => path.join(dataDir, 'history')
+
 app.get('/api/dashboard', route(async (req, res) => {
   const inputs = await loadInputs()
   const year = typeof req.query.year === 'string' ? req.query.year : undefined
-  res.json(buildDashboard(inputs, year))
+  const dashboard = buildDashboard(inputs, year)
+  // First request of the day records the state, so change tracking accrues
+  // without anyone having to remember to press a button.
+  await ensureDailySnapshot(historyDir(), dashboard)
+  res.json(dashboard)
+}))
+
+/** Dates for which a snapshot exists, oldest first. */
+app.get('/api/history', route(async (_req, res) => {
+  res.json({ dates: await listSnapshots(historyDir()) })
+}))
+
+app.get('/api/history/:date', route(async (req, res) => {
+  const raw = req.params.date
+  const snapshot = await readSnapshot(historyDir(), String(Array.isArray(raw) ? raw[0] : raw))
+  if (!snapshot) {
+    res.status(404).json({ error: 'No snapshot for that date' })
+    return
+  }
+  res.json(snapshot)
 }))
 
 app.get('/api/company/:ticker', route(async (req, res) => {

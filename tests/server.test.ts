@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { spawn, spawnSync, type ChildProcess } from 'node:child_process'
 import { createServer } from 'node:net'
-import { mkdtempSync, rmSync, readFileSync, existsSync } from 'node:fs'
+import { mkdtempSync, rmSync, readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 
@@ -230,6 +230,51 @@ describe('writes land on the data directory', () => {
       value: 55555,
       tier: 'override',
     })
+  })
+
+  it('records a daily snapshot when the dashboard is served', async () => {
+    const cookie = await signIn()
+    await fetch(`${baseUrl}/api/dashboard`, { headers: { cookie } })
+
+    const today = new Date().toISOString().slice(0, 10)
+    const file = path.join(dataDir, 'history', `${today}.json`)
+    expect(existsSync(file)).toBe(true)
+
+    const snapshot = JSON.parse(readFileSync(file, 'utf8')) as {
+      date: string
+      companies: Record<string, { series: { revenue?: Record<string, number> } }>
+    }
+    expect(snapshot.date).toBe(today)
+    expect(Object.keys(snapshot.companies).length).toBe(335)
+    expect(snapshot.companies.ADBE?.series.revenue?.['2024']).toBe(21505)
+
+    const list = await fetch(`${baseUrl}/api/history`, { headers: { cookie } })
+    expect(((await list.json()) as { dates: string[] }).dates).toContain(today)
+  })
+
+  it('serves a stored snapshot and 404s an unknown date', async () => {
+    const cookie = await signIn()
+    // A hand-planted earlier snapshot stands in for a previous day's run.
+    mkdirSync(path.join(dataDir, 'history'), { recursive: true })
+    writeFileSync(
+      path.join(dataDir, 'history', '2026-01-02.json'),
+      JSON.stringify({ date: '2026-01-02', takenAt: 'x', companies: {} }),
+    )
+
+    const ok = await fetch(`${baseUrl}/api/history/2026-01-02`, { headers: { cookie } })
+    expect(ok.ok).toBe(true)
+    expect(((await ok.json()) as { date: string }).date).toBe('2026-01-02')
+
+    const missing = await fetch(`${baseUrl}/api/history/1999-01-01`, { headers: { cookie } })
+    expect(missing.status).toBe(404)
+
+    const invalid = await fetch(`${baseUrl}/api/history/..%2Foverrides`, { headers: { cookie } })
+    expect(invalid.status).toBe(404)
+  })
+
+  it('keeps history behind the session like everything else', async () => {
+    const res = await fetch(`${baseUrl}/api/history`)
+    expect(res.status).toBe(401)
   })
 
   it('signs out and closes the API again', async () => {

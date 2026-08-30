@@ -8,3 +8,6 @@ tsconfig.tsbuildinfo
 # Generated secrets, never committed
 secrets.env
 *.secrets.env
+
+# Daily snapshots are runtime state, not seed data
+data/history/

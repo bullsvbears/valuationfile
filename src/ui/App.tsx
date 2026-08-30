@@ -6,13 +6,14 @@ import { Screener } from './Screener.js'
 import { CompanyDetail } from './CompanyDetail.js'
 import { Summary } from './Summary.js'
 import { CompaniesMaster } from './CompaniesMaster.js'
+import { Changes } from './Changes.js'
 
-type View = 'screener' | 'master' | 'sectors' | 'peers'
+type View = 'master' | 'screener' | 'changes' | 'sectors' | 'peers'
 
 export function App() {
   const [dashboard, setDashboard] = useState<Dashboard | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [view, setView] = useState<View>('screener')
+  const [view, setView] = useState<View>('master')
   const [selected, setSelected] = useState<string | null>(null)
   const [year, setYear] = useState<string | null>(null)
   const [session, setSession] = useState<SessionState | null>(null)
@@ -70,10 +71,11 @@ export function App() {
         {!selected && (
           <nav className="tabs">
             {([
-              ['screener', 'Screener'],
-              ['master', 'Companies Master'],
-              ['sectors', 'Sectors'],
-              ['peers', 'Peer groups'],
+              ['master', 'Master Input'],
+              ['screener', 'Screen'],
+              ['changes', 'Changes'],
+              ['sectors', 'Sector Peers'],
+              ['peers', 'Financial Peers'],
             ] as const).map(([key, label]) => (
               <button
                 key={key}
@@ -112,10 +114,12 @@ export function App() {
           />
         ) : view === 'master' ? (
           <CompaniesMaster dashboard={dashboard} onSaved={() => load(year)} />
+        ) : view === 'changes' ? (
+          <Changes dashboard={dashboard} />
         ) : view === 'sectors' ? (
-          <Summary title="Sectors" summaries={dashboard.sectorSummaries} year={year} />
+          <Summary title="Sector Peers" summaries={dashboard.sectorSummaries} year={year} />
         ) : (
-          <Summary title="Peer groups" summaries={dashboard.peerSummaries} year={year} />
+          <Summary title="Financial Peers" summaries={dashboard.peerSummaries} year={year} />
         )}
       </main>
     </div>
