@@ -78,6 +78,10 @@ beforeAll(async () => {
       DASHBOARD_PASSWORD_HASH: hashPassword(PASSWORD),
       SESSION_SECRET: 'a-fixed-secret-for-tests',
       NODE_ENV: 'test',
+      // Empty strings read as unset, so the daily task never attempts a live
+      // FactSet pull inside the test suite whatever the ambient environment.
+      FACTSET_USERNAME_SERIAL: '',
+      FACTSET_API_KEY: '',
     },
     stdio: 'ignore',
     // A process group lets the whole tree be signalled at once. Windows has no
@@ -114,6 +118,16 @@ afterAll(async () => {
   }
   if (dataDir) rmSync(dataDir, { recursive: true, force: true })
 })
+
+/** Poll until a condition holds; the daily snapshot is written off-request. */
+async function waitFor(condition: () => boolean, timeoutMs = 10000): Promise<void> {
+  const deadline = Date.now() + timeoutMs
+  while (Date.now() < deadline) {
+    if (condition()) return
+    await new Promise((r) => setTimeout(r, 150))
+  }
+  throw new Error('Condition not met in time')
+}
 
 /** Sign in and return the session cookie. */
 async function signIn(password = PASSWORD): Promise<string> {
@@ -238,7 +252,9 @@ describe('writes land on the data directory', () => {
 
     const today = new Date().toISOString().slice(0, 10)
     const file = path.join(dataDir, 'history', `${today}.json`)
-    expect(existsSync(file)).toBe(true)
+    // The snapshot is taken in the background after the refresh step, so the
+    // serving request is never held for the pull; wait for it to land.
+    await waitFor(() => existsSync(file))
 
     const snapshot = JSON.parse(readFileSync(file, 'utf8')) as {
       date: string
@@ -288,6 +304,19 @@ describe('writes land on the data directory', () => {
 
   it('keeps history behind the session like everything else', async () => {
     const res = await fetch(`${baseUrl}/api/history`)
+    expect(res.status).toBe(401)
+  })
+
+  it('reports missing FactSet credentials on a manual refresh', async () => {
+    const cookie = await signIn()
+    const res = await fetch(`${baseUrl}/api/refresh`, { method: 'POST', headers: { cookie } })
+    expect(res.status).toBe(503)
+    const body = (await res.json()) as { error: string }
+    expect(body.error).toContain('FACTSET_USERNAME_SERIAL')
+  })
+
+  it('keeps the refresh behind the session', async () => {
+    const res = await fetch(`${baseUrl}/api/refresh`, { method: 'POST' })
     expect(res.status).toBe(401)
   })
 

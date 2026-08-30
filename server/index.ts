@@ -6,7 +6,7 @@ import { existsSync } from 'node:fs'
 import { DataStore } from '../src/lib/store.js'
 import { assertProductionAuth, authConfigFromEnv, createAuth } from './auth.js'
 import { seedDataDir } from './seed.js'
-import { ensureDailySnapshot, listSnapshots, readSnapshot } from './history.js'
+import { ensureDailySnapshot, listSnapshots, readSnapshot, todayKey } from './history.js'
 import { buildDashboard, type DashboardInputs } from '../src/lib/dashboard.js'
 import { credentialsFromEnv, fetchFactSet } from '../src/factset/client.js'
 import type { OverrideEntry, OwnModel } from '../src/lib/types.js'
@@ -60,14 +60,90 @@ function tickerParam(req: express.Request): string {
 
 const historyDir = () => path.join(dataDir, 'history')
 
+/**
+ * One FactSet refresh at a time. The flag rides on the dashboard payload so
+ * the UI can show a refreshing state and poll for completion.
+ */
+const refreshState = { running: false }
+
+class RefreshError extends Error {
+  constructor(message: string, readonly status: number) {
+    super(message)
+  }
+}
+
+async function runFactSetRefresh(): Promise<{ asOf: string; companies: number }> {
+  const creds = credentialsFromEnv()
+  if (!creds) {
+    throw new RefreshError(
+      'FactSet credentials not configured. Set FACTSET_USERNAME_SERIAL and FACTSET_API_KEY.',
+      503,
+    )
+  }
+  if (refreshState.running) throw new RefreshError('A FactSet refresh is already running.', 409)
+  refreshState.running = true
+  try {
+    const universe = await store.loadUniverse()
+    const currentYear = new Date().getFullYear()
+    const years = Array.from({ length: 11 }, (_, i) => currentYear - 8 + i)
+    const cache = await fetchFactSet(
+      creds,
+      universe.companies.map((c) => ({ ticker: c.ticker, fiscalYearEnd: c.fiscalYearEnd })),
+      { years },
+    )
+    await store.saveFactSet(cache)
+    return { asOf: cache.asOf, companies: Object.keys(cache.companies).length }
+  } finally {
+    refreshState.running = false
+  }
+}
+
+/**
+ * The once-a-day housekeeping, kicked by the first dashboard request of the
+ * day and run in the background so that request is not held for the pull:
+ * refresh FactSet first (when credentials exist), then record the snapshot.
+ * The order is the point — the day's baseline should carry this morning's
+ * consensus, so day-over-day diffs on the Summary tab are real revisions. A
+ * failed refresh still snapshots, so change tracking never silently stops.
+ */
+const dailyTask = { done: '', running: false }
+
+function kickDailyTask(): void {
+  const today = todayKey()
+  if (dailyTask.done === today || dailyTask.running) return
+  if (existsSync(path.join(historyDir(), `${today}.json`))) {
+    dailyTask.done = today
+    return
+  }
+  dailyTask.running = true
+  void (async () => {
+    try {
+      if (credentialsFromEnv()) {
+        try {
+          await runFactSetRefresh()
+        } catch (error) {
+          console.error(
+            'Daily FactSet refresh failed:',
+            error instanceof Error ? error.message : error,
+          )
+        }
+      }
+      const inputs = await loadInputs()
+      await ensureDailySnapshot(historyDir(), buildDashboard(inputs), today)
+      dailyTask.done = today
+    } catch (error) {
+      console.error('Daily snapshot failed:', error)
+    } finally {
+      dailyTask.running = false
+    }
+  })()
+}
+
 app.get('/api/dashboard', route(async (req, res) => {
+  kickDailyTask()
   const inputs = await loadInputs()
   const year = typeof req.query.year === 'string' ? req.query.year : undefined
-  const dashboard = buildDashboard(inputs, year)
-  // First request of the day records the state, so change tracking accrues
-  // without anyone having to remember to press a button.
-  await ensureDailySnapshot(historyDir(), dashboard)
-  res.json(dashboard)
+  res.json({ ...buildDashboard(inputs, year), factsetRefreshing: refreshState.running })
 }))
 
 /** Dates for which a snapshot exists, oldest first. */
@@ -130,28 +206,20 @@ app.put('/api/company/:ticker/model', route(async (req, res) => {
 }))
 
 /**
- * Pull fresh data from FactSet into the factset tier. Overrides and own models
- * are stored separately and are untouched by a refresh.
+ * Pull fresh data from FactSet into the factset tier, on demand. Overrides
+ * and own models are stored separately and are untouched by a refresh.
  */
 app.post('/api/refresh', route(async (_req, res) => {
-  const creds = credentialsFromEnv()
-  if (!creds) {
-    res.status(503).json({
-      error:
-        'FactSet credentials not configured. Set FACTSET_USERNAME_SERIAL and FACTSET_API_KEY.',
-    })
-    return
+  try {
+    const result = await runFactSetRefresh()
+    res.json({ ok: true, ...result })
+  } catch (error) {
+    if (error instanceof RefreshError) {
+      res.status(error.status).json({ error: error.message })
+      return
+    }
+    throw error
   }
-  const universe = await store.loadUniverse()
-  const currentYear = new Date().getFullYear()
-  const years = Array.from({ length: 11 }, (_, i) => currentYear - 8 + i)
-  const cache = await fetchFactSet(
-    creds,
-    universe.companies.map((c) => ({ ticker: c.ticker, fiscalYearEnd: c.fiscalYearEnd })),
-    { years },
-  )
-  await store.saveFactSet(cache)
-  res.json({ ok: true, asOf: cache.asOf, companies: Object.keys(cache.companies).length })
 }))
 
 /**

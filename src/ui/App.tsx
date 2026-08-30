@@ -8,6 +8,7 @@ import { Summary } from './Summary.js'
 import { CompaniesMaster } from './CompaniesMaster.js'
 import { Changes } from './Changes.js'
 import { Overview } from './Overview.js'
+import { formatAge } from './format.js'
 
 type View = 'summary' | 'master' | 'screener' | 'sectors' | 'peers' | 'changes'
 
@@ -18,6 +19,8 @@ export function App() {
   const [selected, setSelected] = useState<string | null>(null)
   const [year, setYear] = useState<string | null>(null)
   const [session, setSession] = useState<SessionState | null>(null)
+  const [refreshBusy, setRefreshBusy] = useState(false)
+  const [refreshError, setRefreshError] = useState<string | null>(null)
 
   const load = useCallback(async (forYear?: string) => {
     try {
@@ -52,6 +55,27 @@ export function App() {
   useEffect(() => {
     if (year && session?.signedIn) void load(year)
   }, [year, session?.signedIn, load])
+
+  // While the server is pulling FactSet (the daily refresh or a manual one),
+  // poll so the new numbers appear without a hand reload.
+  useEffect(() => {
+    if (!dashboard?.factsetRefreshing) return
+    const timer = setTimeout(() => void load(year ?? undefined), 5000)
+    return () => clearTimeout(timer)
+  }, [dashboard, year, load])
+
+  const refreshFactSet = async () => {
+    setRefreshBusy(true)
+    setRefreshError(null)
+    try {
+      await api.refresh()
+      await load(year ?? undefined)
+    } catch (e) {
+      setRefreshError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setRefreshBusy(false)
+    }
+  }
 
   const signOut = async () => {
     await api.logout().catch(() => undefined)
@@ -91,11 +115,23 @@ export function App() {
           </nav>
         )}
         <div className="spacer" />
-        <span className="asof">
-          {dashboard.asOf
-            ? `FactSet as of ${new Date(dashboard.asOf).toLocaleString()}`
-            : dashboard.factsetSource}
+        <span className={`asof ${refreshError ? 'asof-error' : ''}`}>
+          {refreshError
+            ? refreshError
+            : dashboard.factsetRefreshing || refreshBusy
+              ? 'Pulling latest FactSet data…'
+              : dashboard.asOf
+                ? `FactSet as of ${formatAge(dashboard.asOf)}`
+                : dashboard.factsetSource}
         </span>
+        <button
+          className="back"
+          onClick={() => void refreshFactSet()}
+          disabled={refreshBusy || Boolean(dashboard.factsetRefreshing)}
+          title="Pull the latest estimates, prices and balance sheet data from FactSet. Your models and overrides are untouched."
+        >
+          {refreshBusy || dashboard.factsetRefreshing ? 'Refreshing…' : 'Refresh FactSet'}
+        </button>
         {session.authRequired && (
           <button className="back" onClick={() => void signOut()}>Sign out</button>
         )}

@@ -73,6 +73,12 @@ A refresh rewrites only the FactSet tier. Overrides and models are separate
 files and are never touched, so the consensus moves underneath your views
 rather than over them.
 
+Once credentials are configured, refreshes run themselves: the first
+dashboard request of each day pulls FactSet in the background and then
+records the daily snapshot, in that order, so the Summary tab's day-over-day
+diffs reflect real consensus revisions. The topbar's "Refresh FactSet"
+button triggers the same pull on demand and shows the data's age.
+
 The bundled `data/factset-cache.json` holds the cached FDS values read out of
 the workbook. It is a starting point, not a live pull — run a refresh to make
 it current.

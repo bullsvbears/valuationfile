@@ -48,6 +48,8 @@ export interface Dashboard {
   peerSummaries: GroupSummary[]
   /** Year the summaries were struck on. */
   summaryYear: string
+  /** Set by the server when a FactSet pull is in flight; absent otherwise. */
+  factsetRefreshing?: boolean
 }
 
 function tiersFor(ticker: string, inputs: DashboardInputs): TierInputs {

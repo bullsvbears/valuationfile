@@ -465,3 +465,6 @@ td.nm { color: var(--text-faint); }
 }
 .overview-panel table { width: 100%; }
 .overview-panel td, .overview-panel th { padding: 5px 8px; }
+
+/* A failed refresh reports in place of the data-age readout. */
+.asof-error { color: var(--negative); }
