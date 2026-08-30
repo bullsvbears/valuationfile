@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { Dashboard } from '../lib/dashboard.js'
 import type { MetricKey } from '../lib/types.js'
 import { api } from './api.js'
@@ -102,7 +102,33 @@ export function CompaniesMaster({
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const years = dashboard.years
+  /**
+   * Forecast years added here before any value exists for them.
+   *
+   * The rest of the app derives its year list from the data, so a new year
+   * cascades everywhere the moment the first value is saved: the grid only
+   * needs to show the empty column until then. Years the data has since
+   * caught up with are dropped so the list never double-counts.
+   */
+  const [extraYears, setExtraYears] = useState<string[]>([])
+
+  useEffect(() => {
+    setExtraYears((prev) => prev.filter((y) => !dashboard.years.includes(y)))
+  }, [dashboard.years])
+
+  const years = useMemo(
+    () => [...dashboard.years, ...extraYears].sort(),
+    [dashboard.years, extraYears],
+  )
+
+  const nextYear = String(
+    Math.max(...years.map(Number).filter(Number.isFinite), new Date().getFullYear()) + 1,
+  )
+
+  const addYear = () => {
+    setExtraYears((prev) => (prev.includes(nextYear) ? prev : [...prev, nextYear]))
+    if (metric === 'balance') setMetric('revenue')
+  }
 
   const rows = useMemo(() => {
     const needle = search.trim().toLowerCase()
@@ -222,6 +248,9 @@ export function CompaniesMaster({
           />
         </div>
         <span className="count">{rows.length} companies</span>
+        <button className="btn" onClick={addYear} title="Add an empty forecast-year column; it flows through the whole app once a value is saved">
+          + Add {nextYear}
+        </button>
         <div className="spacer" />
         <div className="legend">
           <span><i className="tier-dot factset" /> FactSet</span>

@@ -121,9 +121,21 @@ export function App() {
         ) : view === 'changes' ? (
           <Changes dashboard={dashboard} />
         ) : view === 'sectors' ? (
-          <Summary title="Sector Peers" summaries={dashboard.sectorSummaries} year={year} />
+          <Summary
+            title="Sector Peers"
+            summaries={dashboard.sectorSummaries}
+            year={year}
+            years={dashboard.years}
+            onYearChange={setYear}
+          />
         ) : (
-          <Summary title="Financial Peers" summaries={dashboard.peerSummaries} year={year} />
+          <Summary
+            title="Financial Peers"
+            summaries={dashboard.peerSummaries}
+            year={year}
+            years={dashboard.years}
+            onYearChange={setYear}
+          />
         )}
       </main>
     </div>

@@ -13,6 +13,7 @@ const ROWS = [
   { key: 'evGrossProfit', label: 'EV/GP', format: formatMultiple },
   { key: 'evEbitda', label: 'EV/EBITDA', format: formatMultiple },
   { key: 'evFcf', label: 'EV/FCF', format: formatMultiple },
+  { key: 'pe', label: 'P/E', format: formatMultiple },
   { key: 'revenueGrowth', label: 'Rev growth', format: formatPercent },
   { key: 'grossMargin', label: 'Gross margin', format: formatPercent },
   { key: 'fcfMargin', label: 'FCF margin', format: formatPercent },
@@ -23,16 +24,34 @@ export function Summary({
   title,
   summaries,
   year,
+  years,
+  onYearChange,
 }: {
   title: string
   summaries: GroupSummary[]
   year: string
+  years: string[]
+  onYearChange: (year: string) => void
 }) {
   const groups = summaries.filter((s) => s.members.length > 0)
 
   return (
     <div className="panel">
-      <h3>{title} · {year}</h3>
+      <div className="controls" style={{ marginBottom: 8 }}>
+        <h3 style={{ margin: 0 }}>{title}</h3>
+        <div className="control">
+          <label htmlFor="peers-year">Year</label>
+          <select
+            id="peers-year"
+            value={year}
+            onChange={(e) => onYearChange(e.target.value)}
+          >
+            {years.map((y) => (
+              <option key={y} value={y}>{y}</option>
+            ))}
+          </select>
+        </div>
+      </div>
       <div className="table-wrap" style={{ maxHeight: 'none' }}>
         <table>
           <thead>
