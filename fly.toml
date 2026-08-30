@@ -1,11 +1,14 @@
 # Fly.io deployment for a single-analyst dashboard.
 #
-#   fly launch --no-deploy --copy-config
-#   fly volumes create valuation_data --size 1
-#   fly secrets set DASHBOARD_PASSWORD_HASH='...' SESSION_SECRET='...'
-#   fly deploy
+#   fly apps create <your-app-name>          # app names are globally unique
+#   # set `app` and `primary_region` below to match
+#   fly volumes create valuation_data --size 1 --yes
+#   fly secrets import < secrets.env         # from `npm run hash-password -- --out`
+#   fly deploy --ha=false
 #
-# Set app and primary_region during `fly launch`.
+# --ha=false matters: Fly otherwise starts two machines for an HTTP service,
+# and the second would have no volume to mount. One machine is also what this
+# app wants, since the JSON tiers have a single writer.
 
 app = "valuation-dashboard"
 primary_region = "iad"
@@ -27,7 +30,10 @@ primary_region = "iad"
   force_https = true
   # One analyst, one session: keeping a single machine means the volume has a
   # single writer and there is no state to share between instances.
-  auto_stop_machines = "suspend"
+  #
+  # "stop" rather than "suspend": suspend resumes faster but carries more
+  # configuration caveats, and a cold boot here is a couple of seconds.
+  auto_stop_machines = "stop"
   auto_start_machines = true
   min_machines_running = 0
 

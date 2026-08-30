@@ -82,17 +82,33 @@ Set a password before exposing it. In production the server refuses to start
 without `DASHBOARD_PASSWORD_HASH`, rather than quietly serving an open app.
 
 ```bash
-npm run hash-password        # generates a strong password and prints both secrets
+npm run hash-password -- --out secrets.env
 ```
+
+That writes a `KEY=value` file for `fly secrets import`, which is worth
+preferring over pasting: the hash uses the conventional PHC layout, whose `$`
+separators are shell metacharacters, and a mangled secret shows up as a password
+that never works rather than as an error. The file is gitignored; delete it once
+the secrets are set.
 
 ### Fly.io
 
 ```bash
-fly launch --no-deploy --copy-config          # sets app name and region in fly.toml
-fly volumes create valuation_data --size 1
-fly secrets set DASHBOARD_PASSWORD_HASH='...' SESSION_SECRET='...'
-fly deploy
+fly apps create my-valuation-dashboard        # names are globally unique
 ```
+
+Set `app` and `primary_region` in `fly.toml` to match (`fly platform regions`
+lists the options). Then:
+
+```bash
+fly volumes create valuation_data --size 1 --yes
+fly secrets import < secrets.env              # Get-Content secrets.env | fly secrets import
+fly deploy --ha=false
+```
+
+`--ha=false` matters. Fly otherwise starts two machines for an HTTP service and
+the second has no volume to mount, so the deploy fails. One machine is also what
+this app wants: the JSON tiers have a single writer.
 
 `fly.toml` mounts a volume at `/data` and points `DATA_DIR` there. That volume
 is the live data, not a cache: your overrides and models are written to it, and
@@ -105,7 +121,7 @@ run the refresh there:
 
 ```bash
 fly secrets set FACTSET_USERNAME_SERIAL='...' FACTSET_API_KEY='...'
-fly ssh console -C "npx tsx scripts/refresh-factset.ts"
+fly ssh console -C "node node_modules/tsx/dist/cli.mjs scripts/refresh-factset.ts"
 ```
 
 ### What the auth does and does not do

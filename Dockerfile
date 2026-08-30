@@ -37,4 +37,7 @@ ENV DATA_DIR=/data
 ENV PORT=8080
 EXPOSE 8080
 
-CMD ["npx", "tsx", "server/index.ts"]
+# Invoke tsx's entry point directly rather than through npx: npx would try to
+# fetch the package if it were ever missing, turning a packaging mistake into a
+# slow network failure at boot instead of an immediate one.
+CMD ["node", "node_modules/tsx/dist/cli.mjs", "server/index.ts"]

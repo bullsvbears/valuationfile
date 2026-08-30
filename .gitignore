@@ -4,3 +4,7 @@ dist/
 .env
 .DS_Store
 tsconfig.tsbuildinfo
+
+# Generated secrets, never committed
+secrets.env
+*.secrets.env
