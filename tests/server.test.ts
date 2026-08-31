@@ -704,6 +704,50 @@ describe('writes land on the data directory', () => {
     expect(labels.some((l) => l.startsWith('    '))).toBe(true)
   })
 
+  it('lets a price update supersede a manual price and cascade to mcap and EV', async () => {
+    const cookie = await signIn()
+    const headers = { 'Content-Type': 'application/json', cookie }
+
+    // Hand-type a price, as one would while the feed was down.
+    const patch = await fetch(`${baseUrl}/api/company/ADBE/override`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ price: 500 }),
+    })
+    expect(patch.ok).toBe(true)
+
+    type Co = {
+      meta: { ticker: string }
+      metrics: { price: number | null; marketCap: number | null; enterpriseValue: number | null }
+      resolved: { price: { tier: string | null }; balance: { shares: { value: number | null } } }
+    }
+    const company = async (): Promise<Co> => {
+      const res = await fetch(`${baseUrl}/api/dashboard`, { headers: { cookie } })
+      const dashboard = (await res.json()) as { companies: Co[] }
+      return dashboard.companies.find((c) => c.meta.ticker === 'ADBE')!
+    }
+
+    const before = await company()
+    expect(before.metrics.price).toBe(500)
+    expect(before.resolved.price.tier).toBe('override')
+
+    // The next live update replaces the stopgap and everything downstream
+    // restrikes from the new price.
+    const refresh = await fetch(`${baseUrl}/api/refresh-prices`, {
+      method: 'POST',
+      headers: { cookie },
+    })
+    expect(refresh.ok).toBe(true)
+
+    const after = await company()
+    expect(after.metrics.price).toBe(111.25)
+    expect(after.resolved.price.tier).toBe('factset')
+    const shares = after.resolved.balance.shares.value
+    expect(shares).not.toBeNull()
+    expect(after.metrics.marketCap).toBeCloseTo(111.25 * shares!, 6)
+    expect(after.metrics.marketCap).not.toBeCloseTo(before.metrics.marketCap!, 6)
+  })
+
   it('replaces a feed-fetched baseline with the bundled analyst file', async () => {
     const cookie = await signIn()
 

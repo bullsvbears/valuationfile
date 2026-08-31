@@ -109,6 +109,24 @@ export class DataStore {
     }
     cache.pricesAsOf = new Date().toISOString()
     await this.saveFactSet(cache)
+
+    // A hand-typed price is a stopgap for a name the feed cannot reach, not
+    // a permanent pin: the moment a live source prices the ticker, the stale
+    // manual price would silently freeze market cap, EV and every multiple.
+    // Clear price overrides for everything this update actually priced;
+    // manual prices for unpriced names (private companies, unmapped
+    // listings) survive untouched, as do all other overrides.
+    const overrides = await this.loadOverrides()
+    let cleared = false
+    for (const ticker of Object.keys(prices)) {
+      const entry = overrides.companies[ticker]
+      if (entry && typeof entry.price === 'number') {
+        delete entry.price
+        cleared = true
+      }
+    }
+    if (cleared) await this.saveOverrides(overrides)
+
     return updated
   }
 

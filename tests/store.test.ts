@@ -88,6 +88,20 @@ describe('override persistence', () => {
     await store.clearOverrides('CRM')
     expect((await store.loadOverrides()).companies.CRM).toBeUndefined()
   })
+
+  it('lets a live price update supersede a stale manual price', async () => {
+    // A hand-typed price is a stopgap while the feed cannot reach a name;
+    // once the feed prices it, the manual value must not shadow it forever.
+    await store.patchOverride('ADBE', { price: 999 })
+    await store.patchOverride('CRM', { price: 111 })
+
+    await store.updatePrices({ ADBE: 300 })
+
+    const overrides = await store.loadOverrides()
+    expect(overrides.companies.ADBE?.price).toBeUndefined() // superseded
+    expect(overrides.companies.CRM?.price).toBe(111) // not priced: kept
+    expect((await store.loadFactSet()).companies.ADBE?.price).toBe(300)
+  })
 })
 
 describe('model persistence', () => {
