@@ -7,10 +7,11 @@ import { CompanyDetail } from './CompanyDetail.js'
 import { Summary } from './Summary.js'
 import { CompaniesMaster } from './CompaniesMaster.js'
 import { Changes } from './Changes.js'
+import { Snapshot } from './Snapshot.js'
 import { Overview } from './Overview.js'
 import { formatAge } from './format.js'
 
-type View = 'summary' | 'master' | 'screener' | 'sectors' | 'peers' | 'changes'
+type View = 'summary' | 'master' | 'screener' | 'sectors' | 'peers' | 'snapshot' | 'changes'
 
 export function App() {
   const [dashboard, setDashboard] = useState<Dashboard | null>(null)
@@ -123,6 +124,7 @@ export function App() {
               ['screener', 'Screen'],
               ['sectors', 'Sector Peers'],
               ['peers', 'Financial Peers'],
+              ['snapshot', 'Company Snapshot'],
               ['changes', 'Changes'],
             ] as const).map(([key, label]) => (
               <button
@@ -204,6 +206,8 @@ export function App() {
           <Overview dashboard={dashboard} />
         ) : view === 'master' ? (
           <CompaniesMaster dashboard={dashboard} onSaved={() => load(year)} />
+        ) : view === 'snapshot' ? (
+          <Snapshot dashboard={dashboard} />
         ) : view === 'changes' ? (
           <Changes dashboard={dashboard} />
         ) : view === 'sectors' ? (

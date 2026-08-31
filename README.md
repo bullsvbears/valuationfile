@@ -152,6 +152,16 @@ aggregated with the selected median/mean statistic), each removable in
 place. Every membership add or remove is recorded to `group-audit.json` and
 readable in the "Membership audit log" at the bottom of each peers tab.
 
+## Company Snapshot
+
+The Company Snapshot tab reproduces the valuation-snapshot slide: one name
+against a peer group across nine charts (EV/Revenue, Revenue Growth,
+EV/Revenue/Rule of 40; EV/EBITDA, EBITDA Margin, EBITDA Growth; EV/FCF,
+FCF Margin, FCF Growth) for the latest two forecast years. Dropdowns pick
+the company and the peer group (defaulting to a group the company belongs
+to); medians are computed the same way as the peers tabs. Every axis
+starts at zero and the top scales to the data.
+
 ## Excel export
 
 The "Excel" button in the top bar downloads every tab as one workbook:
