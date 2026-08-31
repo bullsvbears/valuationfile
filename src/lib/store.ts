@@ -103,6 +103,12 @@ export class DataStore {
     year: number,
   ): Promise<number> {
     const cache = await this.loadFactSet()
+    // A new year invalidates every stored baseline: without this, a name the
+    // feed cannot price would keep last year's close under this year's stamp
+    // and its YTD would silently measure from the wrong date.
+    if (cache.priorYearCloseYear !== undefined && cache.priorYearCloseYear !== year) {
+      for (const entry of Object.values(cache.companies)) delete entry.priorYearClose
+    }
     for (const [ticker, close] of Object.entries(closes)) {
       const entry = cache.companies[ticker] ?? { series: {} }
       entry.priorYearClose = close

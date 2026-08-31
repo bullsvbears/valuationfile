@@ -15,34 +15,76 @@ type ColumnKind = 'multiple' | 'percent' | 'price' | 'money' | 'return'
 interface Column {
   key: string
   label: string
+  /** Name shown in the filter dropdown, where a bare year would be opaque. */
+  filterLabel: string
   group: string
   kind: ColumnKind
+  /** First column of its group: draws the vertical separator. */
+  groupStart?: boolean
   /** Pull the sortable/displayable value out of a company row. */
   value: (company: CompanyView, year: YearMetrics | undefined) => Multiple
 }
 
-const COLUMNS: Column[] = [
-  { key: 'price', label: 'Price', group: 'Market', kind: 'price', value: (c) => c.metrics.price },
-  { key: 'ytd', label: 'YTD', group: 'Market', kind: 'return', value: (c) => c.ytdReturn },
-  { key: 'mcap', label: 'Mkt Cap', group: 'Market', kind: 'money', value: (c) => c.metrics.marketCap },
-  { key: 'ev', label: 'EV', group: 'Market', kind: 'money', value: (c) => c.metrics.enterpriseValue },
-
-  { key: 'evRevenue', label: 'EV/Rev', group: 'Valuation', kind: 'multiple', value: (_, y) => y?.evRevenue ?? null },
-  { key: 'evRevenueGrowth', label: 'EV/Rev/G', group: 'Valuation', kind: 'multiple', value: (_, y) => y?.evRevenueGrowth ?? null },
-  { key: 'evRevenueR40', label: 'EV/Rev/R40', group: 'Valuation', kind: 'multiple', value: (_, y) => y?.evRevenueR40 ?? null },
-  { key: 'evGrossProfit', label: 'EV/GP', group: 'Valuation', kind: 'multiple', value: (_, y) => y?.evGrossProfit ?? null },
-  { key: 'evEbitda', label: 'EV/EBITDA', group: 'Valuation', kind: 'multiple', value: (_, y) => y?.evEbitda ?? null },
-  { key: 'evFcf', label: 'EV/FCF', group: 'Valuation', kind: 'multiple', value: (_, y) => y?.evFcf ?? null },
-  { key: 'pe', label: 'P/E', group: 'Valuation', kind: 'multiple', value: (_, y) => y?.pe ?? null },
-  { key: 'fcfYield', label: 'FCF Yld', group: 'Valuation', kind: 'percent', value: (_, y) => y?.fcfYield ?? null },
-
-  { key: 'revenue', label: 'Revenue', group: 'Fundamentals', kind: 'money', value: (_, y) => y?.revenue ?? null },
-  { key: 'revenueGrowth', label: 'Rev Growth', group: 'Fundamentals', kind: 'percent', value: (_, y) => y?.revenueGrowth ?? null },
-  { key: 'grossMargin', label: 'GM', group: 'Fundamentals', kind: 'percent', value: (_, y) => y?.grossMargin ?? null },
-  { key: 'ebitdaMargin', label: 'EBITDA M', group: 'Fundamentals', kind: 'percent', value: (_, y) => y?.ebitdaMargin ?? null },
-  { key: 'fcfMargin', label: 'FCF M', group: 'Fundamentals', kind: 'percent', value: (_, y) => y?.fcfMargin ?? null },
-  { key: 'ruleOf40', label: 'Rule of 40', group: 'Fundamentals', kind: 'percent', value: (_, y) => y?.ruleOf40 ?? null },
+/** Fundamamental metrics that get one column per recent year. */
+const FUNDAMENTALS: { key: keyof YearMetrics; label: string; kind: ColumnKind }[] = [
+  { key: 'revenue', label: 'Revenue', kind: 'money' },
+  { key: 'revenueGrowth', label: 'Rev Growth', kind: 'percent' },
+  { key: 'grossMargin', label: 'Gross Margin', kind: 'percent' },
+  { key: 'ebitdaMargin', label: 'EBITDA Margin', kind: 'percent' },
+  { key: 'fcfMargin', label: 'FCF Margin', kind: 'percent' },
+  { key: 'ruleOf40', label: 'Rule of 40', kind: 'percent' },
 ]
+
+/**
+ * Columns are built from the data's own year list, so an added forecast year
+ * flows straight into the grid: valuation shows the selected year, and each
+ * fundamental shows the latest three years side by side.
+ */
+function buildColumns(valuationYear: string, fundamentalYears: string[]): Column[] {
+  const columns: Column[] = [
+    { key: 'price', label: 'Price', filterLabel: 'Price', group: 'Market', kind: 'price', groupStart: true, value: (c) => c.metrics.price },
+    { key: 'ytd', label: 'YTD', filterLabel: 'YTD return', group: 'Market', kind: 'return', value: (c) => c.ytdReturn },
+    { key: 'mcap', label: 'Mkt Cap', filterLabel: 'Market cap', group: 'Market', kind: 'money', value: (c) => c.metrics.marketCap },
+    { key: 'ev', label: 'EV', filterLabel: 'Enterprise value', group: 'Market', kind: 'money', value: (c) => c.metrics.enterpriseValue },
+  ]
+
+  const valuation: [string, string, ColumnKind, keyof YearMetrics][] = [
+    ['evRevenue', 'EV/Rev', 'multiple', 'evRevenue'],
+    ['evRevenueGrowth', 'EV/Rev/G', 'multiple', 'evRevenueGrowth'],
+    ['evRevenueR40', 'EV/Rev/R40', 'multiple', 'evRevenueR40'],
+    ['evGrossProfit', 'EV/GP', 'multiple', 'evGrossProfit'],
+    ['evEbitda', 'EV/EBITDA', 'multiple', 'evEbitda'],
+    ['evFcf', 'EV/FCF', 'multiple', 'evFcf'],
+    ['pe', 'P/E', 'multiple', 'pe'],
+    ['fcfYield', 'FCF Yld', 'percent', 'fcfYield'],
+  ]
+  valuation.forEach(([key, label, kind, metric], index) => {
+    columns.push({
+      key,
+      label,
+      filterLabel: `${label} (${valuationYear})`,
+      group: `Valuation · ${valuationYear}`,
+      kind,
+      groupStart: index === 0,
+      value: (_, y) => (y?.[metric] ?? null) as Multiple,
+    })
+  })
+
+  for (const fundamental of FUNDAMENTALS) {
+    fundamentalYears.forEach((fy, index) => {
+      columns.push({
+        key: `${fundamental.key}:${fy}`,
+        label: fy,
+        filterLabel: `${fundamental.label} ${fy}`,
+        group: fundamental.label,
+        kind: fundamental.kind,
+        groupStart: index === 0,
+        value: (c) => (c.metrics.byYear[fy]?.[fundamental.key] ?? null) as Multiple,
+      })
+    })
+  }
+  return columns
+}
 
 function render(kind: ColumnKind, value: Multiple): string {
   switch (kind) {
@@ -136,6 +178,12 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
     setActiveView('')
   }
 
+  const fundamentalYears = useMemo(() => dashboard.years.slice(-3), [dashboard.years])
+  const columns = useMemo(
+    () => buildColumns(year, fundamentalYears),
+    [year, fundamentalYears],
+  )
+
   const groupOptions = useMemo(
     () => [
       'All companies',
@@ -154,7 +202,7 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
       if (coverageOnly && !company.meta.covered) return false
 
       for (const filter of filters) {
-        const column = COLUMNS.find((c) => c.key === filter.key)
+        const column = columns.find((c) => c.key === filter.key)
         if (!column) continue
         const value = column.value(company, company.metrics.byYear[year])
         // A filtered column must hold a real number: "nm" and blanks fail it.
@@ -179,7 +227,7 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
         (a, b) => a.meta.ticker.localeCompare(b.meta.ticker) * sort.direction,
       )
     }
-    const column = COLUMNS.find((c) => c.key === sort.key)
+    const column = columns.find((c) => c.key === sort.key)
     if (!column) return filtered
     return [...filtered].sort((a, b) =>
       compare(
@@ -188,7 +236,7 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
         sort.direction,
       ),
     )
-  }, [dashboard, search, group, coverageOnly, sort, year, filters])
+  }, [dashboard, search, group, coverageOnly, sort, year, filters, columns])
 
   const toggleSort = (key: string) =>
     setSort((prev) =>
@@ -197,7 +245,7 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
         : { key, direction: key === 'ticker' ? 1 : -1 },
     )
 
-  const groups = [...new Set(COLUMNS.map((c) => c.group))]
+  const groups = [...new Set(columns.map((c) => c.group))]
 
   return (
     <>
@@ -251,7 +299,7 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
           className="control"
           onSubmit={(e) => {
             e.preventDefault()
-            const column = COLUMNS.find((c) => c.key === draftFilter.key)
+            const column = columns.find((c) => c.key === draftFilter.key)
             const raw = Number(draftFilter.value.replace(/[%,x$]/g, ''))
             if (!column || !Number.isFinite(raw)) return
             // Percent columns read "40" as 40%, matching how the grid displays.
@@ -269,8 +317,8 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
             value={draftFilter.key}
             onChange={(e) => setDraftFilter((prev) => ({ ...prev, key: e.target.value }))}
           >
-            {COLUMNS.map((c) => (
-              <option key={c.key} value={c.key}>{c.label}</option>
+            {columns.map((c) => (
+              <option key={c.key} value={c.key}>{c.filterLabel}</option>
             ))}
           </select>
           <select
@@ -294,12 +342,12 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
         </form>
 
         {filters.map((filter) => {
-          const column = COLUMNS.find((c) => c.key === filter.key)
+          const column = columns.find((c) => c.key === filter.key)
           const pctish = column?.kind === 'percent' || column?.kind === 'return'
           const shown = pctish ? `${(filter.value * 100).toFixed(0)}%` : String(filter.value)
           return (
             <span key={`${filter.key}-${filter.op}`} className="chip">
-              {column?.label ?? filter.key} {filter.op === 'gte' ? '≥' : '≤'} {shown}
+              {column?.filterLabel ?? filter.key} {filter.op === 'gte' ? '≥' : '≤'} {shown}
               <button
                 className="chip-remove"
                 onClick={() =>
@@ -365,10 +413,10 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
               {groups.map((g) => (
                 <th
                   key={g}
-                  className="group-head"
-                  colSpan={COLUMNS.filter((c) => c.group === g).length}
+                  className="group-head group-start"
+                  colSpan={columns.filter((c) => c.group === g).length}
                 >
-                  {g === 'Market' ? g : `${g} · ${year}`}
+                  {g}
                 </th>
               ))}
             </tr>
@@ -376,11 +424,12 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
               <th className="left sticky-col" onClick={() => toggleSort('ticker')}>
                 Company{sort.key === 'ticker' ? (sort.direction === 1 ? ' ▴' : ' ▾') : ''}
               </th>
-              {COLUMNS.map((column) => (
+              {columns.map((column) => (
                 <th
                   key={column.key}
+                  className={column.groupStart ? 'group-start' : ''}
                   onClick={() => toggleSort(column.key)}
-                  title={`Sort by ${column.label}`}
+                  title={`Sort by ${column.filterLabel}`}
                 >
                   {column.label}
                   {sort.key === column.key ? (sort.direction === -1 ? ' ▾' : ' ▴') : ''}
@@ -403,7 +452,7 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
                     )}
                     <div className="company-name">{company.meta.name}</div>
                   </td>
-                  {COLUMNS.map((column) => {
+                  {columns.map((column) => {
                     const value = column.value(company, yearMetrics)
                     const text = render(column.kind, value)
                     const signed =
@@ -413,7 +462,7 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
                     return (
                       <td
                         key={column.key}
-                        className={`num ${text === 'nm' || text === '—' ? 'nm' : ''} ${signed}`}
+                        className={`num ${text === 'nm' || text === '—' ? 'nm' : ''} ${signed} ${column.groupStart ? 'group-start' : ''}`}
                       >
                         {text}
                       </td>

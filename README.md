@@ -83,6 +83,36 @@ The bundled `data/factset-cache.json` holds the cached FDS values read out of
 the workbook. It is a starting point, not a live pull — run a refresh to make
 it current.
 
+### Year-end price baselines
+
+Year-to-date returns divide by the prior year's final close. The server
+looks for baselines in `data/year-end-closes.json` first (hand-supplied,
+shipped with the image) and asks Stooq only for what that file leaves open.
+To load a list from a spreadsheet (two columns: ticker, closing price):
+
+```bash
+python3 scripts/import_year_end_prices.py path/to/YE_Prices.xlsx 2025
+```
+
+A "Prior YE close" column in Master Input's Price & balance sheet view can
+override any single name by hand.
+
+### Backfilling history from old workbook copies
+
+Old saved copies of the valuation file can become history snapshots, so
+change-tracking reaches back before the app existed. Per file:
+
+```bash
+python3 scripts/extract_workbook.py "2025-06-30 copy.xlsx" --out /tmp/asof
+npx tsx scripts/backfill-snapshot.ts --data /tmp/asof --date 2025-06-30
+```
+
+That writes `data/history/2025-06-30.json` through the same resolver and
+metrics engine the daily task uses. Add `--push https://your-app.fly.dev
+--password <dashboard password>` to send it straight to a deployed instance
+instead; only past dates are accepted — today's snapshot belongs to the
+daily task.
+
 ### Free price updates without FactSet
 
 Without FactSet credentials, the Refresh button and the daily task fall back

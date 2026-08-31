@@ -199,27 +199,9 @@ export function App() {
         ) : view === 'changes' ? (
           <Changes dashboard={dashboard} />
         ) : view === 'sectors' ? (
-          <Summary
-            title="Sector Peers"
-            summaries={dashboard.sectorSummaries}
-            year={year}
-            years={dashboard.years}
-            onYearChange={setYear}
-            kind="sector"
-            companies={dashboard.companies.map((c) => c.meta)}
-            onChanged={() => load(year)}
-          />
+          <Summary title="Sector Peers" kind="sector" dashboard={dashboard} onChanged={() => load(year)} />
         ) : (
-          <Summary
-            title="Financial Peers"
-            summaries={dashboard.peerSummaries}
-            year={year}
-            years={dashboard.years}
-            onYearChange={setYear}
-            kind="financial"
-            companies={dashboard.companies.map((c) => c.meta)}
-            onChanged={() => load(year)}
-          />
+          <Summary title="Financial Peers" kind="financial" dashboard={dashboard} onChanged={() => load(year)} />
         )}
       </main>
     </div>

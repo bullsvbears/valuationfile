@@ -511,9 +511,10 @@ describe('writes land on the data directory', () => {
     const dashboard = (await dash.json()) as {
       companies: { meta: { ticker: string }; ytdReturn: number | null }[]
     }
-    // The stand-in serves ADBE at 111.25 now against an 89.00 year-end close.
+    // The bundled year-end file answers before the feed: ADBE's baseline is
+    // the hand-supplied 349.99, not the stand-in's 89.00.
     const adbe = dashboard.companies.find((c) => c.meta.ticker === 'ADBE')
-    expect(adbe?.ytdReturn).toBeCloseTo(111.25 / 89 - 1, 6)
+    expect(adbe?.ytdReturn).toBeCloseTo(111.25 / 349.99 - 1, 6)
 
     // A name with no mappable symbol has no baseline, so it reports nothing
     // rather than a stale figure carried over from the workbook.
@@ -531,6 +532,45 @@ describe('writes land on the data directory', () => {
     })
     const body = (await res.json()) as { yearEndCloses: number }
     expect(body.yearEndCloses).toBe(0)
+  })
+
+  it('accepts a backfilled snapshot for a past date only', async () => {
+    const cookie = await signIn()
+    const headers = { 'Content-Type': 'application/json', cookie }
+
+    const put = await fetch(`${baseUrl}/api/history/2025-06-30`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        date: '2025-06-30',
+        takenAt: '2025-06-30T20:00:00Z',
+        companies: { ADBE: { price: 400, series: { revenue: { '2027': 27000 } } } },
+      }),
+    })
+    expect(put.ok).toBe(true)
+
+    const list = await fetch(`${baseUrl}/api/history`, { headers: { cookie } })
+    expect(((await list.json()) as { dates: string[] }).dates).toContain('2025-06-30')
+
+    const read = await fetch(`${baseUrl}/api/history/2025-06-30`, { headers: { cookie } })
+    const body = (await read.json()) as { companies: { ADBE: { price: number } } }
+    expect(body.companies.ADBE.price).toBe(400)
+
+    // Today's snapshot belongs to the daily task; a mismatched body is junk.
+    const today = new Date().toISOString().slice(0, 10)
+    const todayPut = await fetch(`${baseUrl}/api/history/${today}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ date: today, companies: {} }),
+    })
+    expect(todayPut.status).toBe(400)
+
+    const mismatched = await fetch(`${baseUrl}/api/history/2025-01-15`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ date: '2025-02-15', companies: {} }),
+    })
+    expect(mismatched.status).toBe(400)
   })
 
   it('lets a hand-entered prior-year close override the fetched baseline', async () => {

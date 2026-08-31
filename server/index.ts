@@ -1,5 +1,6 @@
 import express from 'express'
 import path from 'node:path'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { existsSync } from 'node:fs'
 
@@ -95,6 +96,17 @@ async function liveTickers(): Promise<string[]> {
  * must not repeat daily. Runs after either price source, since neither the
  * FactSet price pull nor the quote endpoint carries the baseline.
  */
+/** Hand-supplied baselines shipped with the image, keyed by year then ticker. */
+async function bundledYearEndCloses(year: number): Promise<Record<string, number>> {
+  try {
+    const raw = await readFile(path.join(bundledData, 'year-end-closes.json'), 'utf8')
+    const byYear = JSON.parse(raw) as Record<string, Record<string, number>>
+    return byYear[String(year)] ?? {}
+  } catch {
+    return {}
+  }
+}
+
 async function ensureYearEndCloses(tickers: string[]): Promise<number> {
   const priorYear = new Date().getFullYear() - 1
   const cache = await store.loadFactSet()
@@ -104,9 +116,27 @@ async function ensureYearEndCloses(tickers: string[]): Promise<number> {
       typeof cache.companies[t]?.priorYearClose !== 'number',
   )
   if (!missing.length) return 0
-  const closes = await fetchYearEndCloses(missing, priorYear, {
-    historyUrl: process.env.STOOQ_HISTORY_URL,
-  })
+
+  // The bundled file answers first — the analyst's own year-end list is more
+  // trustworthy than a free feed, and it covers names the feed cannot price.
+  // Stooq fills whatever the file leaves open.
+  const bundled = await bundledYearEndCloses(priorYear)
+  const closes: Record<string, number> = {}
+  const stillMissing: string[] = []
+  for (const ticker of missing) {
+    const close = bundled[ticker]
+    if (typeof close === 'number' && close > 0) closes[ticker] = close
+    else stillMissing.push(ticker)
+  }
+
+  if (stillMissing.length) {
+    Object.assign(
+      closes,
+      await fetchYearEndCloses(stillMissing, priorYear, {
+        historyUrl: process.env.STOOQ_HISTORY_URL,
+      }),
+    )
+  }
   return store.updatePriorYearCloses(closes, priorYear)
 }
 
@@ -297,6 +327,31 @@ app.get('/api/history/series', route(async (req, res) => {
     })
   }
   res.json({ ticker, metric, year, points })
+}))
+
+/**
+ * Store a backfilled snapshot for a past date (see scripts/backfill-snapshot.ts).
+ * Today's snapshot belongs to the daily task and cannot be overwritten here.
+ */
+app.put('/api/history/:date', route(async (req, res) => {
+  const raw = req.params.date
+  const date = String(Array.isArray(raw) ? raw[0] : raw)
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || date >= todayKey()) {
+    res.status(400).json({ error: 'Backfill takes a past date in YYYY-MM-DD form' })
+    return
+  }
+  const body = req.body as { date?: unknown; companies?: unknown }
+  if (body?.date !== date || typeof body.companies !== 'object' || body.companies === null) {
+    res.status(400).json({ error: 'Body must be a snapshot whose date matches the URL' })
+    return
+  }
+  await mkdir(historyDir(), { recursive: true })
+  await writeFile(
+    path.join(historyDir(), `${date}.json`),
+    JSON.stringify(body) + '\n',
+    'utf8',
+  )
+  res.json({ ok: true, date, companies: Object.keys(body.companies).length })
 }))
 
 app.get('/api/history/:date', route(async (req, res) => {

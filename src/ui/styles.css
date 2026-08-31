@@ -68,8 +68,8 @@
 body {
   margin: 0;
   font-family: var(--sans);
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 13.5px;
+  line-height: 1.5;
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
@@ -192,7 +192,7 @@ button, input, select { font: inherit; color: inherit; }
 table { border-collapse: separate; border-spacing: 0; width: 100%; }
 
 th, td {
-  padding: 7px 11px;
+  padding: 8px 11px;
   text-align: right;
   white-space: nowrap;
   border-bottom: 1px solid var(--border);
@@ -206,9 +206,9 @@ thead th {
   background: var(--surface-2);
   color: var(--text-muted);
   font-weight: 600;
-  font-size: 11px;
+  font-size: 11.5px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   border-bottom: 1px solid var(--border-strong);
   cursor: pointer;
   user-select: none;
@@ -219,9 +219,10 @@ thead th.group-head {
   text-align: center;
   cursor: default;
   border-bottom: 1px solid var(--border);
-  color: var(--text-faint);
+  color: var(--text);
+  font-weight: 650;
 }
-thead tr:nth-child(2) th { top: 27px; }
+thead tr:nth-child(2) th { top: 30px; }
 
 th.left, td.left { text-align: left; }
 
@@ -236,7 +237,7 @@ th.sticky-col, td.sticky-col {
 thead th.sticky-col { z-index: 4; background: var(--surface-2); }
 tbody tr:hover td { background: var(--surface-2); }
 
-td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12px; }
+td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.75px; }
 td.nm { color: var(--text-faint); }
 .pos { color: var(--positive); }
 .neg { color: var(--negative); }
@@ -255,7 +256,7 @@ td.nm { color: var(--text-faint); }
 
 .company-name {
   color: var(--text-muted);
-  font-size: 11.5px;
+  font-size: 12px;
   max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -559,3 +560,10 @@ td.nm { color: var(--text-faint); }
 }
 
 a.back { text-decoration: none; display: inline-block; }
+
+/* ---------- Column-group separation ---------- */
+
+/* The first column of each metric group carries a strong left rule, so
+   Market / Valuation / each fundamental read as distinct bands. */
+th.group-start, td.group-start { border-left: 2px solid var(--border-strong); }
+thead th.group-head.group-start { border-left: 2px solid var(--border-strong); }

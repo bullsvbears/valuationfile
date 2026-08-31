@@ -1,80 +1,84 @@
-import { useEffect, useMemo, useState } from 'react'
+import { Fragment as Fragment2, useEffect, useMemo, useState } from 'react'
+import { median } from '../lib/aggregate.js'
 import type { Dashboard } from '../lib/dashboard.js'
-import type { MetricKey } from '../lib/types.js'
+import { isMeaningful } from '../lib/metrics.js'
 import { api, type HistorySnapshot } from './api.js'
 
 /**
- * Changes: how the key inputs have moved since an earlier snapshot.
- *
- * The server records the state once per day, and this tab compares the live
- * numbers against any recorded date. The default source is the master inputs
- * (the resolved values — FactSet, model or override, whichever owns the
- * cell); "FactSet estimates only" isolates consensus revisions, which stay
- * visible even where a model or override wins the resolved cell.
+ * Changes by comp group: today's group medians against a chosen snapshot
+ * date, in the layout of the workbook's Sector Summary "Today / Last Week /
+ * % Delta" blocks. One table for sectors, one for financial groups; material
+ * single-company moves live on the Summary tab.
  */
 
-type Source = 'factset' | 'resolved'
+interface GroupRow {
+  group: string
+  n: number
+  ytd: number | null
+  sinceReturn: number | null
+  blocks: Record<string, { today: number | null; then: number | null }>
+}
 
-const METRIC_TABS: { key: MetricKey | 'price'; label: string }[] = [
-  { key: 'revenue', label: 'Revenue' },
-  { key: 'grossProfit', label: 'Gross profit' },
-  { key: 'ebitda', label: 'EBITDA' },
-  { key: 'eps', label: 'EPS' },
-  { key: 'fcf', label: 'Free cash flow' },
-  { key: 'price', label: 'Price' },
+/** The metric blocks across the table, in the workbook's order. */
+const BLOCKS = [
+  { key: 'evRevenue', label: 'EV/Rev', kind: 'multiple' as const, delta: 'pct' as const },
+  { key: 'revenue', label: 'Rev', kind: 'money' as const, delta: 'pct' as const },
+  { key: 'revenueGrowth', label: 'Rev Growth', kind: 'percent' as const, delta: 'pts' as const },
+  { key: 'evFcf', label: 'EV/FCF', kind: 'multiple' as const, delta: 'pct' as const },
+  { key: 'fcfMargin', label: 'FCF Margin', kind: 'percent' as const, delta: 'pts' as const },
+  { key: 'ruleOf40', label: 'Rule of 40', kind: 'percent' as const, delta: 'pts' as const },
 ]
 
-function fmt(value: number | null, cents: boolean): string {
+function fmt(value: number | null, kind: 'multiple' | 'money' | 'percent'): string {
   if (value === null) return '—'
-  const sign = value < 0 ? '-' : ''
-  const abs = Math.abs(value)
-  return `${sign}$${abs.toLocaleString('en-US', {
-    minimumFractionDigits: cents ? 2 : 0,
-    maximumFractionDigits: cents ? 2 : 0,
-  })}`
+  switch (kind) {
+    case 'multiple': return `${value.toFixed(1)}x`
+    case 'money': return `$${Math.round(value).toLocaleString('en-US')}`
+    case 'percent': return `${(value * 100).toFixed(1)}%`
+  }
 }
 
-function fmtDelta(value: number | null, cents: boolean): string {
-  if (value === null) return '—'
-  const body = fmt(value, cents)
-  return value > 0 ? `+${body}` : body
+function fmtDelta(
+  today: number | null,
+  then: number | null,
+  mode: 'pct' | 'pts',
+): { text: string; cls: string } {
+  if (today === null || then === null) return { text: '—', cls: 'nm' }
+  const delta = mode === 'pct' ? (then === 0 ? null : today / then - 1) : today - then
+  if (delta === null) return { text: '—', cls: 'nm' }
+  const text = `${delta > 0 ? '+' : ''}${(delta * 100).toFixed(1)}%${mode === 'pts' ? ' pts' : ''}`
+  const cls = Math.abs(delta) < 0.0005 ? '' : delta > 0 ? 'pos' : 'neg'
+  return { text, cls }
 }
 
-function fmtPercent(value: number | null): string {
-  if (value === null) return '—'
-  const pct = (value * 100).toFixed(1)
-  return value > 0 ? `+${pct}%` : `${pct}%`
-}
-
-interface Row {
-  ticker: string
-  name: string
-  then: number | null
-  now: number | null
-  delta: number | null
-  percent: number | null
+function fmtReturn(value: number | null): { text: string; cls: string } {
+  if (value === null) return { text: '—', cls: 'nm' }
+  return {
+    text: `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`,
+    cls: value > 0 ? 'pos' : value < 0 ? 'neg' : '',
+  }
 }
 
 export function Changes({ dashboard }: { dashboard: Dashboard }) {
   const [dates, setDates] = useState<string[] | null>(null)
   const [compareTo, setCompareTo] = useState<string | null>(null)
   const [snapshot, setSnapshot] = useState<HistorySnapshot | null>(null)
-  const [metric, setMetric] = useState<MetricKey | 'price'>('revenue')
-  const [year, setYear] = useState(dashboard.summaryYear)
-  const [search, setSearch] = useState('')
-  const [source, setSource] = useState<Source>('resolved')
-  const [sort, setSort] = useState<'moved' | 'ticker'>('moved')
   const [error, setError] = useState<string | null>(null)
+
+  const today = new Date().toISOString().slice(0, 10)
+  const year = dashboard.years[dashboard.years.length - 1] ?? ''
+  const priorYear = String(Number(year) - 1)
 
   useEffect(() => {
     api
       .historyDates()
       .then(({ dates: all }) => {
         setDates(all)
-        // Default to the oldest snapshot: the widest window shows the most.
-        if (all.length) setCompareTo(all[0] as string)
+        const prior = all.filter((d) => d < today)
+        setCompareTo(prior.length ? (prior[prior.length - 1] as string) : null)
       })
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -86,88 +90,165 @@ export function Changes({ dashboard }: { dashboard: Dashboard }) {
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
   }, [compareTo])
 
-  const cents = metric === 'eps' || metric === 'price'
+  const tables = useMemo(() => {
+    if (!snapshot) return null
 
-  const rows = useMemo<Row[]>(() => {
-    if (!snapshot) return []
-    const needle = search.trim().toLowerCase()
-    const out: Row[] = []
-
-    for (const company of dashboard.companies) {
-      const ticker = company.meta.ticker
-      if (
-        needle &&
-        !ticker.toLowerCase().includes(needle) &&
-        !company.meta.name.toLowerCase().includes(needle)
-      ) continue
-
-      const past = snapshot.companies[ticker]
-      let then: number | null
-      let now: number | null
-      if (metric === 'price') {
-        // Price is a market fact, the same number under either source.
-        then = past?.price ?? null
-        now = company.metrics.price
-      } else if (source === 'factset') {
-        then = past?.factset?.series?.[metric]?.[year] ?? null
-        now = (company.factset?.series?.[metric]?.[year] as number | undefined) ?? null
-      } else {
-        then = past?.series?.[metric]?.[year] ?? null
-        now = company.resolved.series[metric][year]?.value ?? null
-      }
-
-      const delta = then !== null && now !== null ? now - then : null
-      const percent = delta !== null && then !== null && then !== 0 ? delta / Math.abs(then) : null
-      out.push({ ticker, name: company.meta.name, then, now, delta, percent })
+    /** Per-company then-values reconstructed from the snapshot. */
+    const thenByTicker = new Map<string, Record<string, number | null> & { price: number | null }>()
+    for (const [ticker, past] of Object.entries(snapshot.companies)) {
+      const rev = past.series?.revenue?.[year] ?? null
+      const revPrior = past.series?.revenue?.[priorYear] ?? null
+      const fcf = past.series?.fcf?.[year] ?? null
+      const growth = rev !== null && revPrior !== null && revPrior !== 0 ? rev / Math.abs(revPrior) - 1 : null
+      const margin = rev !== null && rev !== 0 && fcf !== null ? fcf / rev : null
+      thenByTicker.set(ticker, {
+        price: past.price ?? null,
+        evRevenue: past.multiples?.[year]?.evRevenue ?? null,
+        evFcf: past.multiples?.[year]?.evFcf ?? null,
+        revenue: rev,
+        revenueGrowth: growth,
+        fcfMargin: margin,
+        ruleOf40: growth !== null && margin !== null ? growth + margin : null,
+      })
     }
 
-    if (sort === 'ticker') return out.sort((a, b) => a.ticker.localeCompare(b.ticker))
-    // Biggest movers first; rows with nothing to compare sink to the bottom.
-    const rank = (row: Row) => (row.percent === null ? -Infinity : Math.abs(row.percent))
-    return out.sort((a, b) => rank(b) - rank(a) || a.ticker.localeCompare(b.ticker))
-  }, [dashboard, snapshot, metric, year, search, sort, source])
+    const companyByTicker = new Map(dashboard.companies.map((c) => [c.meta.ticker, c]))
 
-  const changed = rows.filter((r) => r.delta !== null && Math.abs(r.delta) > 1e-9).length
+    const buildRows = (rosters: { group: string; members: string[] }[]): GroupRow[] =>
+      rosters
+        .filter((r) => r.members.length > 0)
+        .map((roster) => {
+          const members = roster.members
+            .map((t) => companyByTicker.get(t))
+            .filter((c): c is NonNullable<typeof c> => Boolean(c))
+
+          const collectToday = (key: string): number[] =>
+            members
+              .map((c) => {
+                const v = c.metrics.byYear[year]?.[key as 'evRevenue'] ?? null
+                return isMeaningful(v) ? v : null
+              })
+              .filter((v): v is number => v !== null)
+          const collectThen = (key: string): number[] =>
+            members
+              .map((c) => thenByTicker.get(c.meta.ticker)?.[key] ?? null)
+              .filter((v): v is number => typeof v === 'number')
+
+          const blocks: GroupRow['blocks'] = {}
+          for (const block of BLOCKS) {
+            blocks[block.key] = {
+              today: median(collectToday(block.key)),
+              then: median(collectThen(block.key)),
+            }
+          }
+
+          const sinceMoves = members
+            .map((c) => {
+              const priceThen = thenByTicker.get(c.meta.ticker)?.price
+              const priceNow = c.metrics.price
+              return typeof priceThen === 'number' && priceThen !== 0 && priceNow !== null
+                ? priceNow / priceThen - 1
+                : null
+            })
+            .filter((v): v is number => v !== null)
+
+          return {
+            group: roster.group,
+            n: roster.members.length,
+            ytd: median(members.map((c) => c.ytdReturn).filter((v): v is number => v !== null)),
+            sinceReturn: median(sinceMoves),
+            blocks,
+          }
+        })
+
+    return {
+      sectors: buildRows(dashboard.sectorSummaries),
+      financial: buildRows(dashboard.peerSummaries),
+    }
+  }, [dashboard, snapshot, year, priorYear])
 
   if (error) return <div className="status error">{error}</div>
   if (dates === null) return <div className="loading">Loading history…</div>
 
+  const priorDates = dates.filter((d) => d < today)
+  if (!priorDates.length) {
+    return (
+      <div className="panel">
+        <h3>Changes</h3>
+        <p className="sub">
+          Nothing to compare yet: today's snapshot is the first one recorded. A
+          snapshot is stored automatically each day the dashboard is used — from
+          tomorrow, this page shows each comp group's medians today against a
+          date you pick, in the Today / Then / Δ layout of the old Sector
+          Summary sheet.
+        </p>
+      </div>
+    )
+  }
+
+  const renderTable = (label: string, rows: GroupRow[]) => (
+    <div className="panel" key={label}>
+      <h3>{label}</h3>
+      <div className="table-wrap" style={{ maxHeight: 'none' }}>
+        <table>
+          <thead>
+            <tr>
+              <th className="left sticky-col group-head" />
+              <th className="group-head" />
+              <th className="group-head group-start" colSpan={2}>Returns</th>
+              {BLOCKS.map((block) => (
+                <th key={block.key} className="group-head group-start" colSpan={3}>
+                  {year} {block.label}
+                </th>
+              ))}
+            </tr>
+            <tr>
+              <th className="left sticky-col">Group</th>
+              <th>N</th>
+              <th className="group-start">YTD</th>
+              <th>Since {compareTo}</th>
+              {BLOCKS.map((block) => (
+                <Fragment2 key={block.key}>
+                  <th className="group-start">Today</th>
+                  <th>{compareTo}</th>
+                  <th>{block.delta === 'pts' ? 'Δ pts' : '%Δ'}</th>
+                </Fragment2>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => {
+              const ytd = fmtReturn(row.ytd)
+              const since = fmtReturn(row.sinceReturn)
+              return (
+                <tr key={row.group}>
+                  <td className="left sticky-col">{row.group}</td>
+                  <td className="num">{row.n}</td>
+                  <td className={`num group-start ${ytd.cls}`}>{ytd.text}</td>
+                  <td className={`num ${since.cls}`}>{since.text}</td>
+                  {BLOCKS.map((block) => {
+                    const value = row.blocks[block.key] ?? { today: null, then: null }
+                    const delta = fmtDelta(value.today, value.then, block.delta)
+                    return (
+                      <Fragment2 key={block.key}>
+                        <td className="num group-start">{fmt(value.today, block.kind)}</td>
+                        <td className="num nm">{fmt(value.then, block.kind)}</td>
+                        <td className={`num ${delta.cls}`}>{delta.text}</td>
+                      </Fragment2>
+                    )
+                  })}
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+
   return (
     <>
       <div className="controls">
-        <nav className="tabs metric-tabs">
-          {METRIC_TABS.map((tab) => (
-            <button
-              key={tab.key}
-              className="tab"
-              aria-selected={metric === tab.key}
-              onClick={() => setMetric(tab.key)}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
-        {metric !== 'price' && (
-          <div className="control">
-            <label htmlFor="chg-year">Year</label>
-            <select id="chg-year" value={year} onChange={(e) => setYear(e.target.value)}>
-              {dashboard.years.map((y) => (
-                <option key={y} value={y}>{y}</option>
-              ))}
-            </select>
-          </div>
-        )}
-        <div className="control">
-          <label htmlFor="chg-source">Source</label>
-          <select
-            id="chg-source"
-            value={source}
-            onChange={(e) => setSource(e.target.value as Source)}
-          >
-            <option value="resolved">Master inputs (any source)</option>
-            <option value="factset">FactSet estimates only</option>
-          </select>
-        </div>
         <div className="control">
           <label htmlFor="chg-date">Compare to</label>
           <select
@@ -175,66 +256,17 @@ export function Changes({ dashboard }: { dashboard: Dashboard }) {
             value={compareTo ?? ''}
             onChange={(e) => setCompareTo(e.target.value)}
           >
-            {dates.map((d) => (
+            {priorDates.map((d) => (
               <option key={d} value={d}>{d}</option>
             ))}
           </select>
         </div>
-        <div className="control">
-          <label htmlFor="chg-search">Search</label>
-          <input
-            id="chg-search"
-            type="text"
-            value={search}
-            placeholder="Ticker or company"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        <span className="count">{changed} of {rows.length} moved</span>
+        <span className="hint">
+          Group medians, {year} data. Material single-company moves are on the Summary tab.
+        </span>
       </div>
-
-      {dates.length <= 1 && (
-        <div className="status">
-          A snapshot is recorded automatically each day the dashboard is used, and
-          today's is the first. Differences will appear here once estimates,
-          prices or your inputs move against a recorded day.
-        </div>
-      )}
-
-      {snapshot && (
-        <div className="table-wrap" style={{ maxWidth: 860 }}>
-          <table>
-            <thead>
-              <tr>
-                <th className="left sticky-col" onClick={() => setSort('ticker')}>
-                  Company{sort === 'ticker' ? ' ▴' : ''}
-                </th>
-                <th>{compareTo}</th>
-                <th>Today</th>
-                <th>Δ</th>
-                <th onClick={() => setSort('moved')}>%Δ{sort === 'moved' ? ' ▾' : ''}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row) => {
-                const dir = (row.delta ?? 0) > 1e-9 ? 'pos' : (row.delta ?? 0) < -1e-9 ? 'neg' : ''
-                return (
-                  <tr key={row.ticker}>
-                    <td className="left sticky-col">
-                      <span className="master-ticker">{row.ticker}</span>
-                      <div className="company-name">{row.name}</div>
-                    </td>
-                    <td className="num">{fmt(row.then, cents)}</td>
-                    <td className="num">{fmt(row.now, cents)}</td>
-                    <td className={`num ${dir}`}>{fmtDelta(row.delta, cents)}</td>
-                    <td className={`num ${dir}`}>{fmtPercent(row.percent)}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      )}
+      {tables && renderTable('Sector groups', tables.sectors)}
+      {tables && renderTable('Financial groups', tables.financial)}
     </>
   )
 }
