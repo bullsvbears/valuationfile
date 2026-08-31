@@ -110,25 +110,32 @@ async function bundledYearEndCloses(year: number): Promise<Record<string, number
 async function ensureYearEndCloses(tickers: string[]): Promise<number> {
   const priorYear = new Date().getFullYear() - 1
   const cache = await store.loadFactSet()
-  const missing = tickers.filter(
-    (t) =>
-      cache.priorYearCloseYear !== priorYear ||
-      typeof cache.companies[t]?.priorYearClose !== 'number',
-  )
-  if (!missing.length) return 0
+  const stored = (t: string): number | undefined =>
+    cache.priorYearCloseYear === priorYear
+      ? (cache.companies[t]?.priorYearClose ?? undefined)
+      : undefined
 
-  // The bundled file answers first — the analyst's own year-end list is more
-  // trustworthy than a free feed, and it covers names the feed cannot price.
-  // Stooq fills whatever the file leaves open.
+  // The analyst's bundled year-end list is authoritative over the free feed:
+  // apply it wherever the stored baseline is absent or disagrees, so a volume
+  // stamped with feed values before the file shipped still picks it up. A
+  // hand-entered close lives on the override tier and beats both regardless.
   const bundled = await bundledYearEndCloses(priorYear)
   const closes: Record<string, number> = {}
-  const stillMissing: string[] = []
-  for (const ticker of missing) {
+  for (const ticker of tickers) {
     const close = bundled[ticker]
-    if (typeof close === 'number' && close > 0) closes[ticker] = close
-    else stillMissing.push(ticker)
+    if (typeof close === 'number' && close > 0 && close !== stored(ticker)) {
+      closes[ticker] = close
+    }
   }
 
+  // Stooq fills what the file leaves open — but only once per calendar year:
+  // the history endpoint takes one symbol per request, so it must not repeat.
+  const stillMissing = tickers.filter(
+    (t) =>
+      !(t in closes) &&
+      !(typeof bundled[t] === 'number' && bundled[t]! > 0) &&
+      typeof stored(t) !== 'number',
+  )
   if (stillMissing.length) {
     Object.assign(
       closes,
@@ -137,6 +144,7 @@ async function ensureYearEndCloses(tickers: string[]): Promise<number> {
       }),
     )
   }
+  if (!Object.keys(closes).length && cache.priorYearCloseYear === priorYear) return 0
   return store.updatePriorYearCloses(closes, priorYear)
 }
 

@@ -573,6 +573,29 @@ describe('writes land on the data directory', () => {
     expect(mismatched.status).toBe(400)
   })
 
+  it('replaces a feed-fetched baseline with the bundled analyst file', async () => {
+    const cookie = await signIn()
+
+    // A volume stamped before the analyst's year-end file shipped holds Stooq
+    // baselines; the bundled number must win on the next price update.
+    const cachePath = path.join(dataDir, 'factset-cache.json')
+    const cache = JSON.parse(readFileSync(cachePath, 'utf8')) as {
+      companies: Record<string, { priorYearClose?: number }>
+    }
+    expect(cache.companies.ADBE?.priorYearClose).toBe(349.99)
+    cache.companies.ADBE!.priorYearClose = 100 // pretend the free feed got here first
+    writeFileSync(cachePath, JSON.stringify(cache))
+
+    const res = await fetch(`${baseUrl}/api/refresh-prices`, {
+      method: 'POST',
+      headers: { cookie },
+    })
+    expect(((await res.json()) as { yearEndCloses: number }).yearEndCloses).toBeGreaterThanOrEqual(1)
+
+    const after = JSON.parse(readFileSync(cachePath, 'utf8')) as typeof cache
+    expect(after.companies.ADBE?.priorYearClose).toBe(349.99)
+  })
+
   it('lets a hand-entered prior-year close override the fetched baseline', async () => {
     const cookie = await signIn()
     const headers = { 'Content-Type': 'application/json', cookie }
