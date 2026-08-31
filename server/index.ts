@@ -9,6 +9,8 @@ import { assertProductionAuth, authConfigFromEnv, createAuth } from './auth.js'
 import { seedDataDir } from './seed.js'
 import { ensureDailySnapshot, listSnapshots, readSnapshot, todayKey } from './history.js'
 import { backupConfigFromEnv, runBackup, scrubSecrets } from './backup.js'
+import { buildExportWorkbook } from './export-xlsx.js'
+import type { MoverSnapshot } from '../src/lib/movers.js'
 import {
   fetchPolygonPrices,
   fetchYearEndCloses,
@@ -457,6 +459,37 @@ app.delete('/api/views/:name', route(async (req, res) => {
  * The git-branch backup is the durable path; this is the "I want a copy on
  * my machine right now" path.
  */
+/**
+ * Every tab as one Excel workbook: Summary movers, the Master Input grids
+ * (source tier as font colour), Screen, both peers tabs with constituents,
+ * and the Changes comparison — all against the latest prior snapshot.
+ */
+app.get('/api/export.xlsx', route(async (_req, res) => {
+  const inputs = await loadInputs()
+  const dashboard = buildDashboard(inputs)
+  const today = todayKey()
+
+  const dates = (await listSnapshots(historyDir())).filter((d) => d < today)
+  const date = dates[dates.length - 1]
+  let compare: { snapshot: MoverSnapshot; date: string } | null = null
+  if (date) {
+    const snapshot = await readSnapshot(historyDir(), date)
+    if (snapshot) compare = { snapshot, date }
+  }
+
+  const workbook = buildExportWorkbook(dashboard, compare)
+  res.setHeader(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  )
+  res.setHeader(
+    'Content-Disposition',
+    `attachment; filename="valuation-dashboard-${today}.xlsx"`,
+  )
+  await workbook.xlsx.write(res)
+  res.end()
+}))
+
 app.get('/api/export', route(async (_req, res) => {
   const [universe, factset, overrides, models, kpis, views] = await Promise.all([
     store.loadUniverse(),

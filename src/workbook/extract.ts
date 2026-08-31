@@ -24,8 +24,8 @@ import type {
  * which crashed the app behind 502s. Before re-exposing an upload endpoint,
  * parse only the four needed sheets — e.g. stub the other worksheet XML
  * entries inside the zip, or read the sheet XML directly — and measure the
- * peak under `--max-old-space-size` first. exceljs is a devDependency until
- * then, so keep server code from importing this module.
+ * peak under `--max-old-space-size` first. (Writing workbooks with exceljs,
+ * as the Excel export does, is cheap; it is whole-file reads that blow up.)
  */
 
 // Column spans on the `Data` sheet, one contiguous block of years per metric.

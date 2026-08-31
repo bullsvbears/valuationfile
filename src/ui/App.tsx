@@ -168,6 +168,14 @@ export function App() {
         </button>
         <a
           className="back"
+          href="/api/export.xlsx"
+          download
+          title="Download every tab as one Excel workbook — Summary, the Master Input grids, Screen, both peers tabs with constituents, and Changes"
+        >
+          Excel
+        </a>
+        <a
+          className="back"
           href="/api/export"
           download
           title="Download the whole data set — models, overrides, FactSet cache and history — as one JSON file"

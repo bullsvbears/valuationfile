@@ -646,6 +646,64 @@ describe('writes land on the data directory', () => {
     expect(mismatched.status).toBe(400)
   })
 
+  it('exports every tab as one Excel workbook', async () => {
+    const cookie = await signIn()
+    const res = await fetch(`${baseUrl}/api/export.xlsx`, { headers: { cookie } })
+    expect(res.status).toBe(200)
+    expect(res.headers.get('content-type')).toContain('spreadsheetml.sheet')
+    expect(res.headers.get('content-disposition')).toMatch(/valuation-dashboard-.*\.xlsx/)
+
+    const ExcelJS = (await import('exceljs')).default
+    const workbook = new ExcelJS.Workbook()
+    await workbook.xlsx.load(Buffer.from(await res.arrayBuffer()) as never)
+
+    expect(workbook.worksheets.map((s) => s.name)).toEqual([
+      'Summary',
+      'Input Revenue',
+      'Input Gross Profit',
+      'Input EBITDA',
+      'Input EPS',
+      'Input FCF',
+      'Input Balance',
+      'Screen',
+      'Sector Peers',
+      'Financial Peers',
+      'Changes',
+    ])
+
+    // The input grids carry the resolved numbers by year.
+    const revenue = workbook.getWorksheet('Input Revenue')!
+    const header = revenue.getRow(1).values as (string | undefined)[]
+    const yearCol = header.indexOf('2024')
+    expect(yearCol).toBeGreaterThan(2)
+    let adbe2024: number | undefined
+    revenue.eachRow((row) => {
+      if (row.getCell(1).value === 'ADBE') {
+        adbe2024 = row.getCell(yearCol).value as number
+      }
+    })
+    expect(adbe2024).toBe(21505)
+
+    // The Screen sheet lists live companies with real numeric cells.
+    const screen = workbook.getWorksheet('Screen')!
+    expect(screen.rowCount).toBeGreaterThan(250)
+    let adbePrice: unknown
+    screen.eachRow((row) => {
+      if (row.getCell(1).value === 'ADBE') adbePrice = row.getCell(3).value
+    })
+    expect(typeof adbePrice).toBe('number')
+
+    // Peers sheets carry group rows and indented constituents.
+    const sectors = workbook.getWorksheet('Sector Peers')!
+    const labels: string[] = []
+    sectors.eachRow((row) => {
+      const v = row.getCell(1).value
+      if (typeof v === 'string') labels.push(v)
+    })
+    expect(labels).toContain('Adtech')
+    expect(labels.some((l) => l.startsWith('    '))).toBe(true)
+  })
+
   it('replaces a feed-fetched baseline with the bundled analyst file', async () => {
     const cookie = await signIn()
 

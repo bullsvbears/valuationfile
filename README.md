@@ -152,6 +152,15 @@ aggregated with the selected median/mean statistic), each removable in
 place. Every membership add or remove is recorded to `group-audit.json` and
 readable in the "Membership audit log" at the bottom of each peers tab.
 
+## Excel export
+
+The "Excel" button in the top bar downloads every tab as one workbook:
+Summary's movers, each Master Input grid (cell font colour marks the
+source tier — purple for your model, amber for overrides), the Screen
+table, both peers tabs with group medians and their constituents, and the
+Changes comparison against the latest prior snapshot. Cells are real
+numbers with Excel number formats, so the sheets pivot and chart cleanly.
+
 ## Backups
 
 Two paths, both covering the whole data directory — models, overrides, the
