@@ -25,6 +25,7 @@ const METRIC_TABS: { key: MetricKey | 'balance'; label: string }[] = [
 
 const BALANCE_COLUMNS = [
   { key: 'price', label: 'Price ($)' },
+  { key: 'priorYearClose', label: 'Prior YE close ($)' },
   { key: 'shares', label: 'Diluted shares (M)' },
   { key: 'cash', label: 'Cash ($M)' },
   { key: 'debt', label: 'Debt ($M)' },
@@ -50,7 +51,7 @@ type CellFormat = 'dollars0' | 'dollars2' | 'count'
 function formatFor(metric: MetricKey | 'balance', column: string): CellFormat {
   if (metric === 'eps') return 'dollars2'
   if (metric !== 'balance') return 'dollars0'
-  if (column === 'price') return 'dollars2'
+  if (column === 'price' || column === 'priorYearClose') return 'dollars2'
   if (column === 'shares') return 'count'
   return 'dollars0'
 }
@@ -154,7 +155,8 @@ export function CompaniesMaster({
     if (!company) return { value: null, tier: null }
     if (metric === 'balance') {
       if (column === 'price') return { value: company.metrics.price, tier: company.resolved.price.tier }
-      const cell = company.resolved.balance[column as Exclude<BalanceColumn, 'price'>]
+      if (column === 'priorYearClose') return company.priorYearClose
+      const cell = company.resolved.balance[column as Exclude<BalanceColumn, 'price' | 'priorYearClose'>]
       return { value: cell.value, tier: cell.tier }
     }
     const cell = company.resolved.series[metric][column]
@@ -232,6 +234,7 @@ export function CompaniesMaster({
         const series: Record<string, Record<string, number | null>> = {}
         const balance: Record<string, number | null> = {}
         let price: number | null | undefined
+        let priorYearClose: number | null | undefined
 
         for (const [key, raw] of Object.entries(edits)) {
           const [, editMetric, column] = key.split('|') as [string, string, string]
@@ -241,6 +244,7 @@ export function CompaniesMaster({
           if (value === null && raw.trim() !== '') continue
           if (editMetric === 'balance') {
             if (column === 'price') price = value
+            else if (column === 'priorYearClose') priorYearClose = value
             else balance[column] = value
           } else {
             series[editMetric] ??= {}
@@ -252,6 +256,7 @@ export function CompaniesMaster({
           series,
           balance,
           ...(price !== undefined ? { price } : {}),
+          ...(priorYearClose !== undefined ? { priorYearClose } : {}),
         })
       }
 

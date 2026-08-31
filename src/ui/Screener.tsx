@@ -73,7 +73,13 @@ export interface ScreenerProps {
 
 export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerProps) {
   const [search, setSearch] = useState('')
-  const [group, setGroup] = useState('All companies')
+  // The desk's home base: land on the core comp group rather than the whole
+  // universe, falling back gracefully if that group is ever renamed away.
+  const [group, setGroup] = useState(() =>
+    dashboard.peerSummaries.some((s) => s.group === 'Core Software Group')
+      ? 'Core Software Group'
+      : 'All companies',
+  )
   const [coverageOnly, setCoverageOnly] = useState(false)
   const [sort, setSort] = useState<{ key: string; direction: 1 | -1 }>({
     key: 'ticker',

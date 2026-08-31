@@ -466,20 +466,31 @@ describe('writes land on the data directory', () => {
     expect(bad.status).toBe(400)
   })
 
-  it('falls back to the free price feed on refresh without FactSet credentials', async () => {
+  it('refuses an estimates refresh without FactSet credentials, with the fix named', async () => {
     const cookie = await signIn()
     const res = await fetch(`${baseUrl}/api/refresh`, { method: 'POST', headers: { cookie } })
+    expect(res.status).toBe(503)
+    const body = (await res.json()) as { error: string }
+    expect(body.error).toContain('FACTSET_USERNAME_SERIAL')
+  })
+
+  it('updates prices from the free feed via the price-only route', async () => {
+    const cookie = await signIn()
+    const res = await fetch(`${baseUrl}/api/refresh-prices`, {
+      method: 'POST',
+      headers: { cookie },
+    })
     expect(res.ok).toBe(true)
     const body = (await res.json()) as {
       mode: string
+      source: string
       updated: number
       unmapped: string[]
-      note: string
     }
     expect(body.mode).toBe('prices')
+    expect(body.source).toBe('stooq')
     expect(body.updated).toBeGreaterThan(250)
     expect(body.unmapped).toContain('SPCX')
-    expect(body.note).toContain('FactSet')
 
     // The new close flows through to the dashboard's resolved price.
     const dash = await fetch(`${baseUrl}/api/dashboard`, { headers: { cookie } })
@@ -494,7 +505,7 @@ describe('writes land on the data directory', () => {
 
   it('derives YTD from the live price over the prior year-end close', async () => {
     const cookie = await signIn()
-    await fetch(`${baseUrl}/api/refresh`, { method: 'POST', headers: { cookie } })
+    await fetch(`${baseUrl}/api/refresh-prices`, { method: 'POST', headers: { cookie } })
 
     const dash = await fetch(`${baseUrl}/api/dashboard`, { headers: { cookie } })
     const dashboard = (await dash.json()) as {
@@ -512,16 +523,55 @@ describe('writes land on the data directory', () => {
 
   it('does not refetch year-end closes once stored for the year', async () => {
     const cookie = await signIn()
-    // The first refresh in this suite already stored them; a second must not
-    // repeat the slow per-symbol pass.
-    const res = await fetch(`${baseUrl}/api/refresh`, { method: 'POST', headers: { cookie } })
+    // The first price update in this suite already stored them; a second must
+    // not repeat the slow per-symbol pass.
+    const res = await fetch(`${baseUrl}/api/refresh-prices`, {
+      method: 'POST',
+      headers: { cookie },
+    })
     const body = (await res.json()) as { yearEndCloses: number }
     expect(body.yearEndCloses).toBe(0)
   })
 
-  it('keeps the refresh behind the session', async () => {
-    const res = await fetch(`${baseUrl}/api/refresh`, { method: 'POST' })
-    expect(res.status).toBe(401)
+  it('lets a hand-entered prior-year close override the fetched baseline', async () => {
+    const cookie = await signIn()
+    const headers = { 'Content-Type': 'application/json', cookie }
+
+    // SPCX has no Stooq symbol, so only a manual baseline can give it a YTD.
+    await fetch(`${baseUrl}/api/company/SPCX/override`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ priorYearClose: 100, price: 125 }),
+    })
+
+    const dash = await fetch(`${baseUrl}/api/dashboard`, { headers: { cookie } })
+    const dashboard = (await dash.json()) as {
+      companies: {
+        meta: { ticker: string }
+        ytdReturn: number | null
+        priorYearClose: { value: number | null; tier: string | null }
+      }[]
+    }
+    const spcx = dashboard.companies.find((c) => c.meta.ticker === 'SPCX')
+    expect(spcx?.priorYearClose).toEqual({ value: 100, tier: 'override' })
+    expect(spcx?.ytdReturn).toBeCloseTo(0.25, 6)
+
+    // Clearing the override drops the return back to unknown.
+    await fetch(`${baseUrl}/api/company/SPCX/override`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ priorYearClose: null, price: null }),
+    })
+    const after = await fetch(`${baseUrl}/api/dashboard`, { headers: { cookie } })
+    const cleared = (await after.json()) as typeof dashboard
+    expect(cleared.companies.find((c) => c.meta.ticker === 'SPCX')?.ytdReturn).toBeNull()
+  })
+
+  it('keeps both refresh routes behind the session', async () => {
+    for (const path of ['/api/refresh', '/api/refresh-prices']) {
+      const res = await fetch(`${baseUrl}${path}`, { method: 'POST' })
+      expect(res.status).toBe(401)
+    }
   })
 
   it('signs out and closes the API again', async () => {

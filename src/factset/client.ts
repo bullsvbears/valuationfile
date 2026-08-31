@@ -151,3 +151,41 @@ export async function fetchFactSet(
     companies,
   }
 }
+
+/**
+ * Price-only pull: one formula per company, no calendarisation, so the whole
+ * universe fits in a handful of requests. Used by the "Update prices" button
+ * when credentials exist; estimates are untouched.
+ */
+export async function fetchFactSetPrices(
+  creds: FactSetCredentials,
+  tickers: string[],
+  options: { batchSize?: number; fetchImpl?: typeof fetch } = {},
+): Promise<Record<string, number>> {
+  const doFetch = options.fetchImpl ?? fetch
+  const batchSize = options.batchSize ?? 100
+  const prices: Record<string, number> = {}
+
+  for (let i = 0; i < tickers.length; i += batchSize) {
+    const batch = tickers.slice(i, i + batchSize)
+    const url = new URL(creds.endpoint ?? DEFAULT_ENDPOINT)
+    url.searchParams.set('ids', batch.join(','))
+    url.searchParams.append('formulas', 'P_PRICE(now,,,USD) as price')
+
+    const res = await doFetch(url.toString(), {
+      headers: { Authorization: authHeader(creds), Accept: 'application/json' },
+    })
+    if (!res.ok) {
+      throw new Error(
+        `FactSet price request failed (${res.status} ${res.statusText}): ${await res.text()}`,
+      )
+    }
+    const body = (await res.json()) as { data?: FormulaResponseRow[] }
+    for (const row of body.data ?? []) {
+      const ticker = String(row.requestId ?? '')
+      const price = toNumber(row.price)
+      if (ticker && price !== null) prices[ticker] = price
+    }
+  }
+  return prices
+}

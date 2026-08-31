@@ -10,7 +10,7 @@ import { ensureDailySnapshot, listSnapshots, readSnapshot, todayKey } from './hi
 import { backupConfigFromEnv, runBackup, scrubSecrets } from './backup.js'
 import { fetchStooqPrices, fetchYearEndCloses } from '../src/prices/stooq.js'
 import { buildDashboard, type DashboardInputs } from '../src/lib/dashboard.js'
-import { credentialsFromEnv, fetchFactSet } from '../src/factset/client.js'
+import { credentialsFromEnv, fetchFactSet, fetchFactSetPrices } from '../src/factset/client.js'
 import type { OverrideEntry, OwnModel } from '../src/lib/types.js'
 import type { SavedView } from '../src/lib/store.js'
 
@@ -81,25 +81,21 @@ class RefreshError extends Error {
  * anything it could not price, so a delisting or rename never keeps a stale
  * number standing silently.
  */
-async function runPriceUpdate(): Promise<{
-  updated: number
-  unmapped: string[]
-  unpriced: string[]
-  yearEndCloses: number
-}> {
+async function liveTickers(): Promise<string[]> {
   const universe = await store.loadUniverse()
-  const tickers = universe.companies
+  return universe.companies
     .filter((c) => c.coverage !== 'Acquired Companies')
     .map((c) => c.ticker)
-  const result = await fetchStooqPrices(tickers, {
-    baseUrl: process.env.STOOQ_BASE_URL,
-  })
-  const updated = await store.updatePrices(result.prices)
+}
 
-  // Year-to-date returns divide by last year's final close. Fetch those once
-  // per calendar year, and only for names that do not already have one: the
-  // history endpoint takes a symbol per request, so this is the slow part and
-  // must not repeat daily.
+/**
+ * Year-to-date returns divide by last year's final close. Fetch those once
+ * per calendar year, and only for names that do not already have one: the
+ * history endpoint takes a symbol per request, so this is the slow part and
+ * must not repeat daily. Runs after either price source, since neither the
+ * FactSet price pull nor the quote endpoint carries the baseline.
+ */
+async function ensureYearEndCloses(tickers: string[]): Promise<number> {
   const priorYear = new Date().getFullYear() - 1
   const cache = await store.loadFactSet()
   const missing = tickers.filter(
@@ -107,16 +103,41 @@ async function runPriceUpdate(): Promise<{
       cache.priorYearCloseYear !== priorYear ||
       typeof cache.companies[t]?.priorYearClose !== 'number',
   )
+  if (!missing.length) return 0
+  const closes = await fetchYearEndCloses(missing, priorYear, {
+    historyUrl: process.env.STOOQ_HISTORY_URL,
+  })
+  return store.updatePriorYearCloses(closes, priorYear)
+}
 
-  let yearEndCloses = 0
-  if (missing.length) {
-    const closes = await fetchYearEndCloses(missing, priorYear, {
-      historyUrl: process.env.STOOQ_HISTORY_URL,
-    })
-    yearEndCloses = await store.updatePriorYearCloses(closes, priorYear)
+interface PriceReport {
+  source: 'factset' | 'stooq'
+  updated: number
+  unmapped: string[]
+  unpriced: string[]
+  yearEndCloses: number
+}
+
+/** Update prices only: FactSet when credentials exist, Stooq otherwise. */
+async function runPriceUpdate(): Promise<PriceReport> {
+  const tickers = await liveTickers()
+  const creds = credentialsFromEnv()
+
+  if (creds) {
+    const prices = await fetchFactSetPrices(creds, tickers)
+    const updated = await store.updatePrices(prices)
+    const unpriced = tickers.filter((t) => !(t in prices))
+    const yearEndCloses = await ensureYearEndCloses(tickers)
+    return { source: 'factset', updated, unmapped: [], unpriced, yearEndCloses }
   }
 
+  const result = await fetchStooqPrices(tickers, {
+    baseUrl: process.env.STOOQ_BASE_URL,
+  })
+  const updated = await store.updatePrices(result.prices)
+  const yearEndCloses = await ensureYearEndCloses(tickers)
   return {
+    source: 'stooq',
     updated,
     unmapped: result.unmapped,
     unpriced: result.unpriced,
@@ -184,23 +205,28 @@ function kickDailyTask(): void {
       }
       // A FactSet pull already carried live prices; otherwise take the free
       // EOD closes so at least the market side of the day's snapshot is real.
-      if (!factsetFresh) {
-        try {
+      try {
+        if (factsetFresh) {
+          // The estimates pull already carried live prices; only the YTD
+          // baseline may still be missing.
+          const closes = await ensureYearEndCloses(await liveTickers())
+          if (closes) console.log(`Daily year-end closes: ${closes} fetched`)
+        } else {
           const report = await runPriceUpdate()
           console.log(
-            `Daily price update: ${report.updated} priced, ` +
+            `Daily price update (${report.source}): ${report.updated} priced, ` +
               `${report.unpriced.length} unpriced, ${report.unmapped.length} unmapped` +
               (report.yearEndCloses ? `, ${report.yearEndCloses} year-end closes` : ''),
           )
           if (report.unpriced.length) {
             console.log(`Unpriced tickers: ${report.unpriced.join(', ')}`)
           }
-        } catch (error) {
-          console.error(
-            'Daily price update failed:',
-            error instanceof Error ? error.message : error,
-          )
         }
+      } catch (error) {
+        console.error(
+          'Daily price update failed:',
+          error instanceof Error ? error.message : error,
+        )
       }
       const inputs = await loadInputs()
       await ensureDailySnapshot(historyDir(), buildDashboard(inputs), today)
@@ -402,24 +428,26 @@ app.patch('/api/groups', route(async (req, res) => {
  * Pull fresh data from FactSet into the factset tier, on demand. Overrides
  * and own models are stored separately and are untouched by a refresh.
  */
+/** Prices only: FactSet when credentials exist, the free EOD feed otherwise. */
+app.post('/api/refresh-prices', route(async (_req, res) => {
+  if (refreshState.running) {
+    res.status(409).json({ error: 'A refresh is already running.' })
+    return
+  }
+  refreshState.running = true
+  try {
+    const report = await runPriceUpdate()
+    res.json({ ok: true, mode: 'prices', ...report })
+  } finally {
+    refreshState.running = false
+  }
+}))
+
+/** Estimates (and everything else FactSet carries): credentials required. */
 app.post('/api/refresh', route(async (_req, res) => {
   try {
-    if (credentialsFromEnv()) {
-      const result = await runFactSetRefresh()
-      res.json({ ok: true, mode: 'factset', ...result })
-      return
-    }
-    // No FactSet credentials: fall back to the free EOD price feed rather
-    // than refusing, and say plainly what was and was not updated.
-    const report = await runPriceUpdate()
-    res.json({
-      ok: true,
-      mode: 'prices',
-      ...report,
-      note:
-        'Prices updated from the free EOD feed. Estimates still need FactSet ' +
-        'credentials (FACTSET_USERNAME_SERIAL and FACTSET_API_KEY).',
-    })
+    const result = await runFactSetRefresh()
+    res.json({ ok: true, mode: 'factset', ...result })
   } catch (error) {
     if (error instanceof RefreshError) {
       res.status(error.status).json({ error: error.message })

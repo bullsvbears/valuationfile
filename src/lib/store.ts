@@ -198,6 +198,10 @@ export class DataStore {
       series,
       balance,
       price: patch.price === null ? undefined : (patch.price ?? current.price),
+      priorYearClose:
+        patch.priorYearClose === null
+          ? undefined
+          : (patch.priorYearClose ?? current.priorYearClose),
       notes: { ...current.notes, ...patch.notes },
       updatedAt: new Date().toISOString(),
     }

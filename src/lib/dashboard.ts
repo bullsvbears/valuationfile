@@ -43,6 +43,11 @@ export interface CompanyView {
    * price moves; this one cannot.
    */
   ytdReturn: number | null
+  /**
+   * The YTD denominator in effect: a hand-entered override beats the fetched
+   * baseline, so a name the free feed cannot price can still carry a return.
+   */
+  priorYearClose: { value: number | null; tier: 'override' | 'factset' | null }
 }
 
 export interface Dashboard {
@@ -94,7 +99,9 @@ export function buildDashboard(inputs: DashboardInputs, summaryYear?: string): D
     const resolved = resolveCompany(meta, tiersFor(meta.ticker, inputs))
     const vendor = inputs.factset.companies[meta.ticker]
     const metrics = computeMetrics(resolved)
-    const priorClose = vendor?.priorYearClose
+    const overrideClose = inputs.overrides.companies[meta.ticker]?.priorYearClose
+    const priorClose =
+      typeof overrideClose === 'number' ? overrideClose : vendor?.priorYearClose
     return {
       meta,
       resolved,
@@ -105,6 +112,15 @@ export function buildDashboard(inputs: DashboardInputs, summaryYear?: string): D
         typeof priorClose === 'number' && priorClose > 0 && metrics.price !== null
           ? metrics.price / priorClose - 1
           : null,
+      priorYearClose: {
+        value: typeof priorClose === 'number' ? priorClose : null,
+        tier:
+          typeof overrideClose === 'number'
+            ? 'override'
+            : typeof vendor?.priorYearClose === 'number'
+              ? 'factset'
+              : null,
+      },
     }
   })
 

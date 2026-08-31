@@ -66,21 +66,13 @@ export function App() {
 
   const [refreshNote, setRefreshNote] = useState<string | null>(null)
 
-  const refreshFactSet = async () => {
+  /** Shared wrapper: one spinner and one message slot for either button. */
+  const runRefresh = async (action: () => Promise<string | null>) => {
     setRefreshBusy(true)
     setRefreshError(null)
     setRefreshNote(null)
     try {
-      const result = await api.refresh()
-      if (result.mode === 'prices') {
-        const misses = (result.unpriced?.length ?? 0) + (result.unmapped?.length ?? 0)
-        setRefreshNote(
-          `${result.updated ?? 0} prices updated (free EOD feed)` +
-            (result.yearEndCloses ? ` · ${result.yearEndCloses} YTD baselines` : '') +
-            (misses ? ` · ${misses} not priced` : '') +
-            ' · estimates need FactSet credentials',
-        )
-      }
+      setRefreshNote(await action())
       await load(year ?? undefined)
     } catch (e) {
       setRefreshError(e instanceof Error ? e.message : String(e))
@@ -88,6 +80,24 @@ export function App() {
       setRefreshBusy(false)
     }
   }
+
+  const updatePrices = () =>
+    runRefresh(async () => {
+      const result = await api.refreshPrices()
+      const misses = result.unpriced.length + result.unmapped.length
+      const source = result.source === 'factset' ? 'FactSet' : 'free EOD feed'
+      return (
+        `${result.updated} prices updated (${source})` +
+        (result.yearEndCloses ? ` · ${result.yearEndCloses} YTD baselines` : '') +
+        (misses ? ` · ${misses} not priced` : '')
+      )
+    })
+
+  const updateEstimates = () =>
+    runRefresh(async () => {
+      const result = await api.refresh()
+      return `Estimates refreshed for ${result.companies} companies (FactSet)`
+    })
 
   const signOut = async () => {
     await api.logout().catch(() => undefined)
@@ -142,11 +152,19 @@ export function App() {
         </span>
         <button
           className="back"
-          onClick={() => void refreshFactSet()}
+          onClick={() => void updatePrices()}
           disabled={refreshBusy || Boolean(dashboard.factsetRefreshing)}
-          title="With FactSet credentials: estimates, prices and balance sheet. Without: latest end-of-day prices from a free feed. Your models and overrides are untouched either way."
+          title="Update stock prices only — FactSet when configured, otherwise free end-of-day closes. Estimates are untouched."
         >
-          {refreshBusy || dashboard.factsetRefreshing ? 'Refreshing…' : 'Refresh data'}
+          {refreshBusy || dashboard.factsetRefreshing ? 'Refreshing…' : 'Update prices'}
+        </button>
+        <button
+          className="back"
+          onClick={() => void updateEstimates()}
+          disabled={refreshBusy || Boolean(dashboard.factsetRefreshing)}
+          title="Pull consensus estimates, prices and balance sheet data from FactSet. Requires FactSet credentials; your models and overrides are untouched."
+        >
+          Update estimates
         </button>
         <a
           className="back"

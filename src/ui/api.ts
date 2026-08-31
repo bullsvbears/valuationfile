@@ -118,16 +118,21 @@ export const api = {
       body: JSON.stringify(model),
     }),
 
+  /** Full FactSet pull: estimates, prices, balance sheet. Needs credentials. */
   refresh: () =>
+    json<{ ok: boolean; mode: 'factset'; asOf: string; companies: number }>('/api/refresh', {
+      method: 'POST',
+    }),
+
+  /** Prices only: FactSet when configured, the free EOD feed otherwise. */
+  refreshPrices: () =>
     json<{
       ok: boolean
-      mode: 'factset' | 'prices'
-      asOf?: string
-      companies?: number
-      updated?: number
-      unpriced?: string[]
-      unmapped?: string[]
-      yearEndCloses?: number
-      note?: string
-    }>('/api/refresh', { method: 'POST' }),
+      mode: 'prices'
+      source: 'factset' | 'stooq'
+      updated: number
+      unpriced: string[]
+      unmapped: string[]
+      yearEndCloses: number
+    }>('/api/refresh-prices', { method: 'POST' }),
 }
