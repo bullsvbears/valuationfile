@@ -37,6 +37,12 @@ export interface CompanyView {
    * of who won the cell.
    */
   factset: { price: number | null; series: Partial<Record<MetricKey, Series>> } | null
+  /**
+   * Year-to-date return, computed from the live price over the prior year's
+   * final close rather than stored. A stored return goes stale the moment the
+   * price moves; this one cannot.
+   */
+  ytdReturn: number | null
 }
 
 export interface Dashboard {
@@ -87,12 +93,18 @@ export function buildDashboard(inputs: DashboardInputs, summaryYear?: string): D
   const companies: CompanyView[] = inputs.universe.companies.map((meta) => {
     const resolved = resolveCompany(meta, tiersFor(meta.ticker, inputs))
     const vendor = inputs.factset.companies[meta.ticker]
+    const metrics = computeMetrics(resolved)
+    const priorClose = vendor?.priorYearClose
     return {
       meta,
       resolved,
-      metrics: computeMetrics(resolved),
+      metrics,
       tierCounts: tierBreakdown(resolved),
       factset: vendor ? { price: vendor.price ?? null, series: vendor.series ?? {} } : null,
+      ytdReturn:
+        typeof priorClose === 'number' && priorClose > 0 && metrics.price !== null
+          ? metrics.price / priorClose - 1
+          : null,
     }
   })
 

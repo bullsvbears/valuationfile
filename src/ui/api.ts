@@ -127,6 +127,7 @@ export const api = {
       updated?: number
       unpriced?: string[]
       unmapped?: string[]
+      yearEndCloses?: number
       note?: string
     }>('/api/refresh', { method: 'POST' }),
 }

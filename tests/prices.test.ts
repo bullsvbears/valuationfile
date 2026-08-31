@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { fetchStooqPrices, parseStooqCsv, stooqSymbol } from '../src/prices/stooq.js'
+import {
+  fetchStooqPrices,
+  fetchYearEndCloses,
+  lastCloseFromHistory,
+  parseStooqCsv,
+  stooqSymbol,
+} from '../src/prices/stooq.js'
 
 describe('symbol mapping', () => {
   it('maps plain US tickers to .us symbols', () => {
@@ -70,5 +76,58 @@ describe('fetching', () => {
   it('surfaces an HTTP failure rather than reporting everything unpriced', async () => {
     const fetchImpl = (async () => new Response('', { status: 503, statusText: 'down' })) as typeof fetch
     await expect(fetchStooqPrices(['ADBE'], { fetchImpl })).rejects.toThrow('503')
+  })
+})
+
+describe('year-end closes', () => {
+  const history = [
+    'Date,Open,High,Low,Close,Volume',
+    '2025-12-29,300.0,302.0,299.0,301.10,1000',
+    '2025-12-30,301.0,303.0,300.0,302.40,1200',
+    '2025-12-31,302.0,304.0,301.5,303.75,900',
+  ].join('\n')
+
+  it('takes the last close in the window, not the first', () => {
+    // The final session of the year moves with the holidays, so the window is
+    // asked for and the last row wins.
+    expect(lastCloseFromHistory(history)).toBe(303.75)
+  })
+
+  it('returns null for an empty or header-only response', () => {
+    expect(lastCloseFromHistory('Date,Open,High,Low,Close,Volume')).toBeNull()
+    expect(lastCloseFromHistory('')).toBeNull()
+  })
+
+  it('fetches per ticker and skips ones with no symbol', async () => {
+    const asked: string[] = []
+    const fetchImpl = (async (url: string) => {
+      const symbol = new URL(url).searchParams.get('s')!
+      asked.push(symbol)
+      return new Response(history)
+    }) as typeof fetch
+
+    const closes = await fetchYearEndCloses(['ADBE', 'CRM', 'SPCX'], 2025, { fetchImpl })
+    expect(closes).toEqual({ ADBE: 303.75, CRM: 303.75 })
+    expect(asked.sort()).toEqual(['adbe.us', 'crm.us'])
+  })
+
+  it('asks for a December window of the requested year', async () => {
+    let seen = ''
+    const fetchImpl = (async (url: string) => {
+      seen = url
+      return new Response(history)
+    }) as typeof fetch
+    await fetchYearEndCloses(['ADBE'], 2025, { fetchImpl })
+    expect(seen).toContain('d1=20251215')
+    expect(seen).toContain('d2=20251231')
+  })
+
+  it('keeps going when one symbol fails', async () => {
+    const fetchImpl = (async (url: string) => {
+      if (url.includes('crm.us')) throw new Error('network')
+      return new Response(history)
+    }) as typeof fetch
+    const closes = await fetchYearEndCloses(['ADBE', 'CRM'], 2025, { fetchImpl })
+    expect(closes).toEqual({ ADBE: 303.75 })
   })
 })

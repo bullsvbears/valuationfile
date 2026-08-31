@@ -23,7 +23,7 @@ interface Column {
 
 const COLUMNS: Column[] = [
   { key: 'price', label: 'Price', group: 'Market', kind: 'price', value: (c) => c.metrics.price },
-  { key: 'ytd', label: 'YTD', group: 'Market', kind: 'return', value: (c) => (c.meta as { ytdReturn?: number | null }).ytdReturn ?? null },
+  { key: 'ytd', label: 'YTD', group: 'Market', kind: 'return', value: (c) => c.ytdReturn },
   { key: 'mcap', label: 'Mkt Cap', group: 'Market', kind: 'money', value: (c) => c.metrics.marketCap },
   { key: 'ev', label: 'EV', group: 'Market', kind: 'money', value: (c) => c.metrics.enterpriseValue },
 

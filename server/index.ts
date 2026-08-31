@@ -8,7 +8,7 @@ import { assertProductionAuth, authConfigFromEnv, createAuth } from './auth.js'
 import { seedDataDir } from './seed.js'
 import { ensureDailySnapshot, listSnapshots, readSnapshot, todayKey } from './history.js'
 import { backupConfigFromEnv, runBackup, scrubSecrets } from './backup.js'
-import { fetchStooqPrices } from '../src/prices/stooq.js'
+import { fetchStooqPrices, fetchYearEndCloses } from '../src/prices/stooq.js'
 import { buildDashboard, type DashboardInputs } from '../src/lib/dashboard.js'
 import { credentialsFromEnv, fetchFactSet } from '../src/factset/client.js'
 import type { OverrideEntry, OwnModel } from '../src/lib/types.js'
@@ -85,6 +85,7 @@ async function runPriceUpdate(): Promise<{
   updated: number
   unmapped: string[]
   unpriced: string[]
+  yearEndCloses: number
 }> {
   const universe = await store.loadUniverse()
   const tickers = universe.companies
@@ -94,7 +95,33 @@ async function runPriceUpdate(): Promise<{
     baseUrl: process.env.STOOQ_BASE_URL,
   })
   const updated = await store.updatePrices(result.prices)
-  return { updated, unmapped: result.unmapped, unpriced: result.unpriced }
+
+  // Year-to-date returns divide by last year's final close. Fetch those once
+  // per calendar year, and only for names that do not already have one: the
+  // history endpoint takes a symbol per request, so this is the slow part and
+  // must not repeat daily.
+  const priorYear = new Date().getFullYear() - 1
+  const cache = await store.loadFactSet()
+  const missing = tickers.filter(
+    (t) =>
+      cache.priorYearCloseYear !== priorYear ||
+      typeof cache.companies[t]?.priorYearClose !== 'number',
+  )
+
+  let yearEndCloses = 0
+  if (missing.length) {
+    const closes = await fetchYearEndCloses(missing, priorYear, {
+      historyUrl: process.env.STOOQ_HISTORY_URL,
+    })
+    yearEndCloses = await store.updatePriorYearCloses(closes, priorYear)
+  }
+
+  return {
+    updated,
+    unmapped: result.unmapped,
+    unpriced: result.unpriced,
+    yearEndCloses,
+  }
 }
 
 async function runFactSetRefresh(): Promise<{ asOf: string; companies: number }> {
@@ -162,7 +189,8 @@ function kickDailyTask(): void {
           const report = await runPriceUpdate()
           console.log(
             `Daily price update: ${report.updated} priced, ` +
-              `${report.unpriced.length} unpriced, ${report.unmapped.length} unmapped`,
+              `${report.unpriced.length} unpriced, ${report.unmapped.length} unmapped` +
+              (report.yearEndCloses ? `, ${report.yearEndCloses} year-end closes` : ''),
           )
           if (report.unpriced.length) {
             console.log(`Unpriced tickers: ${report.unpriced.join(', ')}`)

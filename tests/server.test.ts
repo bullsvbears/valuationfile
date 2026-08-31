@@ -34,13 +34,24 @@ let stooq: Server
 function startFakeStooq(port: number): Server {
   const srv = createHttpServer((req, res) => {
     const url = new URL(req.url ?? '/', 'http://localhost')
+    res.setHeader('content-type', 'text/csv')
+
+    // The daily-history path (year-end closes) takes one symbol per request.
+    if (url.pathname.startsWith('/q/d/l')) {
+      const symbol = url.searchParams.get('s') ?? ''
+      const close = symbol === 'adbe.us' ? 89.0 : 40.0
+      res.end(
+        ['Date,Open,High,Low,Close,Volume', `2025-12-31,1,1,1,${close},100`].join('\n'),
+      )
+      return
+    }
+
     const symbols = (url.searchParams.get('s') ?? '').split(' ').filter(Boolean)
     const lines = ['Symbol,Date,Time,Open,High,Low,Close,Volume']
     for (const s of symbols) {
       if (s === 'adbe.us') lines.push('ADBE.US,2026-08-31,22:00:00,1,1,1,111.25,100')
       else lines.push(`${s.toUpperCase()},2026-08-31,22:00:00,1,1,1,50,100`)
     }
-    res.setHeader('content-type', 'text/csv')
     res.end(lines.join('\n'))
   })
   srv.listen(port, '127.0.0.1')
@@ -108,6 +119,7 @@ beforeAll(async () => {
       FACTSET_USERNAME_SERIAL: '',
       FACTSET_API_KEY: '',
       STOOQ_BASE_URL: `http://127.0.0.1:${stooqPort}/q/l/`,
+      STOOQ_HISTORY_URL: `http://127.0.0.1:${stooqPort}/q/d/l/`,
     },
     stdio: 'ignore',
     // A process group lets the whole tree be signalled at once. Windows has no
@@ -478,6 +490,33 @@ describe('writes land on the data directory', () => {
     expect(dashboard.pricesAsOf).toBeTruthy()
     const adbe = dashboard.companies.find((c) => c.meta.ticker === 'ADBE')
     expect(adbe?.metrics.price).toBe(111.25)
+  })
+
+  it('derives YTD from the live price over the prior year-end close', async () => {
+    const cookie = await signIn()
+    await fetch(`${baseUrl}/api/refresh`, { method: 'POST', headers: { cookie } })
+
+    const dash = await fetch(`${baseUrl}/api/dashboard`, { headers: { cookie } })
+    const dashboard = (await dash.json()) as {
+      companies: { meta: { ticker: string }; ytdReturn: number | null }[]
+    }
+    // The stand-in serves ADBE at 111.25 now against an 89.00 year-end close.
+    const adbe = dashboard.companies.find((c) => c.meta.ticker === 'ADBE')
+    expect(adbe?.ytdReturn).toBeCloseTo(111.25 / 89 - 1, 6)
+
+    // A name with no mappable symbol has no baseline, so it reports nothing
+    // rather than a stale figure carried over from the workbook.
+    const spcx = dashboard.companies.find((c) => c.meta.ticker === 'SPCX')
+    expect(spcx?.ytdReturn).toBeNull()
+  })
+
+  it('does not refetch year-end closes once stored for the year', async () => {
+    const cookie = await signIn()
+    // The first refresh in this suite already stored them; a second must not
+    // repeat the slow per-symbol pass.
+    const res = await fetch(`${baseUrl}/api/refresh`, { method: 'POST', headers: { cookie } })
+    const body = (await res.json()) as { yearEndCloses: number }
+    expect(body.yearEndCloses).toBe(0)
   })
 
   it('keeps the refresh behind the session', async () => {

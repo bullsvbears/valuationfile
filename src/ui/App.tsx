@@ -76,6 +76,7 @@ export function App() {
         const misses = (result.unpriced?.length ?? 0) + (result.unmapped?.length ?? 0)
         setRefreshNote(
           `${result.updated ?? 0} prices updated (free EOD feed)` +
+            (result.yearEndCloses ? ` · ${result.yearEndCloses} YTD baselines` : '') +
             (misses ? ` · ${misses} not priced` : '') +
             ' · estimates need FactSet credentials',
         )

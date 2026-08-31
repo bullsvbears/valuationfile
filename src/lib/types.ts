@@ -39,6 +39,8 @@ export type Series = Partial<Record<string, number | null>>
 export interface CompanyFacts {
   /** Absent when a tier contributes only balance sheet items or a price. */
   series?: Partial<Record<MetricKey, Series>>
+  /** Close on the final trading day of the prior year: the YTD denominator. */
+  priorYearClose?: number | null
   balance?: Partial<Record<BalanceKey, number | null>>
   price?: number | null
 }
@@ -63,6 +65,12 @@ export interface FactSetCache {
   asOf: string
   /** ISO timestamp of the last price-only update (the free EOD feed). */
   pricesAsOf?: string
+  /**
+   * Calendar year the stored `priorYearClose` values belong to. Year-to-date
+   * returns divide by that year's final close, so this is refetched once a
+   * year rather than on every price update.
+   */
+  priorYearCloseYear?: number
   /** Free-form note describing how the cache was produced. */
   source: string
   companies: Record<string, CompanyFacts>

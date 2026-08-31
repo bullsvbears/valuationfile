@@ -12,7 +12,11 @@
  */
 
 const DEFAULT_BASE_URL = 'https://stooq.com/q/l/'
+/** Daily history lives on a different path and takes one symbol per request. */
+const DEFAULT_HISTORY_URL = 'https://stooq.com/q/d/l/'
 const BATCH_SIZE = 40
+/** Politeness cap on the one-symbol-at-a-time history endpoint. */
+const HISTORY_CONCURRENCY = 6
 
 /**
  * Non-US listings need explicit symbols; a wrong guess would risk pricing the
@@ -104,4 +108,67 @@ export async function fetchStooqPrices(
     .map(([, ticker]) => ticker)
 
   return { prices, unmapped, unpriced }
+}
+
+/**
+ * Parse Stooq's daily history CSV (`Date,Open,High,Low,Close,Volume`) and
+ * return the last close in the file.
+ */
+export function lastCloseFromHistory(csv: string): number | null {
+  let last: number | null = null
+  for (const line of csv.split('\n')) {
+    const cells = line.trim().split(',')
+    if (cells.length < 5) continue
+    if (cells[0]?.toLowerCase() === 'date') continue
+    const close = Number(cells[4])
+    if (Number.isFinite(close) && close > 0) last = close
+  }
+  return last
+}
+
+/**
+ * Closing price on the last trading day of `year`, per ticker.
+ *
+ * This is the denominator of a year-to-date return, so it is fetched once per
+ * calendar year and cached — the December window is asked for rather than a
+ * single date because the last session of the year moves with the holidays.
+ *
+ * The history endpoint serves one symbol per request, so this is deliberately
+ * throttled; it runs only for tickers whose close for the year is not already
+ * stored.
+ */
+export async function fetchYearEndCloses(
+  tickers: string[],
+  year: number,
+  options: { historyUrl?: string; fetchImpl?: typeof fetch } = {},
+): Promise<Record<string, number>> {
+  const doFetch = options.fetchImpl ?? fetch
+  const historyUrl = options.historyUrl ?? DEFAULT_HISTORY_URL
+  const closes: Record<string, number> = {}
+
+  const targets = tickers
+    .map((ticker) => ({ ticker, symbol: stooqSymbol(ticker) }))
+    .filter((t): t is { ticker: string; symbol: string } => t.symbol !== null)
+
+  let cursor = 0
+  const worker = async (): Promise<void> => {
+    while (cursor < targets.length) {
+      const target = targets[cursor++]
+      if (!target) return
+      const url = `${historyUrl}?s=${target.symbol}&d1=${year}1215&d2=${year}1231&i=d`
+      try {
+        const res = await doFetch(url)
+        if (!res.ok) continue
+        const close = lastCloseFromHistory(await res.text())
+        if (close !== null) closes[target.ticker] = close
+      } catch {
+        // One unreachable symbol must not sink the whole year-end pass.
+      }
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(HISTORY_CONCURRENCY, targets.length) }, worker),
+  )
+  return closes
 }

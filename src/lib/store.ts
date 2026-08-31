@@ -97,6 +97,22 @@ export class DataStore {
     return updated
   }
 
+  /** Store the prior-year closing prices that year-to-date returns divide by. */
+  async updatePriorYearCloses(
+    closes: Record<string, number>,
+    year: number,
+  ): Promise<number> {
+    const cache = await this.loadFactSet()
+    for (const [ticker, close] of Object.entries(closes)) {
+      const entry = cache.companies[ticker] ?? { series: {} }
+      entry.priorYearClose = close
+      cache.companies[ticker] = entry
+    }
+    cache.priorYearCloseYear = year
+    await this.saveFactSet(cache)
+    return Object.keys(closes).length
+  }
+
   loadOverrides(): Promise<OverrideStore> {
     return this.readJson<OverrideStore>('overrides.json', { companies: {} })
   }
