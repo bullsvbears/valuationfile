@@ -18,6 +18,14 @@ import type {
  * The two implementations must agree cell for cell; scripts/verify-ts-extractor.ts
  * diffs this port against the Python output for the original workbook.
  * Layout constants below mirror the Python file — change them together.
+ *
+ * NOT wired to any server route right now: exceljs materialises the whole
+ * workbook (~3.6GB heap for the real 10MB file, far beyond a small Fly VM),
+ * which crashed the app behind 502s. Before re-exposing an upload endpoint,
+ * parse only the four needed sheets — e.g. stub the other worksheet XML
+ * entries inside the zip, or read the sheet XML directly — and measure the
+ * peak under `--max-old-space-size` first. exceljs is a devDependency until
+ * then, so keep server code from importing this module.
  */
 
 // Column spans on the `Data` sheet, one contiguous block of years per metric.
