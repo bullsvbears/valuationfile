@@ -44,7 +44,7 @@ function niceStep(raw: number): number {
  * clean steps — 0/4/8/12 rather than 0/3.8/7.5/11.3. A negative value pulls
  * the bottom below zero on the same step grid; the baseline stays at 0.
  */
-function niceScale(max: number, min: number): { top: number; bottom: number; ticks: number[] } {
+export function niceScale(max: number, min: number): { top: number; bottom: number; ticks: number[] } {
   const span = Math.max(max, 0) - Math.min(min, 0)
   if (span === 0) return { top: 1, bottom: 0, ticks: [0, 0.25, 0.5, 0.75, 1] }
   const step = niceStep((span * 1.1) / 4)
