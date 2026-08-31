@@ -85,12 +85,17 @@ export function App() {
   const updatePrices = () =>
     runRefresh(async () => {
       const result = await api.refreshPrices()
-      const misses = result.unpriced.length + result.unmapped.length
-      const source = result.source === 'factset' ? 'FactSet' : 'Polygon EOD'
+      const source =
+        result.source === 'factset'
+          ? 'FactSet live'
+          : `Polygon close of ${result.sessionDate ?? 'latest session'}`
+      const missing = [...result.unpriced, ...result.unmapped]
+      const shown = missing.slice(0, 8).join(', ')
+      const more = missing.length > 8 ? ` +${missing.length - 8} more` : ''
       return (
         `${result.updated} prices updated (${source})` +
         (result.yearEndCloses ? ` · ${result.yearEndCloses} YTD baselines` : '') +
-        (misses ? ` · ${misses} not priced` : '')
+        (missing.length ? ` · not priced: ${shown}${more}` : '')
       )
     })
 
@@ -139,7 +144,18 @@ export function App() {
           </nav>
         )}
         <div className="spacer" />
-        <span className={`asof ${refreshError ? 'asof-error' : ''}`}>
+        <span
+          className={`asof ${refreshError ? 'asof-error' : ''}`}
+          title={
+            dashboard.priceUpdate &&
+            dashboard.priceUpdate.unpriced.length + dashboard.priceUpdate.unmapped.length > 0
+              ? `Not priced by the last update:\n${[
+                  ...dashboard.priceUpdate.unpriced,
+                  ...dashboard.priceUpdate.unmapped,
+                ].join(', ')}`
+              : undefined
+          }
+        >
           {refreshError
             ? refreshError
             : refreshNote
@@ -148,9 +164,21 @@ export function App() {
                 ? 'Refreshing data…'
                 : dashboard.asOf
                   ? `FactSet as of ${formatAge(dashboard.asOf)}`
-                  : dashboard.pricesAsOf
-                    ? `Prices as of ${formatAge(dashboard.pricesAsOf)} · estimates from workbook import`
-                    : dashboard.factsetSource}
+                  : dashboard.priceUpdate
+                    ? `Prices: ${
+                        dashboard.priceUpdate.source === 'polygon'
+                          ? `Polygon close of ${dashboard.priceUpdate.sessionDate ?? '—'}`
+                          : 'FactSet'
+                      } (updated ${formatAge(dashboard.priceUpdate.at)})` +
+                      (dashboard.priceUpdate.unpriced.length + dashboard.priceUpdate.unmapped.length
+                        ? ` · ${
+                            dashboard.priceUpdate.unpriced.length +
+                            dashboard.priceUpdate.unmapped.length
+                          } not priced — hover for the list`
+                        : '')
+                    : dashboard.pricesAsOf
+                      ? `Prices as of ${formatAge(dashboard.pricesAsOf)} · estimates from workbook import`
+                      : dashboard.factsetSource}
         </span>
         <button
           className="back"

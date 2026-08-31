@@ -60,11 +60,27 @@ export interface CompanyMeta {
 }
 
 /** The FactSet tier: bulk data refreshed from the vendor. */
+/** What the last price update did, persisted so the UI can always show it. */
+export interface PriceUpdateReport {
+  source: 'factset' | 'polygon'
+  /** When the update ran (ISO timestamp). */
+  at: string
+  /** The trading session the closes belong to (Polygon is end-of-day). */
+  sessionDate: string | null
+  updated: number
+  /** Mapped tickers the source returned nothing for. */
+  unpriced: string[]
+  /** Tickers with no mapped symbol (non-US listings, private companies). */
+  unmapped: string[]
+}
+
 export interface FactSetCache {
   /** ISO timestamp of the last successful estimates refresh. */
   asOf: string
   /** ISO timestamp of the last price-only update (the free EOD feed). */
   pricesAsOf?: string
+  /** Outcome of the most recent price update, whatever the source. */
+  lastPriceUpdate?: PriceUpdateReport
   /**
    * Calendar year the stored `priorYearClose` values belong to. Year-to-date
    * returns divide by that year's final close, so this is refetched once a

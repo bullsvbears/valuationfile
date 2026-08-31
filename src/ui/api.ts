@@ -145,6 +145,7 @@ export const api = {
       ok: boolean
       mode: 'prices'
       source: 'factset' | 'polygon'
+      sessionDate: string | null
       updated: number
       unpriced: string[]
       unmapped: string[]

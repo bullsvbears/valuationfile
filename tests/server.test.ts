@@ -557,21 +557,33 @@ describe('writes land on the data directory', () => {
     const body = (await res.json()) as {
       mode: string
       source: string
+      sessionDate: string | null
       updated: number
       unmapped: string[]
     }
     expect(body.mode).toBe('prices')
     expect(body.source).toBe('polygon')
+    expect(body.sessionDate).toMatch(/^\d{4}-\d{2}-\d{2}$/) // the session the closes belong to
     expect(body.updated).toBeGreaterThan(250)
     expect(body.unmapped).toContain('SPCX')
 
-    // The new close flows through to the dashboard's resolved price.
+    // The new close flows through to the dashboard's resolved price, and the
+    // report persists so the UI can always say what the last update did.
     const dash = await fetch(`${baseUrl}/api/dashboard`, { headers: { cookie } })
     const dashboard = (await dash.json()) as {
       pricesAsOf: string | null
+      priceUpdate: {
+        source: string
+        sessionDate: string | null
+        unpriced: string[]
+        unmapped: string[]
+      } | null
       companies: { meta: { ticker: string }; metrics: { price: number | null } }[]
     }
     expect(dashboard.pricesAsOf).toBeTruthy()
+    expect(dashboard.priceUpdate?.source).toBe('polygon')
+    expect(dashboard.priceUpdate?.sessionDate).toBe(body.sessionDate)
+    expect(dashboard.priceUpdate?.unmapped).toContain('SPCX')
     const adbe = dashboard.companies.find((c) => c.meta.ticker === 'ADBE')
     expect(adbe?.metrics.price).toBe(111.25)
   })

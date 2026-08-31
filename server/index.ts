@@ -158,6 +158,8 @@ async function ensureYearEndCloses(tickers: string[]): Promise<number> {
 
 interface PriceReport {
   source: 'factset' | 'polygon'
+  /** The trading session the closes belong to; null for a live FactSet pull. */
+  sessionDate: string | null
   updated: number
   unmapped: string[]
   unpriced: string[]
@@ -173,8 +175,16 @@ async function runPriceUpdate(): Promise<PriceReport> {
     const prices = await fetchFactSetPrices(creds, tickers)
     const updated = await store.updatePrices(prices)
     const unpriced = tickers.filter((t) => !(t in prices))
+    await store.savePriceReport({
+      source: 'factset',
+      at: new Date().toISOString(),
+      sessionDate: null,
+      updated,
+      unpriced,
+      unmapped: [],
+    })
     const yearEndCloses = await ensureYearEndCloses(tickers)
-    return { source: 'factset', updated, unmapped: [], unpriced, yearEndCloses }
+    return { source: 'factset', sessionDate: null, updated, unmapped: [], unpriced, yearEndCloses }
   }
 
   const apiKey = polygonApiKeyFromEnv()
@@ -190,9 +200,18 @@ async function runPriceUpdate(): Promise<PriceReport> {
     baseUrl: process.env.POLYGON_BASE_URL,
   })
   const updated = await store.updatePrices(result.prices)
+  await store.savePriceReport({
+    source: 'polygon',
+    at: new Date().toISOString(),
+    sessionDate: result.sessionDate,
+    updated,
+    unpriced: result.unpriced,
+    unmapped: result.unmapped,
+  })
   const yearEndCloses = await ensureYearEndCloses(tickers)
   return {
     source: 'polygon',
+    sessionDate: result.sessionDate,
     updated,
     unmapped: result.unmapped,
     unpriced: result.unpriced,

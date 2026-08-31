@@ -4,6 +4,7 @@ import path from 'node:path'
 
 import type {
   CompanyMeta,
+  PriceUpdateReport,
   FactSetCache,
   MetricKey,
   OverrideEntry,
@@ -128,6 +129,13 @@ export class DataStore {
     if (cleared) await this.saveOverrides(overrides)
 
     return updated
+  }
+
+  /** Persist what a price update did, so the UI can always say so. */
+  async savePriceReport(report: PriceUpdateReport): Promise<void> {
+    const cache = await this.loadFactSet()
+    cache.lastPriceUpdate = report
+    await this.saveFactSet(cache)
   }
 
   /** Store the prior-year closing prices that year-to-date returns divide by. */

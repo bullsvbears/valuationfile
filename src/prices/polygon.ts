@@ -40,6 +40,8 @@ export function polygonApiKeyFromEnv(): string | null {
 export interface PriceUpdate {
   /** Ticker -> latest close, for everything the session file covered. */
   prices: Record<string, number>
+  /** The trading session the closes belong to, YYYY-MM-DD. */
+  sessionDate: string
   /** Tickers with no mapped symbol (non-US listings, private companies). */
   unmapped: string[]
   /** Mapped tickers absent from the session — delistings and renames land here. */
@@ -147,9 +149,13 @@ export async function fetchPolygonPrices(
   // Yesterday, not today: the free tier publishes end-of-day files.
   const start = new Date(Date.now() - 24 * 60 * 60 * 1000)
   let session: Map<string, number> | null = null
+  let sessionDate = ''
   for (const day of candidateDays(start, MAX_LOOKBACK_DAYS)) {
     session = await fetchGroupedDaily(day, options)
-    if (session) break
+    if (session) {
+      sessionDate = day
+      break
+    }
   }
   if (!session) {
     throw new Error(
@@ -165,7 +171,7 @@ export async function fetchPolygonPrices(
     if (close === undefined) unpriced.push(ticker)
     else prices[ticker] = close
   }
-  return { prices, unmapped, unpriced }
+  return { prices, sessionDate, unmapped, unpriced }
 }
 
 /**

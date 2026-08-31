@@ -52,6 +52,7 @@ describe('fetchPolygonPrices', () => {
     expect(result.unpriced).toEqual(['DELISTED'])
     expect(result.unmapped).toEqual(['SPCX'])
     expect(dates).toHaveLength(1) // the whole universe cost one call
+    expect(result.sessionDate).toBe(dates[0]) // the session the closes belong to
   })
 
   it('walks back past days with no session to the last completed one', async () => {

@@ -3,6 +3,7 @@ import { resolveCompany, tierBreakdown, type TierInputs } from './resolve.js'
 import { summariseGroups, type GroupSummary } from './aggregate.js'
 import type { Universe } from './store.js'
 import type {
+  PriceUpdateReport,
   CompanyMeta,
   FactSetCache,
   MetricKey,
@@ -54,6 +55,8 @@ export interface Dashboard {
   asOf: string | null
   /** When prices were last updated by the free EOD feed, if ever. */
   pricesAsOf: string | null
+  /** Outcome of the most recent price update, whatever the source. */
+  priceUpdate: PriceUpdateReport | null
   factsetSource: string
   companies: CompanyView[]
   years: string[]
@@ -133,6 +136,7 @@ export function buildDashboard(inputs: DashboardInputs, summaryYear?: string): D
   return {
     asOf: inputs.factset.asOf || null,
     pricesAsOf: inputs.factset.pricesAsOf || null,
+    priceUpdate: inputs.factset.lastPriceUpdate ?? null,
     factsetSource: inputs.factset.source,
     companies,
     years,
