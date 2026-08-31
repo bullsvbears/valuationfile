@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { api, type SavedView } from './api.js'
 import type { CompanyView, Dashboard } from '../lib/dashboard.js'
 import { isMeaningful, type Multiple } from '../lib/metrics.js'
 import type { YearMetrics } from '../lib/metrics.js'
@@ -79,6 +80,56 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
     direction: 1,
   })
 
+  /** Numeric filters, e.g. Rule of 40 >= 0.4. "nm" and missing values never pass. */
+  const [filters, setFilters] = useState<{ key: string; op: 'gte' | 'lte'; value: number }[]>([])
+  const [draftFilter, setDraftFilter] = useState<{ key: string; op: 'gte' | 'lte'; value: string }>({
+    key: 'ruleOf40',
+    op: 'gte',
+    value: '',
+  })
+
+  const [views, setViews] = useState<SavedView[]>([])
+  const [activeView, setActiveView] = useState('')
+  const [viewName, setViewName] = useState('')
+
+  useEffect(() => {
+    api.views().then((r) => setViews(r.views)).catch(() => setViews([]))
+  }, [])
+
+  const applyView = (view: SavedView) => {
+    setActiveView(view.name)
+    setSearch(view.search ?? '')
+    setGroup(view.group ?? 'All companies')
+    setCoverageOnly(view.coverageOnly ?? false)
+    setFilters(view.filters ?? [])
+    if (view.sort) setSort(view.sort)
+    if (view.year) onYearChange(view.year)
+  }
+
+  const saveCurrentView = async () => {
+    const name = viewName.trim()
+    if (!name) return
+    const { views: next } = await api.saveView({
+      name,
+      search,
+      group,
+      coverageOnly,
+      year,
+      sort,
+      filters,
+    })
+    setViews(next)
+    setActiveView(name)
+    setViewName('')
+  }
+
+  const deleteActiveView = async () => {
+    if (!activeView) return
+    const { views: next } = await api.deleteView(activeView)
+    setViews(next)
+    setActiveView('')
+  }
+
   const groupOptions = useMemo(
     () => [
       'All companies',
@@ -95,6 +146,16 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
       // are not screenable: there is no live stock to screen.
       if (company.meta.coverage === 'Acquired Companies') return false
       if (coverageOnly && !company.meta.covered) return false
+
+      for (const filter of filters) {
+        const column = COLUMNS.find((c) => c.key === filter.key)
+        if (!column) continue
+        const value = column.value(company, company.metrics.byYear[year])
+        // A filtered column must hold a real number: "nm" and blanks fail it.
+        if (!isMeaningful(value)) return false
+        if (filter.op === 'gte' && value < filter.value) return false
+        if (filter.op === 'lte' && value > filter.value) return false
+      }
       if (group !== 'All companies') {
         const inGroup =
           company.meta.sectors.includes(group) || company.meta.peerGroups.includes(group)
@@ -121,7 +182,7 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
         sort.direction,
       ),
     )
-  }, [dashboard, search, group, coverageOnly, sort, year])
+  }, [dashboard, search, group, coverageOnly, sort, year, filters])
 
   const toggleSort = (key: string) =>
     setSort((prev) =>
@@ -177,6 +238,117 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
           <span><i className="tier-dot model" /> My model</span>
           <span><i className="tier-dot override" /> Override</span>
         </div>
+      </div>
+
+      <div className="controls">
+        <form
+          className="control"
+          onSubmit={(e) => {
+            e.preventDefault()
+            const column = COLUMNS.find((c) => c.key === draftFilter.key)
+            const raw = Number(draftFilter.value.replace(/[%,x$]/g, ''))
+            if (!column || !Number.isFinite(raw)) return
+            // Percent columns read "40" as 40%, matching how the grid displays.
+            const value = column.kind === 'percent' || column.kind === 'return' ? raw / 100 : raw
+            setFilters((prev) => [
+              ...prev.filter((f) => !(f.key === draftFilter.key && f.op === draftFilter.op)),
+              { key: draftFilter.key, op: draftFilter.op, value },
+            ])
+            setDraftFilter((prev) => ({ ...prev, value: '' }))
+          }}
+        >
+          <label htmlFor="filter-col">Filter</label>
+          <select
+            id="filter-col"
+            value={draftFilter.key}
+            onChange={(e) => setDraftFilter((prev) => ({ ...prev, key: e.target.value }))}
+          >
+            {COLUMNS.map((c) => (
+              <option key={c.key} value={c.key}>{c.label}</option>
+            ))}
+          </select>
+          <select
+            value={draftFilter.op}
+            aria-label="Comparison"
+            onChange={(e) =>
+              setDraftFilter((prev) => ({ ...prev, op: e.target.value as 'gte' | 'lte' }))
+            }
+          >
+            <option value="gte">≥</option>
+            <option value="lte">≤</option>
+          </select>
+          <input
+            type="text"
+            value={draftFilter.value}
+            placeholder="value"
+            style={{ minWidth: 60 }}
+            onChange={(e) => setDraftFilter((prev) => ({ ...prev, value: e.target.value }))}
+          />
+          <button className="btn" type="submit" disabled={!draftFilter.value.trim()}>Add</button>
+        </form>
+
+        {filters.map((filter) => {
+          const column = COLUMNS.find((c) => c.key === filter.key)
+          const pctish = column?.kind === 'percent' || column?.kind === 'return'
+          const shown = pctish ? `${(filter.value * 100).toFixed(0)}%` : String(filter.value)
+          return (
+            <span key={`${filter.key}-${filter.op}`} className="chip">
+              {column?.label ?? filter.key} {filter.op === 'gte' ? '≥' : '≤'} {shown}
+              <button
+                className="chip-remove"
+                onClick={() =>
+                  setFilters((prev) =>
+                    prev.filter((f) => !(f.key === filter.key && f.op === filter.op)),
+                  )
+                }
+              >
+                ×
+              </button>
+            </span>
+          )
+        })}
+
+        <div className="spacer" />
+
+        <div className="control">
+          <label htmlFor="view-select">View</label>
+          <select
+            id="view-select"
+            value={activeView}
+            onChange={(e) => {
+              const view = views.find((v) => v.name === e.target.value)
+              if (view) applyView(view)
+              else setActiveView('')
+            }}
+          >
+            <option value="">—</option>
+            {views.map((v) => (
+              <option key={v.name} value={v.name}>{v.name}</option>
+            ))}
+          </select>
+          {activeView && (
+            <button
+              className="chip-remove"
+              title={`Delete view "${activeView}"`}
+              onClick={() => void deleteActiveView()}
+            >
+              ×
+            </button>
+          )}
+        </div>
+        <form
+          className="control"
+          onSubmit={(e) => { e.preventDefault(); void saveCurrentView() }}
+        >
+          <input
+            type="text"
+            value={viewName}
+            placeholder="Save view as…"
+            style={{ minWidth: 110 }}
+            onChange={(e) => setViewName(e.target.value)}
+          />
+          <button className="btn" type="submit" disabled={!viewName.trim()}>Save</button>
+        </form>
       </div>
 
       <div className="table-wrap">

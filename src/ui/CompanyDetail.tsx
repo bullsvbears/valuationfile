@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { LineChart } from './LineChart.js'
 import { api, type CompanyDetail as Detail } from './api.js'
 import { METRIC_KEYS, type MetricKey } from '../lib/types.js'
 import {
@@ -17,6 +18,37 @@ import {
  * inputs table still shows each cell's source, and for any cell where a
  * higher tier won, the FactSet consensus it displaced.
  */
+
+/** KPI display config: label plus how the number reads. */
+const KPI_ROWS: { key: string; label: string; kind: 'percent' | 'number' | 'count' | 'dollars' }[] = [
+  { key: 'ndrr', label: 'Net dollar retention', kind: 'percent' },
+  { key: 'grossRetention', label: 'Gross retention ($)', kind: 'percent' },
+  { key: 'subscriptionRevenuePct', label: 'Subscription rev %', kind: 'percent' },
+  { key: 'internationalRevenuePct', label: 'International rev %', kind: 'percent' },
+  { key: 'sbcPctOfRevenue', label: 'SBC % of revenue', kind: 'percent' },
+  { key: 'fcfAdjSbcMargin', label: 'FCF margin adj. for SBC', kind: 'percent' },
+  { key: 'cacPaybackMonths', label: 'CAC payback (months)', kind: 'number' },
+  { key: 'netIncrementalArrPerCac', label: 'Net incremental ARR / CAC', kind: 'number' },
+  { key: 'ltvToCac', label: 'LTV : CAC', kind: 'number' },
+  { key: 'avgRevenuePerCustomer', label: 'Avg revenue per customer', kind: 'dollars' },
+  { key: 'revenuePerFte', label: 'Revenue per FTE', kind: 'dollars' },
+  { key: 'paidCustomers', label: 'Paid customers', kind: 'count' },
+  { key: 'ftes', label: 'FTEs', kind: 'count' },
+  { key: 'customersOver50k', label: 'Customers >$50K ARR', kind: 'count' },
+  { key: 'customersOver100k', label: 'Customers >$100K ARR', kind: 'count' },
+  { key: 'customersOver250k', label: 'Customers >$250K ARR', kind: 'count' },
+  { key: 'customersOver500k', label: 'Customers >$500K ARR', kind: 'count' },
+  { key: 'customersOver1m', label: 'Customers >$1M ARR', kind: 'count' },
+]
+
+function formatKpi(value: number, kind: (typeof KPI_ROWS)[number]['kind']): string {
+  switch (kind) {
+    case 'percent': return `${(value * 100).toFixed(1)}%`
+    case 'number': return value.toFixed(1)
+    case 'count': return Math.round(value).toLocaleString('en-US')
+    case 'dollars': return `$${Math.round(value).toLocaleString('en-US')}`
+  }
+}
 
 const METRIC_LABELS: Record<MetricKey, string> = {
   revenue: 'Revenue',
@@ -43,6 +75,14 @@ export function CompanyDetail({ ticker, onBack }: { ticker: string; onBack: () =
     const all = new Set<string>()
     for (const metric of METRIC_KEYS) {
       for (const year of Object.keys(detail.resolved.series[metric])) all.add(year)
+    }
+    return [...all].sort()
+  }, [detail])
+
+  const kpiYears = useMemo(() => {
+    const all = new Set<string>()
+    for (const years of Object.values(detail?.kpis ?? {})) {
+      for (const y of Object.keys(years)) all.add(y)
     }
     return [...all].sort()
   }, [detail])
@@ -187,6 +227,106 @@ export function CompanyDetail({ ticker, onBack }: { ticker: string; onBack: () =
             </tbody>
           </table>
         </div>
+      </div>
+
+      <HistoryPanel ticker={ticker} years={years} />
+
+      {detail.kpis && Object.keys(detail.kpis).length > 0 && (
+        <div className="panel">
+          <h3>Operating KPIs</h3>
+          <p className="sub">
+            Imported from the workbook's KPI columns — net retention, unit
+            economics and customer counts. Read-only.
+          </p>
+          <div className="editor-scroll">
+            <table className="editor-table">
+              <thead>
+                <tr>
+                  <th className="left">KPI</th>
+                  {kpiYears.map((y) => <th key={y}>{y}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {KPI_ROWS.filter((row) => detail.kpis?.[row.key]).map((row) => (
+                  <tr key={row.key}>
+                    <td className="left row-label">{row.label}</td>
+                    {kpiYears.map((y) => {
+                      const value = detail.kpis?.[row.key]?.[y]
+                      return (
+                        <td key={y} className={`num ${value === undefined ? 'nm' : ''}`}>
+                          {value === undefined ? '—' : formatKpi(value, row.kind)}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/**
+ * How this name's numbers have moved across the daily snapshots: price, the
+ * estimate for a chosen year (live inputs against FactSet consensus, the
+ * emphasis form — accent for the live line, gray for the context), and the
+ * EV/Revenue multiple.
+ */
+function HistoryPanel({ ticker, years }: { ticker: string; years: string[] }) {
+  const [year, setYear] = useState(years[years.length - 1] ?? '')
+  const [points, setPoints] = useState<
+    { date: string; price: number | null; resolved: number | null; factset: number | null; evRevenue: number | null }[]
+  >([])
+
+  useEffect(() => {
+    if (years.length && !years.includes(year)) setYear(years[years.length - 1] as string)
+  }, [years, year])
+
+  useEffect(() => {
+    if (!year) return
+    api
+      .historySeries(ticker, 'revenue', year)
+      .then((r) => setPoints(r.points))
+      .catch(() => setPoints([]))
+  }, [ticker, year])
+
+  const accent = 'var(--accent)'
+  const context = 'var(--tier-factset)'
+
+  return (
+    <div className="panel">
+      <div className="controls" style={{ marginBottom: 4 }}>
+        <h3 style={{ margin: 0 }}>History</h3>
+        <div className="control">
+          <label htmlFor="hist-year">Estimate year</label>
+          <select id="hist-year" value={year} onChange={(e) => setYear(e.target.value)}>
+            {years.map((y) => <option key={y} value={y}>{y}</option>)}
+          </select>
+        </div>
+        <span className="hint">One point per daily snapshot; history accrues as the app runs.</span>
+      </div>
+      <div className="chart-row">
+        <LineChart
+          title="Price"
+          series={[{ label: 'Price', color: accent, points: points.map((p) => ({ date: p.date, value: p.price })) }]}
+          format={(v) => `$${v.toFixed(2)}`}
+        />
+        <LineChart
+          title={`Revenue estimate · ${year}`}
+          series={[
+            { label: 'My inputs', color: accent, points: points.map((p) => ({ date: p.date, value: p.resolved })) },
+            { label: 'FactSet', color: context, points: points.map((p) => ({ date: p.date, value: p.factset })) },
+          ]}
+          format={(v) => `$${Math.round(v).toLocaleString('en-US')}`}
+        />
+        <LineChart
+          title={`EV / Revenue · ${year}`}
+          series={[{ label: 'EV/Rev', color: accent, points: points.map((p) => ({ date: p.date, value: p.evRevenue })) }]}
+          format={(v) => `${v.toFixed(2)}x`}
+        />
       </div>
     </div>
   )

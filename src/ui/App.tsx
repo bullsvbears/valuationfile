@@ -132,6 +132,14 @@ export function App() {
         >
           {refreshBusy || dashboard.factsetRefreshing ? 'Refreshing…' : 'Refresh FactSet'}
         </button>
+        <a
+          className="back"
+          href="/api/export"
+          download
+          title="Download the whole data set — models, overrides, FactSet cache and history — as one JSON file"
+        >
+          Backup
+        </a>
         {session.authRequired && (
           <button className="back" onClick={() => void signOut()}>Sign out</button>
         )}

@@ -349,6 +349,84 @@ describe('writes land on the data directory', () => {
     expect(badKind.status).toBe(400)
   })
 
+  it('serves imported KPIs on the company payload', async () => {
+    const cookie = await signIn()
+    const res = await fetch(`${baseUrl}/api/company/MNDY`, { headers: { cookie } })
+    const body = (await res.json()) as { kpis: Record<string, Record<string, number>> | null }
+    expect(body.kpis?.customersOver50k?.['2024']).toBe(3201)
+  })
+
+  it('round-trips saved screener views', async () => {
+    const cookie = await signIn()
+    const headers = { 'Content-Type': 'application/json', cookie }
+
+    const put = await fetch(`${baseUrl}/api/views`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        name: 'Rule of 40',
+        filters: [{ key: 'ruleOf40', op: 'gte', value: 0.4 }],
+        year: '2027',
+      }),
+    })
+    expect(put.ok).toBe(true)
+
+    const list = await fetch(`${baseUrl}/api/views`, { headers: { cookie } })
+    const { views } = (await list.json()) as { views: { name: string }[] }
+    expect(views.map((v) => v.name)).toContain('Rule of 40')
+
+    const nameless = await fetch(`${baseUrl}/api/views`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ filters: [] }),
+    })
+    expect(nameless.status).toBe(400)
+
+    const del = await fetch(`${baseUrl}/api/views/${encodeURIComponent('Rule of 40')}`, {
+      method: 'DELETE',
+      headers: { cookie },
+    })
+    const after = (await del.json()) as { views: { name: string }[] }
+    expect(after.views.map((v) => v.name)).not.toContain('Rule of 40')
+  })
+
+  it('exports the whole data set as a downloadable bundle', async () => {
+    const cookie = await signIn()
+    const res = await fetch(`${baseUrl}/api/export`, { headers: { cookie } })
+    expect(res.ok).toBe(true)
+    expect(res.headers.get('content-disposition')).toContain('valuation-backup-')
+    const bundle = (await res.json()) as {
+      universe: { companies: unknown[] }
+      models: Record<string, unknown>
+      kpis: Record<string, unknown>
+    }
+    expect(bundle.universe.companies.length).toBe(335)
+    expect(Object.keys(bundle.models).length).toBeGreaterThan(40)
+    expect(Object.keys(bundle.kpis).length).toBeGreaterThan(150)
+  })
+
+  it('serves a per-ticker history series once a snapshot exists', async () => {
+    const cookie = await signIn()
+    const today = new Date().toISOString().slice(0, 10)
+    await waitFor(() => existsSync(path.join(dataDir, 'history', `${today}.json`)))
+
+    const res = await fetch(
+      `${baseUrl}/api/history/series?ticker=ADBE&metric=revenue&year=2027`,
+      { headers: { cookie } },
+    )
+    expect(res.ok).toBe(true)
+    const body = (await res.json()) as {
+      points: { date: string; resolved: number | null; price: number | null }[]
+    }
+    expect(body.points.length).toBeGreaterThanOrEqual(1)
+    expect(body.points[0]?.resolved).toBeCloseTo(28828.766, 1)
+
+    const bad = await fetch(`${baseUrl}/api/history/series?ticker=ADBE`, {
+      headers: { cookie },
+    })
+    expect(bad.status).toBe(400)
+  })
+
   it('reports missing FactSet credentials on a manual refresh', async () => {
     const cookie = await signIn()
     const res = await fetch(`${baseUrl}/api/refresh`, { method: 'POST', headers: { cookie } })

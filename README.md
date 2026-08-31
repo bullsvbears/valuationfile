@@ -83,6 +83,22 @@ The bundled `data/factset-cache.json` holds the cached FDS values read out of
 the workbook. It is a starting point, not a live pull — run a refresh to make
 it current.
 
+## Backups
+
+Two paths, both covering the whole data directory — models, overrides, the
+FactSet cache, saved views, KPIs and the snapshot history:
+
+- **Nightly git backup.** Set `BACKUP_GIT_REMOTE` (an HTTPS remote with a
+  token, e.g. `https://x-access-token:<token>@github.com/you/repo.git`) and
+  the daily task pushes the data files to a `data-backup` branch after each
+  snapshot. Plain JSON in git restores the audit trail: every input change
+  is a readable diff with a date. `BACKUP_GIT_BRANCH` overrides the branch.
+  On Fly: `fly secrets set BACKUP_GIT_REMOTE='...'`. Use a fine-grained
+  GitHub token scoped to just the backup repository, with contents
+  read/write.
+- **The Backup button** in the topbar downloads everything as one JSON
+  bundle, for a copy on your machine right now.
+
 ## Hosting it
 
 The dashboard carries licensed FactSet estimates and your own models, so it is

@@ -7,9 +7,11 @@ import { DataStore } from '../src/lib/store.js'
 import { assertProductionAuth, authConfigFromEnv, createAuth } from './auth.js'
 import { seedDataDir } from './seed.js'
 import { ensureDailySnapshot, listSnapshots, readSnapshot, todayKey } from './history.js'
+import { backupConfigFromEnv, runBackup, scrubSecrets } from './backup.js'
 import { buildDashboard, type DashboardInputs } from '../src/lib/dashboard.js'
 import { credentialsFromEnv, fetchFactSet } from '../src/factset/client.js'
 import type { OverrideEntry, OwnModel } from '../src/lib/types.js'
+import type { SavedView } from '../src/lib/store.js'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(here, '..')
@@ -131,6 +133,22 @@ function kickDailyTask(): void {
       const inputs = await loadInputs()
       await ensureDailySnapshot(historyDir(), buildDashboard(inputs), today)
       dailyTask.done = today
+
+      // With the day's snapshot on disk, push the whole data directory to the
+      // backup branch. Failure is logged, never fatal: a broken backup must
+      // not take the dashboard down with it.
+      const backupConfig = backupConfigFromEnv()
+      if (backupConfig) {
+        try {
+          const outcome = await runBackup(dataDir, backupConfig)
+          console.log(`Daily backup: ${outcome}`)
+        } catch (error) {
+          console.error(
+            'Daily backup failed:',
+            scrubSecrets(error instanceof Error ? error.message : String(error), backupConfig.remote),
+          )
+        }
+      }
     } catch (error) {
       console.error('Daily snapshot failed:', error)
     } finally {
@@ -149,6 +167,38 @@ app.get('/api/dashboard', route(async (req, res) => {
 /** Dates for which a snapshot exists, oldest first. */
 app.get('/api/history', route(async (_req, res) => {
   res.json({ dates: await listSnapshots(historyDir()) })
+}))
+
+/**
+ * Time series for one ticker across every stored snapshot: price, the
+ * resolved and vendor values for one metric+year, and EV/Revenue. Snapshot
+ * files are read on demand; with one file per day this stays cheap for
+ * years.
+ */
+app.get('/api/history/series', route(async (req, res) => {
+  const ticker = String(req.query.ticker ?? '').toUpperCase()
+  const metric = String(req.query.metric ?? 'revenue')
+  const year = String(req.query.year ?? '')
+  if (!ticker || !year) {
+    res.status(400).json({ error: 'ticker and year are required' })
+    return
+  }
+
+  const dates = await listSnapshots(historyDir())
+  const points = []
+  for (const date of dates) {
+    const snapshot = await readSnapshot(historyDir(), date)
+    const company = snapshot?.companies[ticker]
+    if (!company) continue
+    points.push({
+      date,
+      price: company.price,
+      resolved: company.series?.[metric as 'revenue']?.[year] ?? null,
+      factset: company.factset?.series?.[metric as 'revenue']?.[year] ?? null,
+      evRevenue: company.multiples?.[year]?.evRevenue ?? null,
+    })
+  }
+  res.json({ ticker, metric, year, points })
 }))
 
 app.get('/api/history/:date', route(async (req, res) => {
@@ -170,8 +220,10 @@ app.get('/api/company/:ticker', route(async (req, res) => {
     res.status(404).json({ error: `Unknown ticker ${ticker}` })
     return
   }
+  const kpis = await store.loadKpis()
   res.json({
     ...company,
+    kpis: kpis[ticker] ?? null,
     tiers: {
       factset: inputs.factset.companies[ticker] ?? null,
       model: inputs.models[ticker] ?? null,
@@ -203,6 +255,46 @@ app.put('/api/company/:ticker/model', route(async (req, res) => {
   const model = { ...(req.body as OwnModel), ticker }
   await store.saveModel(model)
   res.json(model)
+}))
+
+/** Saved screener views. */
+app.get('/api/views', route(async (_req, res) => {
+  res.json(await store.loadViews())
+}))
+
+app.put('/api/views', route(async (req, res) => {
+  const view = req.body as SavedView
+  if (typeof view?.name !== 'string' || !view.name.trim() || view.name.length > 60) {
+    res.status(400).json({ error: 'A view needs a name (up to 60 characters)' })
+    return
+  }
+  res.json({ views: await store.saveView({ ...view, name: view.name.trim() }) })
+}))
+
+app.delete('/api/views/:name', route(async (req, res) => {
+  const raw = req.params.name
+  res.json({ views: await store.deleteView(String(Array.isArray(raw) ? raw[0] : raw)) })
+}))
+
+/**
+ * The whole data directory as one JSON bundle, for a hand-download backup.
+ * The git-branch backup is the durable path; this is the "I want a copy on
+ * my machine right now" path.
+ */
+app.get('/api/export', route(async (_req, res) => {
+  const [universe, factset, overrides, models, kpis, views] = await Promise.all([
+    store.loadUniverse(),
+    store.loadFactSet(),
+    store.loadOverrides(),
+    store.loadModels(),
+    store.loadKpis(),
+    store.loadViews(),
+  ])
+  res.setHeader(
+    'Content-Disposition',
+    `attachment; filename="valuation-backup-${todayKey()}.json"`,
+  )
+  res.json({ exportedAt: new Date().toISOString(), universe, factset, overrides, models, kpis, views })
 }))
 
 /** Edit a comp group's membership: add and/or remove tickers. */

@@ -1,6 +1,9 @@
 import type { Dashboard } from '../lib/dashboard.js'
 import type { CompanyView } from '../lib/dashboard.js'
 import type { CompanyFacts, OverrideEntry, OwnModel } from '../lib/types.js'
+import type { SavedView } from '../lib/store.js'
+
+export type { SavedView }
 
 /** Thin fetch wrappers over the dashboard API. */
 
@@ -26,6 +29,8 @@ async function json<T>(input: string, init?: RequestInit): Promise<T> {
 }
 
 export interface CompanyDetail extends CompanyView {
+  /** Operating KPIs imported from the workbook, kpi -> year -> value. */
+  kpis: Record<string, Record<string, number>> | null
   tiers: {
     factset: CompanyFacts | null
     model: OwnModel | null
@@ -56,6 +61,27 @@ export const api = {
   session: () => json<SessionState>('/api/session'),
 
   historyDates: () => json<{ dates: string[] }>('/api/history'),
+
+  historySeries: (ticker: string, metric: string, year: string) =>
+    json<{
+      points: {
+        date: string
+        price: number | null
+        resolved: number | null
+        factset: number | null
+        evRevenue: number | null
+      }[]
+    }>(
+      `/api/history/series?ticker=${encodeURIComponent(ticker)}&metric=${encodeURIComponent(metric)}&year=${encodeURIComponent(year)}`,
+    ),
+
+  views: () => json<{ views: SavedView[] }>('/api/views'),
+
+  saveView: (view: SavedView) =>
+    json<{ views: SavedView[] }>('/api/views', { method: 'PUT', body: JSON.stringify(view) }),
+
+  deleteView: (name: string) =>
+    json<{ views: SavedView[] }>(`/api/views/${encodeURIComponent(name)}`, { method: 'DELETE' }),
 
   updateGroup: (
     kind: 'sector' | 'financial',

@@ -18,6 +18,11 @@ FROM node:22-slim
 WORKDIR /app
 ENV NODE_ENV=production
 
+# git powers the nightly data backup (see server/backup.ts).
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
 # The server runs TypeScript directly through tsx, so source and the bundled
 # workbook import both ship; the volume is seeded from data/ on first boot.
 COPY --from=build /app/node_modules ./node_modules

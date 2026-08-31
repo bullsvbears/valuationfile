@@ -19,6 +19,17 @@ import type {
  * which is the audit trail the linked-workbook setup could not offer.
  */
 
+/** A saved screener view: name plus the filter state to restore. */
+export interface SavedView {
+  name: string
+  search?: string
+  group?: string
+  coverageOnly?: boolean
+  year?: string
+  sort?: { key: string; direction: 1 | -1 }
+  filters?: { key: string; op: 'gte' | 'lte'; value: number }[]
+}
+
 export interface Universe {
   companies: (CompanyMeta & { ytdReturn?: number | null; priorYearReturn?: number | null })[]
   sectors: Record<string, string[]>
@@ -73,6 +84,31 @@ export class DataStore {
 
   saveOverrides(store: OverrideStore): Promise<void> {
     return this.writeJson('overrides.json', store)
+  }
+
+  /** Operating KPIs imported from the workbook, keyed ticker -> kpi -> year. */
+  loadKpis(): Promise<Record<string, Record<string, Record<string, number>>>> {
+    return this.readJson('kpis.json', {})
+  }
+
+  /** Saved screener views: small, named bundles of filter state. */
+  loadViews(): Promise<{ views: SavedView[] }> {
+    return this.readJson('views.json', { views: [] })
+  }
+
+  async saveView(view: SavedView): Promise<SavedView[]> {
+    const store = await this.loadViews()
+    const others = store.views.filter((v) => v.name !== view.name)
+    const views = [...others, view].sort((a, b) => a.name.localeCompare(b.name))
+    await this.writeJson('views.json', { views })
+    return views
+  }
+
+  async deleteView(name: string): Promise<SavedView[]> {
+    const store = await this.loadViews()
+    const views = store.views.filter((v) => v.name !== name)
+    await this.writeJson('views.json', { views })
+    return views
   }
 
   /** Own models live one file per ticker, so two names never collide on save. */

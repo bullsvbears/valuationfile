@@ -161,6 +161,48 @@ export function CompaniesMaster({
     return { value: cell?.value ?? null, tier: cell?.tier ?? null }
   }
 
+  /**
+   * Spread a pasted Excel range across the grid as drafts.
+   *
+   * Clipboard text from a spreadsheet is tab-delimited within a row and
+   * newline-delimited between rows; the paste anchors at the focused cell and
+   * fills right and down through the visible rows and year columns. Nothing
+   * saves until the analyst hits Save, so a mis-aimed paste is one Discard.
+   */
+  const pasteBlock = (rowIndex: number, colIndex: number, text: string) => {
+    const grid = text
+      .replace(/\r/g, '')
+      .split('\n')
+      .filter((line, i, all) => line !== '' || i < all.length - 1)
+      .map((line) => line.split('\t'))
+    setDrafts((prev) => {
+      const next = { ...prev }
+      grid.forEach((cells, dr) => {
+        const company = rows[rowIndex + dr]
+        if (!company) return
+        cells.forEach((raw, dc) => {
+          const column = columns[colIndex + dc]
+          if (!column) return
+          const key = draftKey(company.meta.ticker, metric, column.key)
+          const cleaned = raw.trim()
+          const original = display(currentValue(company.meta.ticker, column.key).value)
+          if (cleaned.replace(/[$,]/g, '') === original) delete next[key]
+          else next[key] = cleaned
+        })
+      })
+      return next
+    })
+  }
+
+  /** Enter moves down a row in the same column; Shift+Enter moves up. */
+  const moveFocus = (rowIndex: number, colIndex: number, delta: number) => {
+    const target = document.querySelector<HTMLInputElement>(
+      `input[data-row="${rowIndex + delta}"][data-col="${colIndex}"]`,
+    )
+    target?.focus()
+    target?.select()
+  }
+
   const edit = (ticker: string, column: string, raw: string) => {
     const key = draftKey(ticker, metric, column)
     const original = display(currentValue(ticker, column).value)
@@ -277,7 +319,7 @@ export function CompaniesMaster({
             </tr>
           </thead>
           <tbody>
-            {rows.map((company) => {
+            {rows.map((company, rowIndex) => {
               const ticker = company.meta.ticker
               return (
                 <tr key={ticker}>
@@ -285,7 +327,7 @@ export function CompaniesMaster({
                     <span className="master-ticker">{ticker}</span>
                     <div className="company-name">{company.meta.name}</div>
                   </td>
-                  {columns.map((column) => {
+                  {columns.map((column, colIndex) => {
                     const key = draftKey(ticker, metric, column.key)
                     const cell = currentValue(ticker, column.key)
                     const format = formatFor(metric, column.key)
@@ -312,9 +354,22 @@ export function CompaniesMaster({
                           value={shown}
                           placeholder="—"
                           title={cell.tier ? `Source: ${cell.tier}` : 'No data'}
+                          data-row={rowIndex}
+                          data-col={colIndex}
                           onFocus={() => setFocused(key)}
                           onBlur={() => setFocused(null)}
                           onChange={(e) => edit(ticker, column.key, e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== 'Enter') return
+                            e.preventDefault()
+                            moveFocus(rowIndex, colIndex, e.shiftKey ? -1 : 1)
+                          }}
+                          onPaste={(e) => {
+                            const text = e.clipboardData.getData('text')
+                            if (!text.includes('\t') && !text.includes('\n')) return
+                            e.preventDefault()
+                            pasteBlock(rowIndex, colIndex, text)
+                          }}
                         />
                       </td>
                     )
@@ -339,7 +394,8 @@ export function CompaniesMaster({
         </button>
         <span className="hint">
           Edits save as overrides, which every other tab follows. Clearing a cell
-          falls back to your model or FactSet.
+          falls back to your model or FactSet. Paste a block straight from Excel —
+          it spreads across cells from the one you are in. Enter moves down a row.
         </span>
       </div>
     </>
