@@ -10,7 +10,7 @@
 # and the second would have no volume to mount. One machine is also what this
 # app wants, since the JSON tiers have a single writer.
 
-app = "valuation-dashboard"
+app = "valuationfile"
 primary_region = "iad"
 
 [build]
