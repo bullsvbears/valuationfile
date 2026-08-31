@@ -57,6 +57,16 @@ export const api = {
 
   historyDates: () => json<{ dates: string[] }>('/api/history'),
 
+  updateGroup: (
+    kind: 'sector' | 'financial',
+    group: string,
+    changes: { add?: string[]; remove?: string[] },
+  ) =>
+    json<{ ok: boolean; group: string; members: string[] }>('/api/groups', {
+      method: 'PATCH',
+      body: JSON.stringify({ kind, group, ...changes }),
+    }),
+
   historySnapshot: (date: string) =>
     json<HistorySnapshot>(`/api/history/${encodeURIComponent(date)}`),
 

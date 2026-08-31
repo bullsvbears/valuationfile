@@ -163,6 +163,9 @@ export function App() {
             year={year}
             years={dashboard.years}
             onYearChange={setYear}
+            kind="sector"
+            companies={dashboard.companies.map((c) => c.meta)}
+            onChanged={() => load(year)}
           />
         ) : (
           <Summary
@@ -171,6 +174,9 @@ export function App() {
             year={year}
             years={dashboard.years}
             onYearChange={setYear}
+            kind="financial"
+            companies={dashboard.companies.map((c) => c.meta)}
+            onChanged={() => load(year)}
           />
         )}
       </main>

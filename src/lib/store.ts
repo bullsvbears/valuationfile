@@ -171,6 +171,52 @@ export class DataStore {
     await this.saveOverrides(store)
   }
 
+  /**
+   * Add or remove members of a comp group, keeping both directions in sync.
+   *
+   * Membership is stored twice — the group's ticker list, and each company's
+   * list of groups — because reads want both shapes. This is the one writer,
+   * so the two can never drift. Adding to a group that does not exist creates
+   * it; unknown tickers are rejected rather than silently dropped, since a
+   * typo that vanishes reads as a successful add.
+   */
+  async updateGroup(
+    kind: 'sector' | 'financial',
+    group: string,
+    changes: { add?: string[]; remove?: string[] },
+  ): Promise<string[]> {
+    const universe = await this.loadUniverse()
+    const mapping = kind === 'sector' ? universe.sectors : universe.peerGroups
+
+    const known = new Map(universe.companies.map((c) => [c.ticker.toUpperCase(), c.ticker]))
+    const normalise = (raw: string): string => {
+      const ticker = known.get(raw.trim().toUpperCase())
+      if (!ticker) throw new Error(`Unknown ticker "${raw.trim()}"`)
+      return ticker
+    }
+
+    const add = (changes.add ?? []).filter((t) => t.trim()).map(normalise)
+    const remove = new Set((changes.remove ?? []).filter((t) => t.trim()).map(normalise))
+    if (!(group in mapping) && !add.length) throw new Error(`Unknown group "${group}"`)
+
+    const current = mapping[group] ?? []
+    const next = current.filter((t) => !remove.has(t))
+    for (const ticker of add) if (!next.includes(ticker)) next.push(ticker)
+    mapping[group] = next
+
+    const field = kind === 'sector' ? 'sectors' : 'peerGroups'
+    const members = new Set(next)
+    for (const company of universe.companies) {
+      const inGroup = members.has(company.ticker)
+      const listed = company[field].includes(group)
+      if (inGroup && !listed) company[field] = [...company[field], group]
+      else if (!inGroup && listed) company[field] = company[field].filter((g) => g !== group)
+    }
+
+    await this.writeJson('universe.json', universe)
+    return next
+  }
+
   /** Count of override cells an analyst entered here, ignoring imported ones. */
   static analystOverrideCount(entry: OverrideEntry | undefined): number {
     if (!entry) return 0

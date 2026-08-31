@@ -205,6 +205,35 @@ app.put('/api/company/:ticker/model', route(async (req, res) => {
   res.json(model)
 }))
 
+/** Edit a comp group's membership: add and/or remove tickers. */
+app.patch('/api/groups', route(async (req, res) => {
+  const body = req.body as {
+    kind?: unknown
+    group?: unknown
+    add?: unknown
+    remove?: unknown
+  }
+  const kind = body.kind
+  const group = body.group
+  const tickers = (value: unknown): string[] =>
+    Array.isArray(value) ? value.filter((t): t is string => typeof t === 'string') : []
+
+  if ((kind !== 'sector' && kind !== 'financial') || typeof group !== 'string' || !group.trim()) {
+    res.status(400).json({ error: 'Expected kind ("sector" | "financial") and a group name' })
+    return
+  }
+
+  try {
+    const members = await store.updateGroup(kind, group.trim(), {
+      add: tickers(body.add),
+      remove: tickers(body.remove),
+    })
+    res.json({ ok: true, group: group.trim(), members })
+  } catch (error) {
+    res.status(400).json({ error: error instanceof Error ? error.message : String(error) })
+  }
+}))
+
 /**
  * Pull fresh data from FactSet into the factset tier, on demand. Overrides
  * and own models are stored separately and are untouched by a refresh.

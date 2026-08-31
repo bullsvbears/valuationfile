@@ -91,6 +91,9 @@ export function Screener({ dashboard, onSelect, year, onYearChange }: ScreenerPr
   const rows = useMemo(() => {
     const needle = search.trim().toLowerCase()
     const filtered = dashboard.companies.filter((company) => {
+      // Acquired names keep their data (their comp group still uses it) but
+      // are not screenable: there is no live stock to screen.
+      if (company.meta.coverage === 'Acquired Companies') return false
       if (coverageOnly && !company.meta.covered) return false
       if (group !== 'All companies') {
         const inGroup =

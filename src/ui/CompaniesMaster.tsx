@@ -133,12 +133,17 @@ export function CompaniesMaster({
   const rows = useMemo(() => {
     const needle = search.trim().toLowerCase()
     return dashboard.companies
-      .filter(
-        (c) =>
+      .filter((c) => {
+        // Acquired names keep their data (the Acquired Companies comp group
+        // still reads it) but their inputs are frozen history, not something
+        // to edit here.
+        if (c.meta.coverage === 'Acquired Companies') return false
+        return (
           !needle ||
           c.meta.ticker.toLowerCase().includes(needle) ||
-          c.meta.name.toLowerCase().includes(needle),
-      )
+          c.meta.name.toLowerCase().includes(needle)
+        )
+      })
       .sort((a, b) => a.meta.ticker.localeCompare(b.meta.ticker))
   }, [dashboard, search])
 

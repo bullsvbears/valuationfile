@@ -468,3 +468,64 @@ td.nm { color: var(--text-faint); }
 
 /* A failed refresh reports in place of the data-age readout. */
 .asof-error { color: var(--negative); }
+
+/* ---------- Comp group editing ---------- */
+
+.group-toggle {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text);
+}
+.group-toggle:hover { color: var(--accent); }
+
+.group-editor-row td { background: var(--surface-2); }
+.group-editor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 4px 0;
+  max-width: 900px;
+  white-space: normal;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  padding: 2px 4px 2px 9px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.chip-remove {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--text-faint);
+  font-size: 13px;
+  line-height: 1;
+  padding: 1px 4px;
+  border-radius: 50%;
+}
+.chip-remove:hover { color: var(--negative); background: var(--tier-override-soft); }
+
+.chip-add { display: inline-flex; gap: 6px; align-items: center; }
+.chip-add input, .new-group-input {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 5px 9px;
+  min-width: 130px;
+}
+.chip-add input:focus, .new-group-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}

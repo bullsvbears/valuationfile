@@ -307,6 +307,48 @@ describe('writes land on the data directory', () => {
     expect(res.status).toBe(401)
   })
 
+  it('edits a comp group and restrikes the roll-ups from the new membership', async () => {
+    const cookie = await signIn()
+    const patch = await fetch(`${baseUrl}/api/groups`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', cookie },
+      body: JSON.stringify({ kind: 'sector', group: 'Adtech', add: ['CRM'] }),
+    })
+    expect(patch.ok).toBe(true)
+    expect(((await patch.json()) as { members: string[] }).members).toContain('CRM')
+
+    const res = await fetch(`${baseUrl}/api/dashboard`, { headers: { cookie } })
+    const dashboard = (await res.json()) as {
+      sectorSummaries: { group: string; members: string[] }[]
+    }
+    const adtech = dashboard.sectorSummaries.find((g) => g.group === 'Adtech')
+    expect(adtech?.members).toContain('CRM')
+
+    // Put it back so this test leaves the universe as it found it.
+    await fetch(`${baseUrl}/api/groups`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', cookie },
+      body: JSON.stringify({ kind: 'sector', group: 'Adtech', remove: ['CRM'] }),
+    })
+  })
+
+  it('rejects a group edit with an unknown ticker or bad kind', async () => {
+    const cookie = await signIn()
+    const unknown = await fetch(`${baseUrl}/api/groups`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', cookie },
+      body: JSON.stringify({ kind: 'sector', group: 'Adtech', add: ['NOPE123'] }),
+    })
+    expect(unknown.status).toBe(400)
+
+    const badKind = await fetch(`${baseUrl}/api/groups`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', cookie },
+      body: JSON.stringify({ kind: 'wat', group: 'Adtech', add: ['CRM'] }),
+    })
+    expect(badKind.status).toBe(400)
+  })
+
   it('reports missing FactSet credentials on a manual refresh', async () => {
     const cookie = await signIn()
     const res = await fetch(`${baseUrl}/api/refresh`, { method: 'POST', headers: { cookie } })

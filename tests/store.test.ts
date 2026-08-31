@@ -11,6 +11,16 @@ import type { OverrideStore } from '../src/lib/types.js'
 let dir: string
 let store: DataStore
 
+const seededUniverse = {
+  companies: [
+    { ticker: 'ADBE', name: 'Adobe', fiscalYearEnd: 11, coverage: null, covered: false, sectors: ['Front Office'], peerGroups: ['Software Group'] },
+    { ticker: 'CRM', name: 'Salesforce', fiscalYearEnd: 1, coverage: null, covered: false, sectors: ['Front Office'], peerGroups: [] },
+    { ticker: 'NOW', name: 'ServiceNow', fiscalYearEnd: 12, coverage: null, covered: false, sectors: [], peerGroups: [] },
+  ],
+  sectors: { 'Front Office': ['ADBE', 'CRM'] },
+  peerGroups: { 'Software Group': ['ADBE'] },
+}
+
 const seeded: OverrideStore = {
   companies: {
     ADBE: {
@@ -28,6 +38,7 @@ beforeEach(() => {
   dir = mkdtempSync(path.join(tmpdir(), 'valuation-store-'))
   mkdirSync(path.join(dir, 'models'))
   writeFileSync(path.join(dir, 'overrides.json'), JSON.stringify(seeded))
+  writeFileSync(path.join(dir, 'universe.json'), JSON.stringify(seededUniverse))
   store = new DataStore(dir)
 })
 
@@ -101,5 +112,53 @@ describe('model persistence', () => {
   it('writes atomically, leaving no temp file behind', async () => {
     await store.saveModel({ ticker: 'CRM', series: {} })
     expect(() => readFileSync(path.join(dir, 'models', 'CRM.json.tmp'))).toThrow()
+  })
+})
+
+describe('comp group editing', () => {
+  it('adds a member and keeps both membership directions in sync', async () => {
+    const members = await store.updateGroup('sector', 'Front Office', { add: ['NOW'] })
+    expect(members).toEqual(['ADBE', 'CRM', 'NOW'])
+
+    const universe = await store.loadUniverse()
+    expect(universe.sectors['Front Office']).toContain('NOW')
+    expect(universe.companies.find((c) => c.ticker === 'NOW')?.sectors).toContain('Front Office')
+  })
+
+  it('removes a member from both directions', async () => {
+    await store.updateGroup('sector', 'Front Office', { remove: ['CRM'] })
+    const universe = await store.loadUniverse()
+    expect(universe.sectors['Front Office']).toEqual(['ADBE'])
+    expect(universe.companies.find((c) => c.ticker === 'CRM')?.sectors).toEqual([])
+  })
+
+  it('normalises case and whitespace on the way in', async () => {
+    const members = await store.updateGroup('financial', 'Software Group', { add: [' crm '] })
+    expect(members).toEqual(['ADBE', 'CRM'])
+  })
+
+  it('rejects a ticker outside the universe rather than dropping it silently', async () => {
+    // A typo that vanishes reads as a successful add; it must fail loudly.
+    await expect(
+      store.updateGroup('sector', 'Front Office', { add: ['NOPE'] }),
+    ).rejects.toThrow('Unknown ticker')
+  })
+
+  it('creates a group on first add but refuses to remove from a group that never existed', async () => {
+    const members = await store.updateGroup('financial', 'My Watchlist', { add: ['ADBE', 'NOW'] })
+    expect(members).toEqual(['ADBE', 'NOW'])
+    const universe = await store.loadUniverse()
+    expect(universe.companies.find((c) => c.ticker === 'NOW')?.peerGroups).toContain('My Watchlist')
+
+    await expect(
+      store.updateGroup('sector', 'No Such Group', { remove: ['ADBE'] }),
+    ).rejects.toThrow('Unknown group')
+  })
+
+  it('does not duplicate a member added twice', async () => {
+    await store.updateGroup('sector', 'Front Office', { add: ['ADBE'] })
+    const universe = await store.loadUniverse()
+    expect(universe.sectors['Front Office']).toEqual(['ADBE', 'CRM'])
+    expect(universe.companies.find((c) => c.ticker === 'ADBE')?.sectors).toEqual(['Front Office'])
   })
 })
