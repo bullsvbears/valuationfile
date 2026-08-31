@@ -78,6 +78,25 @@ export class DataStore {
     return this.writeJson('factset-cache.json', cache)
   }
 
+  /**
+   * Write fresh closes into the FactSet tier, leaving estimates untouched.
+   * `pricesAsOf` is stamped separately from `asOf`: prices from the free feed
+   * do not make the estimates any less stale, and the UI says so.
+   */
+  async updatePrices(prices: Record<string, number>): Promise<number> {
+    const cache = await this.loadFactSet()
+    let updated = 0
+    for (const [ticker, price] of Object.entries(prices)) {
+      const entry = cache.companies[ticker] ?? { series: {} }
+      entry.price = price
+      cache.companies[ticker] = entry
+      updated += 1
+    }
+    cache.pricesAsOf = new Date().toISOString()
+    await this.saveFactSet(cache)
+    return updated
+  }
+
   loadOverrides(): Promise<OverrideStore> {
     return this.readJson<OverrideStore>('overrides.json', { companies: {} })
   }

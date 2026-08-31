@@ -185,7 +185,7 @@ describe('importer vs the workbook', () => {
   const byTicker = new Map(dashboard.companies.map((c) => [c.meta.ticker, c]))
 
   it('imports the full universe across all three tiers', () => {
-    expect(universe.companies.length).toBe(335)
+    expect(universe.companies.length).toBe(323)
     expect(Object.keys(models).length).toBeGreaterThan(40)
     expect(Object.keys(factset.companies).length).toBeGreaterThan(200)
   })

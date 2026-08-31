@@ -151,6 +151,11 @@ def main() -> None:
         if name is None:  # a section header such as "Bhatia - Covered Companies"
             coverage = str(ticker)
             continue
+        if not isinstance(name, str):
+            # Helper rows at the bottom of the sheet (a month-name lookup
+            # table) have a number where the company name would be. They are
+            # not companies.
+            continue
 
         ticker = str(ticker).strip()
         if ticker in seen:

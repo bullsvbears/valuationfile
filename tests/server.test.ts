@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { spawn, spawnSync, type ChildProcess } from 'node:child_process'
 import { createServer } from 'node:net'
+import { createServer as createHttpServer, type Server } from 'node:http'
 import { mkdtempSync, rmSync, readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
@@ -23,6 +24,28 @@ const PASSWORD = 'a-test-password-for-ci'
 let server: ChildProcess
 let dataDir: string
 let baseUrl: string
+let stooq: Server
+
+/**
+ * A stand-in for Stooq's quote endpoint: answers every requested symbol with a
+ * deterministic close, except adbe.us which gets a recognizable 111.25 and
+ * gone.us which comes back N/D. Lets the price-update path run for real.
+ */
+function startFakeStooq(port: number): Server {
+  const srv = createHttpServer((req, res) => {
+    const url = new URL(req.url ?? '/', 'http://localhost')
+    const symbols = (url.searchParams.get('s') ?? '').split(' ').filter(Boolean)
+    const lines = ['Symbol,Date,Time,Open,High,Low,Close,Volume']
+    for (const s of symbols) {
+      if (s === 'adbe.us') lines.push('ADBE.US,2026-08-31,22:00:00,1,1,1,111.25,100')
+      else lines.push(`${s.toUpperCase()},2026-08-31,22:00:00,1,1,1,50,100`)
+    }
+    res.setHeader('content-type', 'text/csv')
+    res.end(lines.join('\n'))
+  })
+  srv.listen(port, '127.0.0.1')
+  return srv
+}
 
 /** Ask the OS for a free port, so a stray process cannot collide with the run. */
 function freePort(): Promise<number> {
@@ -64,6 +87,8 @@ beforeAll(async () => {
   dataDir = mkdtempSync(path.join(tmpdir(), 'valuation-server-'))
   const port = await freePort()
   baseUrl = `http://127.0.0.1:${port}`
+  const stooqPort = await freePort()
+  stooq = startFakeStooq(stooqPort)
 
   // Run tsx's JS entry point under this Node binary rather than the `.bin`
   // shim: on Windows that shim is `tsx.cmd`, which spawn cannot launch without
@@ -82,6 +107,7 @@ beforeAll(async () => {
       // FactSet pull inside the test suite whatever the ambient environment.
       FACTSET_USERNAME_SERIAL: '',
       FACTSET_API_KEY: '',
+      STOOQ_BASE_URL: `http://127.0.0.1:${stooqPort}/q/l/`,
     },
     stdio: 'ignore',
     // A process group lets the whole tree be signalled at once. Windows has no
@@ -112,6 +138,7 @@ function stopServer(child: ChildProcess): void {
 }
 
 afterAll(async () => {
+  stooq?.close()
   if (server) {
     stopServer(server)
     await new Promise((r) => setTimeout(r, 300))
@@ -149,7 +176,7 @@ describe('data directory seeding', () => {
     expect(existsSync(path.join(dataDir, 'universe.json'))).toBe(true)
     expect(existsSync(path.join(dataDir, 'models', 'ADBE.json'))).toBe(true)
     const universe = JSON.parse(readFileSync(path.join(dataDir, 'universe.json'), 'utf8'))
-    expect(universe.companies.length).toBe(335)
+    expect(universe.companies.length).toBe(323)
   })
 })
 
@@ -199,7 +226,7 @@ describe('access control', () => {
     const res = await fetch(`${baseUrl}/api/dashboard`, { headers: { cookie } })
     expect(res.ok).toBe(true)
     const body = (await res.json()) as { companies: unknown[] }
-    expect(body.companies.length).toBe(335)
+    expect(body.companies.length).toBe(323)
   })
 
   it('refuses a cross-origin write even with a valid session', async () => {
@@ -261,7 +288,7 @@ describe('writes land on the data directory', () => {
       companies: Record<string, { series: { revenue?: Record<string, number> } }>
     }
     expect(snapshot.date).toBe(today)
-    expect(Object.keys(snapshot.companies).length).toBe(335)
+    expect(Object.keys(snapshot.companies).length).toBe(323)
     expect(snapshot.companies.ADBE?.series.revenue?.['2024']).toBe(21505)
 
     // The FactSet tier is captured separately from the resolved values, so
@@ -400,7 +427,7 @@ describe('writes land on the data directory', () => {
       models: Record<string, unknown>
       kpis: Record<string, unknown>
     }
-    expect(bundle.universe.companies.length).toBe(335)
+    expect(bundle.universe.companies.length).toBe(323)
     expect(Object.keys(bundle.models).length).toBeGreaterThan(40)
     expect(Object.keys(bundle.kpis).length).toBeGreaterThan(150)
   })
@@ -427,12 +454,30 @@ describe('writes land on the data directory', () => {
     expect(bad.status).toBe(400)
   })
 
-  it('reports missing FactSet credentials on a manual refresh', async () => {
+  it('falls back to the free price feed on refresh without FactSet credentials', async () => {
     const cookie = await signIn()
     const res = await fetch(`${baseUrl}/api/refresh`, { method: 'POST', headers: { cookie } })
-    expect(res.status).toBe(503)
-    const body = (await res.json()) as { error: string }
-    expect(body.error).toContain('FACTSET_USERNAME_SERIAL')
+    expect(res.ok).toBe(true)
+    const body = (await res.json()) as {
+      mode: string
+      updated: number
+      unmapped: string[]
+      note: string
+    }
+    expect(body.mode).toBe('prices')
+    expect(body.updated).toBeGreaterThan(250)
+    expect(body.unmapped).toContain('SPCX')
+    expect(body.note).toContain('FactSet')
+
+    // The new close flows through to the dashboard's resolved price.
+    const dash = await fetch(`${baseUrl}/api/dashboard`, { headers: { cookie } })
+    const dashboard = (await dash.json()) as {
+      pricesAsOf: string | null
+      companies: { meta: { ticker: string }; metrics: { price: number | null } }[]
+    }
+    expect(dashboard.pricesAsOf).toBeTruthy()
+    const adbe = dashboard.companies.find((c) => c.meta.ticker === 'ADBE')
+    expect(adbe?.metrics.price).toBe(111.25)
   })
 
   it('keeps the refresh behind the session', async () => {

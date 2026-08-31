@@ -83,6 +83,16 @@ The bundled `data/factset-cache.json` holds the cached FDS values read out of
 the workbook. It is a starting point, not a live pull — run a refresh to make
 it current.
 
+### Free price updates without FactSet
+
+Without FactSet credentials, the Refresh button and the daily task fall back
+to pulling end-of-day closes from Stooq (free, no key). Prices, market caps
+and multiples stay current; estimates stay at the workbook import until
+FactSet is configured, and the topbar readout says which is which. Non-US
+listings without a safe symbol mapping and anything Stooq cannot price are
+reported rather than silently left stale. `STOOQ_BASE_URL` overrides the
+endpoint (used by the tests to point at a local stand-in).
+
 ## Backups
 
 Two paths, both covering the whole data directory — models, overrides, the

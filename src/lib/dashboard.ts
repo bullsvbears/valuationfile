@@ -41,6 +41,8 @@ export interface CompanyView {
 
 export interface Dashboard {
   asOf: string | null
+  /** When prices were last updated by the free EOD feed, if ever. */
+  pricesAsOf: string | null
   factsetSource: string
   companies: CompanyView[]
   years: string[]
@@ -102,6 +104,7 @@ export function buildDashboard(inputs: DashboardInputs, summaryYear?: string): D
 
   return {
     asOf: inputs.factset.asOf || null,
+    pricesAsOf: inputs.factset.pricesAsOf || null,
     factsetSource: inputs.factset.source,
     companies,
     years,

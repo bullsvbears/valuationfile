@@ -59,8 +59,10 @@ export interface CompanyMeta {
 
 /** The FactSet tier: bulk data refreshed from the vendor. */
 export interface FactSetCache {
-  /** ISO timestamp of the last successful refresh. */
+  /** ISO timestamp of the last successful estimates refresh. */
   asOf: string
+  /** ISO timestamp of the last price-only update (the free EOD feed). */
+  pricesAsOf?: string
   /** Free-form note describing how the cache was produced. */
   source: string
   companies: Record<string, CompanyFacts>

@@ -8,6 +8,7 @@ import { assertProductionAuth, authConfigFromEnv, createAuth } from './auth.js'
 import { seedDataDir } from './seed.js'
 import { ensureDailySnapshot, listSnapshots, readSnapshot, todayKey } from './history.js'
 import { backupConfigFromEnv, runBackup, scrubSecrets } from './backup.js'
+import { fetchStooqPrices } from '../src/prices/stooq.js'
 import { buildDashboard, type DashboardInputs } from '../src/lib/dashboard.js'
 import { credentialsFromEnv, fetchFactSet } from '../src/factset/client.js'
 import type { OverrideEntry, OwnModel } from '../src/lib/types.js'
@@ -74,6 +75,28 @@ class RefreshError extends Error {
   }
 }
 
+/**
+ * Price-only update from the free Stooq EOD feed: refreshes closes for every
+ * live (non-acquired) name, leaving estimates untouched. The report calls out
+ * anything it could not price, so a delisting or rename never keeps a stale
+ * number standing silently.
+ */
+async function runPriceUpdate(): Promise<{
+  updated: number
+  unmapped: string[]
+  unpriced: string[]
+}> {
+  const universe = await store.loadUniverse()
+  const tickers = universe.companies
+    .filter((c) => c.coverage !== 'Acquired Companies')
+    .map((c) => c.ticker)
+  const result = await fetchStooqPrices(tickers, {
+    baseUrl: process.env.STOOQ_BASE_URL,
+  })
+  const updated = await store.updatePrices(result.prices)
+  return { updated, unmapped: result.unmapped, unpriced: result.unpriced }
+}
+
 async function runFactSetRefresh(): Promise<{ asOf: string; companies: number }> {
   const creds = credentialsFromEnv()
   if (!creds) {
@@ -120,12 +143,33 @@ function kickDailyTask(): void {
   dailyTask.running = true
   void (async () => {
     try {
+      let factsetFresh = false
       if (credentialsFromEnv()) {
         try {
           await runFactSetRefresh()
+          factsetFresh = true
         } catch (error) {
           console.error(
             'Daily FactSet refresh failed:',
+            error instanceof Error ? error.message : error,
+          )
+        }
+      }
+      // A FactSet pull already carried live prices; otherwise take the free
+      // EOD closes so at least the market side of the day's snapshot is real.
+      if (!factsetFresh) {
+        try {
+          const report = await runPriceUpdate()
+          console.log(
+            `Daily price update: ${report.updated} priced, ` +
+              `${report.unpriced.length} unpriced, ${report.unmapped.length} unmapped`,
+          )
+          if (report.unpriced.length) {
+            console.log(`Unpriced tickers: ${report.unpriced.join(', ')}`)
+          }
+        } catch (error) {
+          console.error(
+            'Daily price update failed:',
             error instanceof Error ? error.message : error,
           )
         }
@@ -332,8 +376,22 @@ app.patch('/api/groups', route(async (req, res) => {
  */
 app.post('/api/refresh', route(async (_req, res) => {
   try {
-    const result = await runFactSetRefresh()
-    res.json({ ok: true, ...result })
+    if (credentialsFromEnv()) {
+      const result = await runFactSetRefresh()
+      res.json({ ok: true, mode: 'factset', ...result })
+      return
+    }
+    // No FactSet credentials: fall back to the free EOD price feed rather
+    // than refusing, and say plainly what was and was not updated.
+    const report = await runPriceUpdate()
+    res.json({
+      ok: true,
+      mode: 'prices',
+      ...report,
+      note:
+        'Prices updated from the free EOD feed. Estimates still need FactSet ' +
+        'credentials (FACTSET_USERNAME_SERIAL and FACTSET_API_KEY).',
+    })
   } catch (error) {
     if (error instanceof RefreshError) {
       res.status(error.status).json({ error: error.message })

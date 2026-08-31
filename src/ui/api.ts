@@ -118,7 +118,15 @@ export const api = {
       body: JSON.stringify(model),
     }),
 
-  refresh: () => json<{ ok: boolean; asOf: string; companies: number }>('/api/refresh', {
-    method: 'POST',
-  }),
+  refresh: () =>
+    json<{
+      ok: boolean
+      mode: 'factset' | 'prices'
+      asOf?: string
+      companies?: number
+      updated?: number
+      unpriced?: string[]
+      unmapped?: string[]
+      note?: string
+    }>('/api/refresh', { method: 'POST' }),
 }

@@ -64,11 +64,22 @@ export function App() {
     return () => clearTimeout(timer)
   }, [dashboard, year, load])
 
+  const [refreshNote, setRefreshNote] = useState<string | null>(null)
+
   const refreshFactSet = async () => {
     setRefreshBusy(true)
     setRefreshError(null)
+    setRefreshNote(null)
     try {
-      await api.refresh()
+      const result = await api.refresh()
+      if (result.mode === 'prices') {
+        const misses = (result.unpriced?.length ?? 0) + (result.unmapped?.length ?? 0)
+        setRefreshNote(
+          `${result.updated ?? 0} prices updated (free EOD feed)` +
+            (misses ? ` · ${misses} not priced` : '') +
+            ' · estimates need FactSet credentials',
+        )
+      }
       await load(year ?? undefined)
     } catch (e) {
       setRefreshError(e instanceof Error ? e.message : String(e))
@@ -118,19 +129,23 @@ export function App() {
         <span className={`asof ${refreshError ? 'asof-error' : ''}`}>
           {refreshError
             ? refreshError
-            : dashboard.factsetRefreshing || refreshBusy
-              ? 'Pulling latest FactSet data…'
-              : dashboard.asOf
-                ? `FactSet as of ${formatAge(dashboard.asOf)}`
-                : dashboard.factsetSource}
+            : refreshNote
+              ? refreshNote
+              : dashboard.factsetRefreshing || refreshBusy
+                ? 'Refreshing data…'
+                : dashboard.asOf
+                  ? `FactSet as of ${formatAge(dashboard.asOf)}`
+                  : dashboard.pricesAsOf
+                    ? `Prices as of ${formatAge(dashboard.pricesAsOf)} · estimates from workbook import`
+                    : dashboard.factsetSource}
         </span>
         <button
           className="back"
           onClick={() => void refreshFactSet()}
           disabled={refreshBusy || Boolean(dashboard.factsetRefreshing)}
-          title="Pull the latest estimates, prices and balance sheet data from FactSet. Your models and overrides are untouched."
+          title="With FactSet credentials: estimates, prices and balance sheet. Without: latest end-of-day prices from a free feed. Your models and overrides are untouched either way."
         >
-          {refreshBusy || dashboard.factsetRefreshing ? 'Refreshing…' : 'Refresh FactSet'}
+          {refreshBusy || dashboard.factsetRefreshing ? 'Refreshing…' : 'Refresh data'}
         </button>
         <a
           className="back"
