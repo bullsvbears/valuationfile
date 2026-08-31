@@ -7,7 +7,8 @@ import { existsSync } from 'node:fs'
 import { DataStore } from '../src/lib/store.js'
 import { assertProductionAuth, authConfigFromEnv, createAuth } from './auth.js'
 import { seedDataDir } from './seed.js'
-import { ensureDailySnapshot, listSnapshots, readSnapshot, todayKey } from './history.js'
+import { buildSnapshot, ensureDailySnapshot, listSnapshots, readSnapshot, todayKey } from './history.js'
+import { extractWorkbook } from '../src/workbook/extract.js'
 import { backupConfigFromEnv, runBackup, scrubSecrets } from './backup.js'
 import { fetchStooqPrices, fetchYearEndCloses } from '../src/prices/stooq.js'
 import { buildDashboard, type DashboardInputs } from '../src/lib/dashboard.js'
@@ -353,6 +354,53 @@ app.put('/api/history/:date', route(async (req, res) => {
   )
   res.json({ ok: true, date, companies: Object.keys(body.companies).length })
 }))
+
+/**
+ * Backfill straight from an old copy of the workbook, uploaded through the
+ * browser: the file is run through the same extractor, resolver and metrics
+ * engine as scripts/extract_workbook.py + backfill-snapshot.ts, and the
+ * result stored as that date's snapshot. Past dates only — today belongs to
+ * the daily task.
+ */
+app.post(
+  '/api/backfill',
+  express.raw({ type: () => true, limit: '60mb' }),
+  route(async (req, res) => {
+    const date = String(req.query.date ?? '')
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || date >= todayKey()) {
+      res.status(400).json({ error: 'Backfill takes a past date: /api/backfill?date=YYYY-MM-DD' })
+      return
+    }
+    const body = req.body as unknown
+    if (!Buffer.isBuffer(body) || body.length === 0) {
+      res.status(400).json({ error: 'Send the .xlsx file as the raw request body' })
+      return
+    }
+
+    let extracted
+    try {
+      extracted = await extractWorkbook(
+        body,
+        `Imported from a workbook uploaded for ${date}`,
+      )
+    } catch (error) {
+      res.status(422).json({
+        error: `Could not read that workbook: ${error instanceof Error ? error.message : error}`,
+      })
+      return
+    }
+
+    const dashboard = buildDashboard(extracted)
+    const snapshot = buildSnapshot(dashboard, date)
+    await mkdir(historyDir(), { recursive: true })
+    await writeFile(
+      path.join(historyDir(), `${date}.json`),
+      JSON.stringify(snapshot) + '\n',
+      'utf8',
+    )
+    res.json({ ok: true, date, companies: Object.keys(snapshot.companies).length })
+  }),
+)
 
 app.get('/api/history/:date', route(async (req, res) => {
   const raw = req.params.date

@@ -118,6 +118,21 @@ export const api = {
       body: JSON.stringify(model),
     }),
 
+  /** Turn an uploaded old workbook into the history snapshot for a past date. */
+  backfill: async (date: string, file: File) => {
+    const res = await fetch(`/api/backfill?date=${encodeURIComponent(date)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/octet-stream' },
+      body: await file.arrayBuffer(),
+    })
+    if (res.status === 401) throw new NotSignedInError()
+    if (!res.ok) {
+      const body = (await res.json().catch(() => ({}))) as { error?: string }
+      throw new Error(body.error ?? `${res.status} ${res.statusText}`)
+    }
+    return (await res.json()) as { ok: boolean; date: string; companies: number }
+  },
+
   /** Full FactSet pull: estimates, prices, balance sheet. Needs credentials. */
   refresh: () =>
     json<{ ok: boolean; mode: 'factset'; asOf: string; companies: number }>('/api/refresh', {

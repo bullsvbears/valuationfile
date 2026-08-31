@@ -1,4 +1,4 @@
-import { Fragment as Fragment2, useEffect, useMemo, useState } from 'react'
+import { Fragment as Fragment2, useEffect, useMemo, useRef, useState } from 'react'
 import { median } from '../lib/aggregate.js'
 import type { Dashboard } from '../lib/dashboard.js'
 import { isMeaningful } from '../lib/metrics.js'
@@ -59,6 +59,75 @@ function fmtReturn(value: number | null): { text: string; cls: string } {
   }
 }
 
+/**
+ * Upload an old copy of the valuation workbook and store it as the snapshot
+ * for a chosen past date, so the comparisons above reach back before the app
+ * existed. The heavy lifting happens server-side.
+ */
+function BackfillPanel({ onDone }: { onDone: (date: string) => void }) {
+  const [date, setDate] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [status, setStatus] = useState<{ text: string; error: boolean } | null>(null)
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  const today = new Date().toISOString().slice(0, 10)
+
+  const upload = async () => {
+    const file = fileRef.current?.files?.[0]
+    if (!date || !file) {
+      setStatus({ text: 'Pick the as-of date and the .xlsx file first.', error: true })
+      return
+    }
+    setBusy(true)
+    setStatus({ text: `Extracting ${file.name}…`, error: false })
+    try {
+      const result = await api.backfill(date, file)
+      setStatus({ text: `Stored ${result.date}: ${result.companies} companies.`, error: false })
+      if (fileRef.current) fileRef.current.value = ''
+      onDone(result.date)
+    } catch (e) {
+      setStatus({ text: e instanceof Error ? e.message : String(e), error: true })
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="panel">
+      <h3>Backfill from an old workbook</h3>
+      <p className="sub">
+        Upload a saved copy of the valuation file and pick the date it was
+        current. It runs through the same extraction and metrics as the live
+        data and becomes that date's snapshot, available in the compare list
+        here and in the history charts. A full workbook takes a minute or so —
+        leave the page open until it reports done.
+      </p>
+      <div className="controls">
+        <div className="control">
+          <label htmlFor="bf-date">As-of date</label>
+          <input
+            id="bf-date"
+            type="date"
+            value={date}
+            max={today}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </div>
+        <div className="control">
+          <label htmlFor="bf-file">Workbook (.xlsx)</label>
+          <input id="bf-file" type="file" accept=".xlsx" ref={fileRef} />
+        </div>
+        <button type="button" onClick={() => void upload()} disabled={busy}>
+          {busy ? 'Uploading…' : 'Upload'}
+        </button>
+        {status && (
+          <span className={status.error ? 'status error' : 'hint'}>{status.text}</span>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export function Changes({ dashboard }: { dashboard: Dashboard }) {
   const [dates, setDates] = useState<string[] | null>(null)
   const [compareTo, setCompareTo] = useState<string | null>(null)
@@ -69,17 +138,25 @@ export function Changes({ dashboard }: { dashboard: Dashboard }) {
   const year = dashboard.years[dashboard.years.length - 1] ?? ''
   const priorYear = String(Number(year) - 1)
 
-  useEffect(() => {
+  const loadDates = (select?: string) => {
     api
       .historyDates()
       .then(({ dates: all }) => {
         setDates(all)
         const prior = all.filter((d) => d < today)
-        setCompareTo(prior.length ? (prior[prior.length - 1] as string) : null)
+        if (select && prior.includes(select)) setCompareTo(select)
+        else setCompareTo(prior.length ? (prior[prior.length - 1] as string) : null)
       })
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
+  }
+
+  useEffect(() => {
+    loadDates()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Bumped after a backfill upload so an overwritten date is re-read.
+  const [snapshotVersion, setSnapshotVersion] = useState(0)
 
   useEffect(() => {
     if (!compareTo) return
@@ -88,7 +165,12 @@ export function Changes({ dashboard }: { dashboard: Dashboard }) {
       .historySnapshot(compareTo)
       .then(setSnapshot)
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
-  }, [compareTo])
+  }, [compareTo, snapshotVersion])
+
+  const onBackfilled = (date: string) => {
+    setSnapshotVersion((v) => v + 1)
+    loadDates(date)
+  }
 
   const tables = useMemo(() => {
     if (!snapshot) return null
@@ -173,16 +255,20 @@ export function Changes({ dashboard }: { dashboard: Dashboard }) {
   const priorDates = dates.filter((d) => d < today)
   if (!priorDates.length) {
     return (
-      <div className="panel">
-        <h3>Changes</h3>
-        <p className="sub">
-          Nothing to compare yet: today's snapshot is the first one recorded. A
-          snapshot is stored automatically each day the dashboard is used — from
-          tomorrow, this page shows each comp group's medians today against a
-          date you pick, in the Today / Then / Δ layout of the old Sector
-          Summary sheet.
-        </p>
-      </div>
+      <>
+        <div className="panel">
+          <h3>Changes</h3>
+          <p className="sub">
+            Nothing to compare yet: today's snapshot is the first one recorded. A
+            snapshot is stored automatically each day the dashboard is used — from
+            tomorrow, this page shows each comp group's medians today against a
+            date you pick, in the Today / Then / Δ layout of the old Sector
+            Summary sheet. Or backfill a past date right now from an old copy of
+            the workbook below.
+          </p>
+        </div>
+        <BackfillPanel onDone={onBackfilled} />
+      </>
     )
   }
 
@@ -267,6 +353,7 @@ export function Changes({ dashboard }: { dashboard: Dashboard }) {
       </div>
       {tables && renderTable('Sector groups', tables.sectors)}
       {tables && renderTable('Financial groups', tables.financial)}
+      <BackfillPanel onDone={onBackfilled} />
     </>
   )
 }

@@ -100,7 +100,16 @@ override any single name by hand.
 ### Backfilling history from old workbook copies
 
 Old saved copies of the valuation file can become history snapshots, so
-change-tracking reaches back before the app existed. Per file:
+change-tracking reaches back before the app existed.
+
+The easy way is in the app: the Changes tab has a "Backfill from an old
+workbook" panel — pick the date the copy was current, upload the `.xlsx`,
+and the server extracts it (same tier classification as the importer) and
+stores that date's snapshot. A full-size workbook takes a minute or so to
+parse; if a hosted instance runs out of memory doing it, give the machine
+more with `fly scale memory 1024`.
+
+The same thing from a shell, per file:
 
 ```bash
 python3 scripts/extract_workbook.py "2025-06-30 copy.xlsx" --out /tmp/asof

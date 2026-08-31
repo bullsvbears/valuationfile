@@ -573,6 +573,57 @@ describe('writes land on the data directory', () => {
     expect(mismatched.status).toBe(400)
   })
 
+  it('backfills a snapshot from an uploaded workbook', async () => {
+    const cookie = await signIn()
+    const { buildTestWorkbook } = await import('./fixtures/workbook.js')
+    const workbook = await buildTestWorkbook()
+    const headers = { 'Content-Type': 'application/octet-stream', cookie }
+
+    const post = await fetch(`${baseUrl}/api/backfill?date=2025-03-31`, {
+      method: 'POST',
+      headers,
+      body: new Uint8Array(workbook),
+    })
+    expect(post.status).toBe(200)
+    expect(await post.json()).toMatchObject({ ok: true, date: '2025-03-31', companies: 2 })
+
+    // The stored snapshot went through the real resolver: the model value wins
+    // 2025 revenue, FactSet's pull is kept alongside, prices come from the
+    // Master Software sheet.
+    const read = await fetch(`${baseUrl}/api/history/2025-03-31`, { headers: { cookie } })
+    const snapshot = (await read.json()) as {
+      companies: Record<string, {
+        price: number | null
+        series: { revenue?: Record<string, number> }
+        factset?: { series: { revenue?: Record<string, number> } }
+      }>
+    }
+    expect(snapshot.companies.AAAA?.price).toBe(55.5)
+    expect(snapshot.companies.AAAA?.series.revenue?.['2025']).toBe(100)
+    expect(snapshot.companies.AAAA?.series.revenue?.['2026']).toBe(120)
+    expect(snapshot.companies.AAAA?.factset?.series.revenue?.['2026']).toBe(120)
+
+    const list = await fetch(`${baseUrl}/api/history`, { headers: { cookie } })
+    expect(((await list.json()) as { dates: string[] }).dates).toContain('2025-03-31')
+
+    // Today and malformed dates are refused; junk bytes are a 422, not a crash.
+    const today = new Date().toISOString().slice(0, 10)
+    for (const bad of [today, '31-03-2025', '']) {
+      const res = await fetch(`${baseUrl}/api/backfill?date=${bad}`, {
+        method: 'POST',
+        headers,
+        body: new Uint8Array(workbook),
+      })
+      expect(res.status).toBe(400)
+    }
+    const junk = await fetch(`${baseUrl}/api/backfill?date=2025-04-01`, {
+      method: 'POST',
+      headers,
+      body: 'not an xlsx',
+    })
+    expect(junk.status).toBe(422)
+  })
+
   it('lets a hand-entered prior-year close override the fetched baseline', async () => {
     const cookie = await signIn()
     const headers = { 'Content-Type': 'application/json', cookie }
