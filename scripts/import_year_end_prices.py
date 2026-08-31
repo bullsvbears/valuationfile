@@ -4,7 +4,7 @@ Import a year-end price list into the bundled baselines file.
 
 The file is two columns, ticker and closing price, one row per name. Output
 goes to data/year-end-closes.json keyed by year; the server consults this
-file before asking Stooq, so hand-supplied baselines win and ship with the
+file before asking the price feed, so hand-supplied baselines win and ship with the
 image (they reach a deployed volume without any upload step).
 
 Usage:  python3 scripts/import_year_end_prices.py <prices.xlsx> <year> [--out data/year-end-closes.json]

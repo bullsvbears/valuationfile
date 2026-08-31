@@ -85,7 +85,7 @@ export function App() {
     runRefresh(async () => {
       const result = await api.refreshPrices()
       const misses = result.unpriced.length + result.unmapped.length
-      const source = result.source === 'factset' ? 'FactSet' : 'free EOD feed'
+      const source = result.source === 'factset' ? 'FactSet' : 'Polygon EOD'
       return (
         `${result.updated} prices updated (${source})` +
         (result.yearEndCloses ? ` · ${result.yearEndCloses} YTD baselines` : '') +

@@ -9,7 +9,11 @@ import { assertProductionAuth, authConfigFromEnv, createAuth } from './auth.js'
 import { seedDataDir } from './seed.js'
 import { ensureDailySnapshot, listSnapshots, readSnapshot, todayKey } from './history.js'
 import { backupConfigFromEnv, runBackup, scrubSecrets } from './backup.js'
-import { fetchStooqPrices, fetchYearEndCloses } from '../src/prices/stooq.js'
+import {
+  fetchPolygonPrices,
+  fetchYearEndCloses,
+  polygonApiKeyFromEnv,
+} from '../src/prices/polygon.js'
 import { buildDashboard, type DashboardInputs } from '../src/lib/dashboard.js'
 import { credentialsFromEnv, fetchFactSet, fetchFactSetPrices } from '../src/factset/client.js'
 import type { OverrideEntry, OwnModel } from '../src/lib/types.js'
@@ -77,10 +81,10 @@ class RefreshError extends Error {
 }
 
 /**
- * Price-only update from the free Stooq EOD feed: refreshes closes for every
- * live (non-acquired) name, leaving estimates untouched. The report calls out
- * anything it could not price, so a delisting or rename never keeps a stale
- * number standing silently.
+ * Price-only update from Polygon.io's free tier: refreshes closes for
+ * every live (non-acquired) name, leaving estimates untouched. The report
+ * calls out anything it could not price, so a delisting or rename never
+ * keeps a stale number standing silently.
  */
 async function liveTickers(): Promise<string[]> {
   const universe = await store.loadUniverse()
@@ -128,19 +132,21 @@ async function ensureYearEndCloses(tickers: string[]): Promise<number> {
     }
   }
 
-  // Stooq fills what the file leaves open — but only once per calendar year:
-  // the history endpoint takes one symbol per request, so it must not repeat.
+  // Polygon fills what the file leaves open — when a key is configured, and
+  // only once per calendar year.
   const stillMissing = tickers.filter(
     (t) =>
       !(t in closes) &&
       !(typeof bundled[t] === 'number' && bundled[t]! > 0) &&
       typeof stored(t) !== 'number',
   )
-  if (stillMissing.length) {
+  const apiKey = polygonApiKeyFromEnv()
+  if (stillMissing.length && apiKey) {
     Object.assign(
       closes,
       await fetchYearEndCloses(stillMissing, priorYear, {
-        historyUrl: process.env.STOOQ_HISTORY_URL,
+        apiKey,
+        baseUrl: process.env.POLYGON_BASE_URL,
       }),
     )
   }
@@ -149,14 +155,14 @@ async function ensureYearEndCloses(tickers: string[]): Promise<number> {
 }
 
 interface PriceReport {
-  source: 'factset' | 'stooq'
+  source: 'factset' | 'polygon'
   updated: number
   unmapped: string[]
   unpriced: string[]
   yearEndCloses: number
 }
 
-/** Update prices only: FactSet when credentials exist, Stooq otherwise. */
+/** Update prices only: FactSet when credentials exist, Polygon otherwise. */
 async function runPriceUpdate(): Promise<PriceReport> {
   const tickers = await liveTickers()
   const creds = credentialsFromEnv()
@@ -169,13 +175,22 @@ async function runPriceUpdate(): Promise<PriceReport> {
     return { source: 'factset', updated, unmapped: [], unpriced, yearEndCloses }
   }
 
-  const result = await fetchStooqPrices(tickers, {
-    baseUrl: process.env.STOOQ_BASE_URL,
+  const apiKey = polygonApiKeyFromEnv()
+  if (!apiKey) {
+    throw new RefreshError(
+      'No price source configured. Set POLYGON_API_KEY (a free key from polygon.io) ' +
+        'or FactSet credentials.',
+      503,
+    )
+  }
+  const result = await fetchPolygonPrices(tickers, {
+    apiKey,
+    baseUrl: process.env.POLYGON_BASE_URL,
   })
   const updated = await store.updatePrices(result.prices)
   const yearEndCloses = await ensureYearEndCloses(tickers)
   return {
-    source: 'stooq',
+    source: 'polygon',
     updated,
     unmapped: result.unmapped,
     unpriced: result.unpriced,

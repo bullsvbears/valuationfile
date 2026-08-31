@@ -87,7 +87,8 @@ it current.
 
 Year-to-date returns divide by the prior year's final close. The server
 looks for baselines in `data/year-end-closes.json` first (hand-supplied,
-shipped with the image) and asks Stooq only for what that file leaves open.
+shipped with the image) and asks Polygon only for what that file leaves
+open (when a key is configured).
 To load a list from a spreadsheet (two columns: ticker, closing price):
 
 ```bash
@@ -117,12 +118,23 @@ daily task.
 
 ### Free price updates without FactSet
 
-Without FactSet credentials, the Refresh button and the daily task fall back
-to pulling end-of-day closes from Stooq (free, no key). Prices, market caps
-and multiples stay current; estimates stay at the workbook import until
-FactSet is configured, and the topbar readout says which is which. Non-US
-listings without a safe symbol mapping and anything Stooq cannot price are
-reported rather than silently left stale. `STOOQ_BASE_URL` overrides the
+Without FactSet credentials, the "Update prices" button and the daily task
+pull end-of-day closes from Polygon.io. Sign up for a free key at
+polygon.io and set it as a secret:
+
+```powershell
+fly secrets set POLYGON_API_KEY=your_key_here
+```
+
+One grouped-daily API call prices the whole universe — comfortably inside
+the free tier's 5-requests-per-minute budget — with the most recent
+completed session's closes (the free tier is end-of-day data). Prices,
+market caps and multiples stay current; estimates stay at the workbook
+import until FactSet is configured — neither Polygon nor Finnhub offers
+consensus estimates on an accessible tier — and the topbar readout says
+which source served the last update. Non-US listings and private names
+(no USD listing on Polygon) and anything absent from the session file are
+reported rather than silently left stale. `POLYGON_BASE_URL` overrides the
 endpoint (used by the tests to point at a local stand-in).
 
 ## Backups

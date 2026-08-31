@@ -24,35 +24,34 @@ const PASSWORD = 'a-test-password-for-ci'
 let server: ChildProcess
 let dataDir: string
 let baseUrl: string
-let stooq: Server
+let polygon: Server
 
 /**
- * A stand-in for Stooq's quote endpoint: answers every requested symbol with a
- * deterministic close, except adbe.us which gets a recognizable 111.25 and
- * gone.us which comes back N/D. Lets the price-update path run for real.
+ * A stand-in for Polygon's grouped-daily endpoint: one response carries a
+ * close for every plain-US ticker in the bundled universe, with ADBE at a
+ * recognizable 111.25 (and an 89.00 year-end close for December dates).
+ * Lets the price-update path run for real.
  */
-function startFakeStooq(port: number): Server {
+function startFakePolygon(port: number): Server {
+  const universe = JSON.parse(
+    readFileSync(path.join(root, 'data', 'universe.json'), 'utf8'),
+  ) as { companies: { ticker: string }[] }
+  const usTickers = universe.companies
+    .map((c) => c.ticker)
+    .filter((t) => /^[A-Z]+$/.test(t) && t !== 'SPCX') // SPCX is private, never listed
+
   const srv = createHttpServer((req, res) => {
     const url = new URL(req.url ?? '/', 'http://localhost')
-    res.setHeader('content-type', 'text/csv')
+    const date = url.pathname.split('/').pop() ?? ''
+    res.setHeader('content-type', 'application/json')
 
-    // The daily-history path (year-end closes) takes one symbol per request.
-    if (url.pathname.startsWith('/q/d/l')) {
-      const symbol = url.searchParams.get('s') ?? ''
-      const close = symbol === 'adbe.us' ? 89.0 : 40.0
-      res.end(
-        ['Date,Open,High,Low,Close,Volume', `2025-12-31,1,1,1,${close},100`].join('\n'),
-      )
-      return
-    }
-
-    const symbols = (url.searchParams.get('s') ?? '').split(' ').filter(Boolean)
-    const lines = ['Symbol,Date,Time,Open,High,Low,Close,Volume']
-    for (const s of symbols) {
-      if (s === 'adbe.us') lines.push('ADBE.US,2026-08-31,22:00:00,1,1,1,111.25,100')
-      else lines.push(`${s.toUpperCase()},2026-08-31,22:00:00,1,1,1,50,100`)
-    }
-    res.end(lines.join('\n'))
+    // December dates are the year-end baseline pass; anything else, a quote day.
+    const yearEnd = date.startsWith('2025-12')
+    const results = usTickers.map((t) => ({
+      T: t,
+      c: t === 'ADBE' ? (yearEnd ? 89.0 : 111.25) : yearEnd ? 40 : 50,
+    }))
+    res.end(JSON.stringify({ status: 'OK', resultsCount: results.length, results }))
   })
   srv.listen(port, '127.0.0.1')
   return srv
@@ -98,8 +97,8 @@ beforeAll(async () => {
   dataDir = mkdtempSync(path.join(tmpdir(), 'valuation-server-'))
   const port = await freePort()
   baseUrl = `http://127.0.0.1:${port}`
-  const stooqPort = await freePort()
-  stooq = startFakeStooq(stooqPort)
+  const polygonPort = await freePort()
+  polygon = startFakePolygon(polygonPort)
 
   // Run tsx's JS entry point under this Node binary rather than the `.bin`
   // shim: on Windows that shim is `tsx.cmd`, which spawn cannot launch without
@@ -118,8 +117,8 @@ beforeAll(async () => {
       // FactSet pull inside the test suite whatever the ambient environment.
       FACTSET_USERNAME_SERIAL: '',
       FACTSET_API_KEY: '',
-      STOOQ_BASE_URL: `http://127.0.0.1:${stooqPort}/q/l/`,
-      STOOQ_HISTORY_URL: `http://127.0.0.1:${stooqPort}/q/d/l/`,
+      POLYGON_API_KEY: 'a-test-key',
+      POLYGON_BASE_URL: `http://127.0.0.1:${polygonPort}/`,
     },
     stdio: 'ignore',
     // A process group lets the whole tree be signalled at once. Windows has no
@@ -150,7 +149,7 @@ function stopServer(child: ChildProcess): void {
 }
 
 afterAll(async () => {
-  stooq?.close()
+  polygon?.close()
   if (server) {
     stopServer(server)
     await new Promise((r) => setTimeout(r, 300))
@@ -488,7 +487,7 @@ describe('writes land on the data directory', () => {
       unmapped: string[]
     }
     expect(body.mode).toBe('prices')
-    expect(body.source).toBe('stooq')
+    expect(body.source).toBe('polygon')
     expect(body.updated).toBeGreaterThan(250)
     expect(body.unmapped).toContain('SPCX')
 
@@ -576,7 +575,7 @@ describe('writes land on the data directory', () => {
   it('replaces a feed-fetched baseline with the bundled analyst file', async () => {
     const cookie = await signIn()
 
-    // A volume stamped before the analyst's year-end file shipped holds Stooq
+    // A volume stamped before the analyst's year-end file shipped holds feed
     // baselines; the bundled number must win on the next price update.
     const cachePath = path.join(dataDir, 'factset-cache.json')
     const cache = JSON.parse(readFileSync(cachePath, 'utf8')) as {
@@ -600,7 +599,7 @@ describe('writes land on the data directory', () => {
     const cookie = await signIn()
     const headers = { 'Content-Type': 'application/json', cookie }
 
-    // SPCX has no Stooq symbol, so only a manual baseline can give it a YTD.
+    // SPCX has no feed symbol, so only a manual baseline can give it a YTD.
     await fetch(`${baseUrl}/api/company/SPCX/override`, {
       method: 'PATCH',
       headers,

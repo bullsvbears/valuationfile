@@ -1,156 +1,133 @@
 import { describe, expect, it } from 'vitest'
 import {
-  fetchStooqPrices,
+  fetchPolygonPrices,
   fetchYearEndCloses,
-  lastCloseFromHistory,
-  parseStooqCsv,
-  stooqSymbol,
-} from '../src/prices/stooq.js'
+  polygonSymbol,
+} from '../src/prices/polygon.js'
+
+/** A grouped-daily payload with just the fields the client reads. */
+function grouped(closes: Record<string, number>) {
+  return {
+    status: 'OK',
+    resultsCount: Object.keys(closes).length,
+    results: Object.entries(closes).map(([T, c]) => ({ T, c })),
+  }
+}
+
+const empty = { status: 'OK', resultsCount: 0, results: [] }
+
+/** A fetch stub that answers per grouped-daily date and records requests. */
+function fakePolygon(byDate: (date: string) => unknown) {
+  const dates: string[] = []
+  const fetchImpl = (async (url: string) => {
+    const date = new URL(url).pathname.split('/').pop()!
+    dates.push(date)
+    const body = byDate(date)
+    if (body instanceof Response) return body
+    return new Response(JSON.stringify(body))
+  }) as typeof fetch
+  return { fetchImpl, dates }
+}
 
 describe('symbol mapping', () => {
-  it('maps plain US tickers to .us symbols', () => {
-    expect(stooqSymbol('ADBE')).toBe('adbe.us')
-    expect(stooqSymbol('U')).toBe('u.us')
-  })
-
-  it('maps known internationals explicitly', () => {
-    expect(stooqSymbol('763-HK')).toBe('0763.hk')
-    expect(stooqSymbol('CSU-CA')).toBe('csu.ca')
-  })
-
-  it('refuses to guess: no-coverage listings and private names map to null', () => {
-    // A wrong guess would price the wrong instrument; null lands the ticker
-    // on the report instead.
-    for (const t of ['005930-KR', '532540-IN', 'VSURE-OME', 'SPCX', 'WEIRD-XX']) {
-      expect(stooqSymbol(t)).toBeNull()
+  it('passes plain US tickers through and refuses the rest', () => {
+    expect(polygonSymbol('ADBE')).toBe('ADBE')
+    expect(polygonSymbol('U')).toBe('U')
+    // Foreign listings carry venue suffixes and trade in other currencies;
+    // SPCX is private. All keep their FactSet or hand-entered price.
+    for (const t of ['763-HK', 'CSU-CA', '005930-KR', '532540-IN', 'VSURE-OME', 'SPCX']) {
+      expect(polygonSymbol(t)).toBeNull()
     }
   })
 })
 
-describe('CSV parsing', () => {
-  const csv = [
-    'Symbol,Date,Time,Open,High,Low,Close,Volume',
-    'ADBE.US,2026-08-29,22:00:04,290.1,295.2,289.4,293.55,2412345',
-    'CRM.US,2026-08-29,22:00:04,255.0,260.1,254.2,259.39,5012345',
-    'GONE.US,N/D,N/D,N/D,N/D,N/D,N/D,N/D',
-    '',
-  ].join('\n')
-
-  it('reads closes and skips the header', () => {
-    const quotes = parseStooqCsv(csv)
-    expect(quotes.get('adbe.us')?.close).toBe(293.55)
-    expect(quotes.get('crm.us')?.close).toBe(259.39)
-  })
-
-  it('drops N/D rows instead of producing zeros', () => {
-    expect(parseStooqCsv(csv).has('gone.us')).toBe(false)
-  })
-})
-
-describe('fetching', () => {
-  it('prices what it can and reports the rest', async () => {
-    const served = new Map([
-      ['adbe.us', 293.55],
-      ['crm.us', 259.39],
-    ])
-    const fetchImpl = (async (url: string) => {
-      const symbols = new URL(url).searchParams.get('s')!.split(' ')
-      const lines = ['Symbol,Date,Time,Open,High,Low,Close,Volume']
-      for (const s of symbols) {
-        const close = served.get(s)
-        lines.push(
-          close !== undefined
-            ? `${s.toUpperCase()},2026-08-29,22:00:00,1,1,1,${close},100`
-            : `${s.toUpperCase()},N/D,N/D,N/D,N/D,N/D,N/D,N/D`,
-        )
-      }
-      return new Response(lines.join('\n'))
-    }) as typeof fetch
-
-    const result = await fetchStooqPrices(['ADBE', 'CRM', 'DELISTED', 'SPCX'], { fetchImpl })
+describe('fetchPolygonPrices', () => {
+  it('prices the universe from one grouped-daily session', async () => {
+    const { fetchImpl, dates } = fakePolygon(() => grouped({ ADBE: 293.55, CRM: 259.39 }))
+    const result = await fetchPolygonPrices(['ADBE', 'CRM', 'DELISTED', 'SPCX'], {
+      apiKey: 'k',
+      fetchImpl,
+    })
     expect(result.prices).toEqual({ ADBE: 293.55, CRM: 259.39 })
     expect(result.unpriced).toEqual(['DELISTED'])
     expect(result.unmapped).toEqual(['SPCX'])
+    expect(dates).toHaveLength(1) // the whole universe cost one call
   })
 
-  it('surfaces an HTTP failure rather than reporting everything unpriced', async () => {
-    const fetchImpl = (async () => new Response('', { status: 503, statusText: 'down' })) as typeof fetch
-    await expect(fetchStooqPrices(['ADBE'], { fetchImpl })).rejects.toThrow('503')
+  it('walks back past days with no session to the last completed one', async () => {
+    const { fetchImpl, dates } = fakePolygon((date) =>
+      // Only the second-newest weekday has a file — a holiday Monday, say.
+      dates.length <= 1 ? empty : grouped({ ADBE: 100 }),
+    )
+    const result = await fetchPolygonPrices(['ADBE'], { apiKey: 'k', fetchImpl })
+    expect(result.prices).toEqual({ ADBE: 100 })
+    expect(dates.length).toBeGreaterThan(1)
+    for (const d of dates) {
+      const weekday = new Date(`${d}T12:00:00Z`).getUTCDay()
+      expect(weekday).not.toBe(0) // weekends are skipped without a request
+      expect(weekday).not.toBe(6)
+    }
   })
 
-  it('includes the response body in an HTTP failure, tags stripped', async () => {
-    const fetchImpl = (async () =>
-      new Response('<html><body>Exceeded the daily hits limit</body></html>', {
-        status: 404,
-        statusText: 'Not Found',
-      })) as typeof fetch
-    await expect(fetchStooqPrices(['ADBE'], { fetchImpl })).rejects.toThrow(
-      /404 Not Found — Exceeded the daily hits limit/,
+  it('names the API key as the problem on a 401/403', async () => {
+    const { fetchImpl } = fakePolygon(
+      () => new Response(JSON.stringify({ message: 'Unknown API Key' }), { status: 401 }),
+    )
+    await expect(fetchPolygonPrices(['ADBE'], { apiKey: 'bad', fetchImpl })).rejects.toThrow(
+      /rejected the API key \(401\).*Unknown API Key.*POLYGON_API_KEY/s,
     )
   })
 
-  it('sends browser-like headers, which Stooq requires of both endpoints', async () => {
-    const seen: (string | undefined)[] = []
-    const fetchImpl = (async (_url: string, init?: RequestInit) => {
-      seen.push((init?.headers as Record<string, string> | undefined)?.['User-Agent'])
-      return new Response('Symbol,Date,Time,Open,High,Low,Close,Volume')
+  it('surfaces any other refusal with Polygon’s own words', async () => {
+    const { fetchImpl } = fakePolygon(
+      () => new Response('<h1>upstream exploded</h1>', { status: 502, statusText: 'Bad Gateway' }),
+    )
+    await expect(fetchPolygonPrices(['ADBE'], { apiKey: 'k', fetchImpl })).rejects.toThrow(
+      /502 Bad Gateway — upstream exploded/,
+    )
+  })
+
+  it('sends the key as a query parameter on the grouped endpoint', async () => {
+    let asked = ''
+    const fetchImpl = (async (url: string) => {
+      asked = url
+      return new Response(JSON.stringify(grouped({ ADBE: 1 })))
     }) as typeof fetch
-    await fetchStooqPrices(['ADBE'], { fetchImpl })
-    await fetchYearEndCloses(['ADBE'], 2025, { fetchImpl })
-    expect(seen).toHaveLength(2)
-    for (const agent of seen) expect(agent).toMatch(/^Mozilla\/5\.0/)
+    await fetchPolygonPrices(['ADBE'], { apiKey: 'secret-key', fetchImpl })
+    const url = new URL(asked)
+    expect(url.pathname).toMatch(/^\/v2\/aggs\/grouped\/locale\/us\/market\/stocks\/\d{4}-\d{2}-\d{2}$/)
+    expect(url.searchParams.get('apiKey')).toBe('secret-key')
+    expect(url.searchParams.get('adjusted')).toBe('true')
   })
 })
 
-describe('year-end closes', () => {
-  const history = [
-    'Date,Open,High,Low,Close,Volume',
-    '2025-12-29,300.0,302.0,299.0,301.10,1000',
-    '2025-12-30,301.0,303.0,300.0,302.40,1200',
-    '2025-12-31,302.0,304.0,301.5,303.75,900',
-  ].join('\n')
-
-  it('takes the last close in the window, not the first', () => {
-    // The final session of the year moves with the holidays, so the window is
-    // asked for and the last row wins.
-    expect(lastCloseFromHistory(history)).toBe(303.75)
+describe('fetchYearEndCloses', () => {
+  it('takes the final December session of the requested year', async () => {
+    const { fetchImpl, dates } = fakePolygon((date) =>
+      date === '2025-12-31' ? grouped({ ADBE: 349.99, CRM: 40 }) : empty,
+    )
+    const closes = await fetchYearEndCloses(['ADBE', 'CRM', 'SPCX'], 2025, {
+      apiKey: 'k',
+      fetchImpl,
+    })
+    expect(closes).toEqual({ ADBE: 349.99, CRM: 40 })
+    expect(dates).toEqual(['2025-12-31'])
   })
 
-  it('returns null for an empty or header-only response', () => {
-    expect(lastCloseFromHistory('Date,Open,High,Low,Close,Volume')).toBeNull()
-    expect(lastCloseFromHistory('')).toBeNull()
+  it('walks back within December when the 31st has no session', async () => {
+    const { fetchImpl, dates } = fakePolygon((date) =>
+      date === '2027-12-30' ? grouped({ ADBE: 500 }) : empty,
+    )
+    // Dec 31 2027 is a Friday with no file in this fixture; Dec 30 answers.
+    const closes = await fetchYearEndCloses(['ADBE'], 2027, { apiKey: 'k', fetchImpl })
+    expect(closes).toEqual({ ADBE: 500 })
+    for (const d of dates) expect(d.startsWith('2027-12')).toBe(true)
   })
 
-  it('fetches per ticker and skips ones with no symbol', async () => {
-    const asked: string[] = []
-    const fetchImpl = (async (url: string) => {
-      const symbol = new URL(url).searchParams.get('s')!
-      asked.push(symbol)
-      return new Response(history)
-    }) as typeof fetch
-
-    const closes = await fetchYearEndCloses(['ADBE', 'CRM', 'SPCX'], 2025, { fetchImpl })
-    expect(closes).toEqual({ ADBE: 303.75, CRM: 303.75 })
-    expect(asked.sort()).toEqual(['adbe.us', 'crm.us'])
-  })
-
-  it('asks for a December window of the requested year', async () => {
-    let seen = ''
-    const fetchImpl = (async (url: string) => {
-      seen = url
-      return new Response(history)
-    }) as typeof fetch
-    await fetchYearEndCloses(['ADBE'], 2025, { fetchImpl })
-    expect(seen).toContain('d1=20251215')
-    expect(seen).toContain('d2=20251231')
-  })
-
-  it('keeps going when one symbol fails', async () => {
-    const fetchImpl = (async (url: string) => {
-      if (url.includes('crm.us')) throw new Error('network')
-      return new Response(history)
-    }) as typeof fetch
-    const closes = await fetchYearEndCloses(['ADBE', 'CRM'], 2025, { fetchImpl })
-    expect(closes).toEqual({ ADBE: 303.75 })
+  it('returns nothing rather than crossing into the prior year', async () => {
+    const { fetchImpl, dates } = fakePolygon(() => empty)
+    const closes = await fetchYearEndCloses(['ADBE'], 2025, { apiKey: 'k', fetchImpl })
+    expect(closes).toEqual({})
+    for (const d of dates) expect(d.startsWith('2025-12')).toBe(true)
   })
 })

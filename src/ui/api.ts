@@ -129,7 +129,7 @@ export const api = {
     json<{
       ok: boolean
       mode: 'prices'
-      source: 'factset' | 'stooq'
+      source: 'factset' | 'polygon'
       updated: number
       unpriced: string[]
       unmapped: string[]
