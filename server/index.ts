@@ -633,6 +633,9 @@ app.use(((err, _req, res, _next) => {
 async function start(): Promise<void> {
   const seeded = await seedDataDir(dataDir, bundledData)
   if (seeded === 'seeded') console.log(`Seeded ${dataDir} from the bundled workbook import.`)
+  else if (typeof seeded === 'object' && seeded.backfilled.length) {
+    console.log(`Backfilled onto ${dataDir}: ${seeded.backfilled.join(', ')}`)
+  }
 
   app.listen(port, () => {
     if (!auth.enabled) {

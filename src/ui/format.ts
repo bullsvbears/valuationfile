@@ -19,10 +19,11 @@ export function formatPercent(value: Multiple, digits = 1): string {
 /** Money in millions, abbreviated to billions once it stops being readable. */
 export function formatMillions(value: number | null): string {
   if (value === null) return EMPTY
+  const sign = value < 0 ? '-' : ''
   const abs = Math.abs(value)
-  if (abs >= 1_000_000) return `$${(value / 1_000_000).toFixed(2)}T`
-  if (abs >= 1_000) return `$${(value / 1_000).toFixed(1)}B`
-  return `$${value.toFixed(0)}M`
+  if (abs >= 1_000_000) return `${sign}$${(abs / 1_000_000).toFixed(2)}T`
+  if (abs >= 1_000) return `${sign}$${(abs / 1_000).toFixed(1)}B`
+  return `${sign}$${abs.toFixed(0)}M`
 }
 
 export function formatPrice(value: number | null): string {
@@ -31,6 +32,26 @@ export function formatPrice(value: number | null): string {
 
 export function formatNumber(value: number | null, digits = 2): string {
   return value === null ? EMPTY : value.toFixed(digits)
+}
+
+/**
+ * Master-grid money: `$1,250` for millions figures, `$10.25` when cents are
+ * the point (per-share numbers). Same conventions as the Master Input grid.
+ */
+export function formatDollars(value: number | null | undefined, cents = false): string {
+  if (value === null || value === undefined) return EMPTY
+  const sign = value < 0 ? '-' : ''
+  const abs = Math.abs(value)
+  return `${sign}$${abs.toLocaleString('en-US', cents
+    ? { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+    : { maximumFractionDigits: 0 })}`
+}
+
+/** A plain count with commas and no decimals, as the Master Input grid shows shares. */
+export function formatCount(value: number | null | undefined): string {
+  if (value === null || value === undefined) return EMPTY
+  const sign = value < 0 ? '-' : ''
+  return `${sign}${Math.abs(value).toLocaleString('en-US', { maximumFractionDigits: 0 })}`
 }
 
 /** Signed percentage, for returns where direction is the point. */

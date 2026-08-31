@@ -3,9 +3,10 @@ import { LineChart } from './LineChart.js'
 import { api, type CompanyDetail as Detail } from './api.js'
 import { METRIC_KEYS, type MetricKey } from '../lib/types.js'
 import {
+  formatCount,
+  formatDollars,
   formatMillions,
   formatMultiple,
-  formatNumber,
   formatPercent,
   formatPrice,
 } from './format.js'
@@ -45,8 +46,8 @@ function formatKpi(value: number, kind: (typeof KPI_ROWS)[number]['kind']): stri
   switch (kind) {
     case 'percent': return `${(value * 100).toFixed(1)}%`
     case 'number': return value.toFixed(1)
-    case 'count': return Math.round(value).toLocaleString('en-US')
-    case 'dollars': return `$${Math.round(value).toLocaleString('en-US')}`
+    case 'count': return formatCount(value)
+    case 'dollars': return formatDollars(value)
   }
 }
 
@@ -123,7 +124,7 @@ export function CompanyDetail({ ticker, onBack }: { ticker: string; onBack: () =
           </div>
           <div className="stat">
             <div className="label">Diluted shares</div>
-            <div className="value">{formatNumber(resolved.balance.shares.value, 1)}</div>
+            <div className="value">{formatCount(resolved.balance.shares.value)}</div>
           </div>
           <div className="stat">
             <div className="label">Net debt</div>
@@ -204,20 +205,20 @@ export function CompanyDetail({ ticker, onBack }: { ticker: string; onBack: () =
                   <td className="left row-label">{METRIC_LABELS[metric]}</td>
                   {years.map((year) => {
                     const cell = resolved.series[metric][year]
+                    const cents = metric === 'eps' // $10.25; everything else $1,250
                     const consensus = tiers.factset?.series?.[metric]?.[year]
                     const displaced =
                       cell?.tier && cell.tier !== 'factset' && typeof consensus === 'number'
-                        ? ` · FactSet: ${formatNumber(consensus, 1)}`
+                        ? ` · FactSet: ${formatDollars(consensus, cents)}`
                         : ''
+                    const negative = typeof cell?.value === 'number' && cell.value < 0
                     return (
                       <td
                         key={year}
-                        className="num"
+                        className={`num ${negative ? 'neg' : ''}`}
                         title={cell?.tier ? `Source: ${cell.tier}${displaced}` : 'No data'}
                       >
-                        {cell?.value === null || cell?.value === undefined
-                          ? '—'
-                          : formatNumber(cell.value, 1)}
+                        {formatDollars(cell?.value, cents)}
                         {cell?.tier && <i className={`tier-dot ${cell.tier}`} title={cell.tier} />}
                       </td>
                     )
@@ -252,8 +253,9 @@ export function CompanyDetail({ ticker, onBack }: { ticker: string; onBack: () =
                     <td className="left row-label">{row.label}</td>
                     {kpiYears.map((y) => {
                       const value = detail.kpis?.[row.key]?.[y]
+                      const negative = typeof value === 'number' && value < 0
                       return (
-                        <td key={y} className={`num ${value === undefined ? 'nm' : ''}`}>
+                        <td key={y} className={`num ${value === undefined ? 'nm' : ''} ${negative ? 'neg' : ''}`}>
                           {value === undefined ? '—' : formatKpi(value, row.kind)}
                         </td>
                       )
