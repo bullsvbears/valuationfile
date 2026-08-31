@@ -1,8 +1,8 @@
-import { Fragment, useMemo, useState } from 'react'
-import { summariseGroup, type GroupStat } from '../lib/aggregate.js'
-import type { Dashboard } from '../lib/dashboard.js'
+import { Fragment, useEffect, useMemo, useState } from 'react'
+import { mean, median, summariseGroup, type GroupStat } from '../lib/aggregate.js'
+import type { CompanyView, Dashboard } from '../lib/dashboard.js'
 import type { CompanyMetrics, YearMetrics } from '../lib/metrics.js'
-import { api } from './api.js'
+import { api, type GroupAuditEntry } from './api.js'
 import { formatMillions, formatMultiple, formatPercent } from './format.js'
 
 /**
@@ -11,12 +11,12 @@ import { formatMillions, formatMultiple, formatPercent } from './format.js'
  * Median leads — the desk's convention, and the statistic a 40x outlier
  * cannot drag — with a toggle to mean. Valuation metrics show the latest two
  * forecast years side by side and fundamentals the latest three, both derived
- * from the data's own year list so a new year flows in on its own.
+ * from the data's own year list so a new year flows in on its own. YTD is
+ * aggregated with the same statistic as everything else.
  *
- * Groups are editable in place: expanding a row opens its member list, where
- * tickers can be removed or added (with a new-group form at the bottom of the
- * table). Edits persist to the universe and every stat restrikes immediately,
- * since the roll-ups are computed from the membership on each load.
+ * Expanding a group lists its constituents with the same columns, each
+ * removable in place; new members are added on the row beneath. Every
+ * membership change lands in the audit log at the bottom of the tab.
  */
 
 type Stat = 'median' | 'mean'
@@ -38,6 +38,64 @@ const FUNDAMENTAL_ROWS = [
 ] as const
 
 type MetricKeyOf = keyof YearMetrics
+
+function ytdCell(value: number | null): { text: string; cls: string } {
+  if (value === null) return { text: '—', cls: 'nm' }
+  return {
+    text: `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`,
+    cls: value > 0 ? 'pos' : value < 0 ? 'neg' : '',
+  }
+}
+
+/** "14:02 · Security Software: +CRWD −OKTA" rows for one mapping's edits. */
+function AuditLog({ kind }: { kind: 'sector' | 'financial' }) {
+  const [open, setOpen] = useState(false)
+  const [entries, setEntries] = useState<GroupAuditEntry[] | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!open || entries !== null) return
+    api
+      .groupAudit()
+      .then(({ entries: all }) => setEntries(all.filter((e) => e.kind === kind)))
+      .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
+  }, [open, entries, kind])
+
+  return (
+    <div className="audit-log">
+      <button className="group-toggle" onClick={() => setOpen(!open)}>
+        {open ? '▾' : '▸'} Membership audit log
+      </button>
+      {open && error && <div className="status error">{error}</div>}
+      {open && entries !== null && (
+        <div className="audit-entries">
+          {entries.length === 0 && (
+            <span className="hint">No membership changes recorded yet.</span>
+          )}
+          {entries.slice(0, 100).map((entry, index) => (
+            <div key={`${entry.at}-${index}`} className="audit-entry">
+              <span className="audit-when">
+                {entry.at.slice(0, 10)} {entry.at.slice(11, 16)}
+              </span>
+              <span className="audit-group">
+                {entry.group}
+                {entry.created ? ' (created)' : ''}
+              </span>
+              <span>
+                {entry.added.map((t) => (
+                  <span key={t} className="audit-add">+{t} </span>
+                ))}
+                {entry.removed.map((t) => (
+                  <span key={t} className="audit-remove">−{t} </span>
+                ))}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 export function Summary({
   title,
@@ -71,6 +129,11 @@ export function Summary({
     [dashboard, kind],
   )
 
+  const companyByTicker = useMemo(
+    () => new Map<string, CompanyView>(dashboard.companies.map((c) => [c.meta.ticker, c])),
+    [dashboard],
+  )
+
   /** group -> year -> the full stat table, computed from live member metrics. */
   const statsByGroup = useMemo(() => {
     const metricsByTicker = new Map<string, CompanyMetrics>(
@@ -88,6 +151,18 @@ export function Summary({
     }
     return out
   }, [dashboard, rosters, valuationYears, fundamentalYears])
+
+  /** Group YTD, aggregated with the same statistic as everything else. */
+  const groupYtd = useMemo(() => {
+    const out = new Map<string, { median: number | null; mean: number | null }>()
+    for (const roster of rosters) {
+      const values = roster.members
+        .map((t) => companyByTicker.get(t)?.ytdReturn)
+        .filter((v): v is number => typeof v === 'number')
+      out.set(roster.group, { median: median(values), mean: mean(values) })
+    }
+    return out
+  }, [rosters, companyByTicker])
 
   const cell = (group: string, year: string, key: MetricKeyOf): number | null => {
     const groupStats = statsByGroup.get(group)?.get(year)?.stats as
@@ -116,7 +191,25 @@ export function Summary({
   ]
 
   const totalColumns =
-    2 + VALUATION_ROWS.length * valuationYears.length + FUNDAMENTAL_ROWS.length * fundamentalYears.length
+    3 + VALUATION_ROWS.length * valuationYears.length + FUNDAMENTAL_ROWS.length * fundamentalYears.length
+
+  /** The metric cells shared by group rows and constituent rows. */
+  const metricCells = (value: (year: string, key: MetricKeyOf) => number | null) =>
+    blocks.flatMap((block) =>
+      block.rows.flatMap((row) =>
+        block.years.map((year, index) => {
+          const v = value(year, row.key as MetricKeyOf)
+          return (
+            <td
+              key={`${row.key}-${year}`}
+              className={`num ${v === null ? 'nm' : ''} ${index === 0 ? 'group-start' : ''}`}
+            >
+              {row.format(v)}
+            </td>
+          )
+        }),
+      ),
+    )
 
   return (
     <div className="panel">
@@ -136,15 +229,17 @@ export function Summary({
         </nav>
         <span className="hint">
           Valuation shows the latest two forecast years; fundamentals the latest three.
+          Expand a group for its constituents.
         </span>
       </div>
 
-      <div className="table-wrap" style={{ maxHeight: 'none' }}>
+      <div className="table-wrap">
         <table>
           <thead>
             <tr>
               <th className="left sticky-col group-head" />
               <th className="group-head" />
+              <th className="group-head group-start">Returns</th>
               {blocks.flatMap((block) =>
                 block.rows.map((row) => (
                   <th
@@ -160,6 +255,7 @@ export function Summary({
             <tr>
               <th className="left sticky-col">Group</th>
               <th>N</th>
+              <th className="group-start">YTD</th>
               {blocks.flatMap((block) =>
                 block.rows.flatMap((row) =>
                   block.years.map((year, index) => (
@@ -172,85 +268,96 @@ export function Summary({
             </tr>
           </thead>
           <tbody>
-            {rosters.map((roster) => (
-              <Fragment key={roster.group}>
-                <tr>
-                  <td className="left sticky-col">
-                    <button
-                      className="group-toggle"
-                      onClick={() => {
-                        setExpanded(expanded === roster.group ? null : roster.group)
-                        setAddTicker('')
-                        setError(null)
-                      }}
-                      title="Edit this group's members"
-                    >
-                      {expanded === roster.group ? '▾' : '▸'} {roster.group}
-                    </button>
-                  </td>
-                  <td className="num">{roster.members.length}</td>
-                  {blocks.flatMap((block) =>
-                    block.rows.flatMap((row) =>
-                      block.years.map((year, index) => {
-                        const value = cell(roster.group, year, row.key as MetricKeyOf)
-                        return (
-                          <td
-                            key={`${row.key}-${year}`}
-                            className={`num ${value === null ? 'nm' : ''} ${index === 0 ? 'group-start' : ''}`}
-                          >
-                            {row.format(value)}
-                          </td>
-                        )
-                      }),
-                    ),
-                  )}
-                </tr>
-                {expanded === roster.group && (
-                  <tr className="group-editor-row">
-                    <td colSpan={totalColumns}>
-                      <div className="group-editor">
-                        {roster.members.map((ticker) => (
-                          <span key={ticker} className="chip">
-                            {ticker}
-                            <button
-                              className="chip-remove"
-                              disabled={busy}
-                              title={`Remove ${ticker} from ${roster.group}`}
-                              onClick={() => void edit(roster.group, { remove: [ticker] })}
-                            >
-                              ×
-                            </button>
-                          </span>
-                        ))}
-                        <form
-                          className="chip-add"
-                          onSubmit={(e) => {
-                            e.preventDefault()
-                            if (!addTicker.trim()) return
-                            void edit(roster.group, { add: [addTicker] }).then(() =>
-                              setAddTicker(''),
-                            )
-                          }}
-                        >
-                          <input
-                            type="text"
-                            list="all-tickers"
-                            value={addTicker}
-                            placeholder="Add ticker…"
-                            disabled={busy}
-                            onChange={(e) => setAddTicker(e.target.value)}
-                          />
-                          <button className="btn" type="submit" disabled={busy || !addTicker.trim()}>
-                            Add
-                          </button>
-                        </form>
-                        {error && <span className="asof-error">{error}</span>}
-                      </div>
+            {rosters.map((roster) => {
+              const ytd = ytdCell(
+                (stat === 'median'
+                  ? groupYtd.get(roster.group)?.median
+                  : groupYtd.get(roster.group)?.mean) ?? null,
+              )
+              const isOpen = expanded === roster.group
+              return (
+                <Fragment key={roster.group}>
+                  <tr>
+                    <td className="left sticky-col">
+                      <button
+                        className="group-toggle"
+                        onClick={() => {
+                          setExpanded(isOpen ? null : roster.group)
+                          setAddTicker('')
+                          setError(null)
+                        }}
+                        title="Show this group's constituents"
+                      >
+                        {isOpen ? '▾' : '▸'} {roster.group}
+                      </button>
                     </td>
+                    <td className="num">{roster.members.length}</td>
+                    <td className={`num group-start ${ytd.cls}`}>{ytd.text}</td>
+                    {metricCells((year, key) => cell(roster.group, year, key))}
                   </tr>
-                )}
-              </Fragment>
-            ))}
+                  {isOpen &&
+                    roster.members.map((ticker) => {
+                      const company = companyByTicker.get(ticker)
+                      const memberYtd = ytdCell(company?.ytdReturn ?? null)
+                      return (
+                        <tr key={`${roster.group}-${ticker}`} className="member-row">
+                          <td className="left sticky-col">
+                            <span className="member-cell">
+                              <button
+                                className="chip-remove"
+                                disabled={busy}
+                                title={`Remove ${ticker} from ${roster.group}`}
+                                onClick={() => void edit(roster.group, { remove: [ticker] })}
+                              >
+                                ×
+                              </button>
+                              <span className="member-ticker">{ticker}</span>
+                              <span className="member-name">{company?.meta.name ?? ''}</span>
+                            </span>
+                          </td>
+                          <td />
+                          <td className={`num group-start ${memberYtd.cls}`}>{memberYtd.text}</td>
+                          {metricCells((year, key) => {
+                            const raw = company?.metrics.byYear[year]?.[key]
+                            return typeof raw === 'number' ? raw : null
+                          })}
+                        </tr>
+                      )
+                    })}
+                  {isOpen && (
+                    <tr className="group-editor-row">
+                      <td colSpan={totalColumns}>
+                        <div className="group-editor">
+                          <form
+                            className="chip-add"
+                            onSubmit={(e) => {
+                              e.preventDefault()
+                              if (!addTicker.trim()) return
+                              void edit(roster.group, { add: [addTicker] }).then(() =>
+                                setAddTicker(''),
+                              )
+                            }}
+                          >
+                            <input
+                              type="text"
+                              list="all-tickers"
+                              value={addTicker}
+                              placeholder={`Add ticker to ${roster.group}…`}
+                              disabled={busy}
+                              onChange={(e) => setAddTicker(e.target.value)}
+                            />
+                            <button className="btn" type="submit" disabled={busy || !addTicker.trim()}>
+                              Add
+                            </button>
+                          </form>
+                          {error && <span className="asof-error">{error}</span>}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              )
+            })}
           </tbody>
         </table>
       </div>
@@ -296,9 +403,11 @@ export function Summary({
           Create group
         </button>
         <span className="hint">
-          Click a group name to edit its members. Changes restrike every statistic immediately.
+          Click a group name for its constituents. Changes restrike every statistic immediately.
         </span>
       </form>
+
+      <AuditLog kind={kind} />
     </div>
   )
 }

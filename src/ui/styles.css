@@ -567,3 +567,40 @@ a.back { text-decoration: none; display: inline-block; }
    Market / Valuation / each fundamental read as distinct bands. */
 th.group-start, td.group-start { border-left: 2px solid var(--border-strong); }
 thead th.group-head.group-start { border-left: 2px solid var(--border-strong); }
+
+/* Peer-group constituent rows and the membership audit log. */
+.member-row td { background: color-mix(in srgb, var(--surface-2) 55%, var(--surface)); }
+.member-row td.sticky-col { background: color-mix(in srgb, var(--surface-2) 55%, var(--surface)); }
+.member-cell { display: inline-flex; align-items: center; gap: 7px; padding-left: 14px; }
+.member-ticker { font-weight: 600; }
+.member-name { color: var(--text-muted); font-size: 12px; }
+
+.audit-log { margin-top: 10px; }
+.audit-entries {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-height: 260px;
+  overflow: auto;
+  font-size: 12.5px;
+}
+.audit-entry { display: flex; gap: 12px; align-items: baseline; }
+.audit-when { color: var(--text-faint); font-family: var(--mono); font-size: 11.5px; white-space: nowrap; }
+.audit-group { font-weight: 600; white-space: nowrap; }
+.audit-add { color: var(--positive); font-family: var(--mono); }
+.audit-remove { color: var(--negative); font-family: var(--mono); }
+
+/* First-time company setup on Master Input. */
+.add-company {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.add-company .check { display: inline-flex; gap: 6px; align-items: center; font-size: 12.5px; color: var(--text-muted); }

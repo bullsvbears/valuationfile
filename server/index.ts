@@ -502,6 +502,51 @@ app.patch('/api/groups', route(async (req, res) => {
   }
 }))
 
+/** The comp-group membership audit log, newest change first. */
+app.get('/api/groups/audit', route(async (_req, res) => {
+  const log = await store.loadGroupAudit()
+  res.json({ entries: [...log.entries].reverse() })
+}))
+
+/**
+ * Add a brand-new company to the universe. Identity only — inputs are typed
+ * into Master Input afterwards, the price arrives with the next update, and
+ * group membership is assigned on the peers tabs.
+ */
+app.post('/api/companies', route(async (req, res) => {
+  const body = req.body as {
+    ticker?: unknown
+    name?: unknown
+    fiscalYearEnd?: unknown
+    covered?: unknown
+    priorYearClose?: unknown
+  }
+  if (
+    typeof body.ticker !== 'string' ||
+    typeof body.name !== 'string' ||
+    typeof body.fiscalYearEnd !== 'number'
+  ) {
+    res.status(400).json({ error: 'Expected ticker, name and fiscalYearEnd (month 1-12)' })
+    return
+  }
+  try {
+    const meta = await store.addCompany({
+      ticker: body.ticker,
+      name: body.name,
+      fiscalYearEnd: body.fiscalYearEnd,
+      covered: body.covered === true,
+    })
+    // A hand-entered prior year-end close makes YTD work from day one for
+    // names the free feed has no baseline for.
+    if (typeof body.priorYearClose === 'number' && body.priorYearClose > 0) {
+      await store.patchOverride(meta.ticker, { priorYearClose: body.priorYearClose })
+    }
+    res.json({ ok: true, company: meta })
+  } catch (error) {
+    res.status(400).json({ error: error instanceof Error ? error.message : String(error) })
+  }
+}))
+
 /**
  * Pull fresh data from FactSet into the factset tier, on demand. Overrides
  * and own models are stored separately and are untouched by a refresh.

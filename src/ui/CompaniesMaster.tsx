@@ -14,6 +14,132 @@ import { api } from './api.js'
  * removes the override and the value falls back to whatever sits beneath it.
  */
 
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+]
+
+/**
+ * First-time setup for a name the universe does not have yet. Identity only:
+ * once created, the new row appears in the grid (search jumps to it) and the
+ * follow-ups are spelled out — type estimates here, assign peer groups on the
+ * peers tabs, prices arrive with the next update.
+ */
+function AddCompanyPanel({
+  onCreated,
+  onClose,
+}: {
+  onCreated: (ticker: string) => Promise<void>
+  onClose: () => void
+}) {
+  const [ticker, setTicker] = useState('')
+  const [name, setName] = useState('')
+  const [fye, setFye] = useState(12)
+  const [covered, setCovered] = useState(false)
+  const [priorClose, setPriorClose] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [status, setStatus] = useState<{ text: string; error: boolean } | null>(null)
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const close = priorClose.trim() ? Number(priorClose.replace(/[$,]/g, '')) : undefined
+    if (priorClose.trim() && (!Number.isFinite(close) || close! <= 0)) {
+      setStatus({ text: 'Prior YE close must be a positive price', error: true })
+      return
+    }
+    setBusy(true)
+    setStatus(null)
+    try {
+      const { company } = await api.addCompany({
+        ticker,
+        name,
+        fiscalYearEnd: fye,
+        covered,
+        ...(close !== undefined ? { priorYearClose: close } : {}),
+      })
+      await onCreated(company.ticker)
+      setStatus({
+        text:
+          `${company.ticker} added. Next: type its estimates into each metric tab here, ` +
+          'assign it to comp groups on the peers tabs, and its price arrives with the ' +
+          'next "Update prices".',
+        error: false,
+      })
+      setTicker('')
+      setName('')
+      setPriorClose('')
+    } catch (err) {
+      setStatus({ text: err instanceof Error ? err.message : String(err), error: true })
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <form className="add-company" onSubmit={(e) => void submit(e)}>
+      <div className="control">
+        <label htmlFor="ac-ticker">Ticker</label>
+        <input
+          id="ac-ticker"
+          type="text"
+          value={ticker}
+          placeholder="e.g. NEWCO"
+          disabled={busy}
+          onChange={(e) => setTicker(e.target.value.toUpperCase())}
+        />
+      </div>
+      <div className="control">
+        <label htmlFor="ac-name">Company name</label>
+        <input
+          id="ac-name"
+          type="text"
+          value={name}
+          placeholder="NewCo, Inc."
+          disabled={busy}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      <div className="control">
+        <label htmlFor="ac-fye">Fiscal year end</label>
+        <select id="ac-fye" value={fye} disabled={busy} onChange={(e) => setFye(Number(e.target.value))}>
+          {MONTHS.map((month, index) => (
+            <option key={month} value={index + 1}>{month}</option>
+          ))}
+        </select>
+      </div>
+      <div className="control">
+        <label htmlFor="ac-close">Prior YE close ($, optional)</label>
+        <input
+          id="ac-close"
+          type="text"
+          value={priorClose}
+          placeholder="for YTD"
+          disabled={busy}
+          onChange={(e) => setPriorClose(e.target.value)}
+        />
+      </div>
+      <label className="check">
+        <input
+          type="checkbox"
+          checked={covered}
+          disabled={busy}
+          onChange={(e) => setCovered(e.target.checked)}
+        />
+        I cover this name (own model)
+      </label>
+      <button className="btn" type="submit" disabled={busy || !ticker.trim() || !name.trim()}>
+        {busy ? 'Adding…' : 'Add to universe'}
+      </button>
+      <button className="btn" type="button" disabled={busy} onClick={onClose}>
+        Close
+      </button>
+      {status && (
+        <span className={status.error ? 'asof-error' : 'hint'}>{status.text}</span>
+      )}
+    </form>
+  )
+}
+
 const METRIC_TABS: { key: MetricKey | 'balance'; label: string }[] = [
   { key: 'revenue', label: 'Revenue' },
   { key: 'grossProfit', label: 'Gross profit' },
@@ -98,6 +224,7 @@ export function CompaniesMaster({
 }) {
   const [metric, setMetric] = useState<MetricKey | 'balance'>('revenue')
   const [search, setSearch] = useState('')
+  const [adding, setAdding] = useState(false)
   const [drafts, setDrafts] = useState<Drafts>({})
   const [focused, setFocused] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
@@ -303,6 +430,13 @@ export function CompaniesMaster({
         <button className="btn" onClick={addYear} title="Add an empty forecast-year column; it flows through the whole app once a value is saved">
           + Add {nextYear}
         </button>
+        <button
+          className="btn"
+          onClick={() => setAdding((open) => !open)}
+          title="Add a company to the universe"
+        >
+          + Add company
+        </button>
         <div className="spacer" />
         <div className="legend">
           <span><i className="tier-dot factset" /> FactSet</span>
@@ -310,6 +444,16 @@ export function CompaniesMaster({
           <span><i className="tier-dot override" /> Override</span>
         </div>
       </div>
+
+      {adding && (
+        <AddCompanyPanel
+          onCreated={async (ticker) => {
+            await onSaved()
+            setSearch(ticker) // jump the grid straight to the new row
+          }}
+          onClose={() => setAdding(false)}
+        />
+      )}
 
       {error && <div className="status error">{error}</div>}
 

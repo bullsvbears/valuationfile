@@ -137,6 +137,21 @@ which source served the last update. Non-US listings and private names
 reported rather than silently left stale. `POLYGON_BASE_URL` overrides the
 endpoint (used by the tests to point at a local stand-in).
 
+## Editing the universe
+
+The app opens on the Screen tab. Master Input is the one editing surface for
+numbers, and its "+ Add company" workflow brings a brand-new name into the
+universe: ticker, company name, fiscal year end, covered or not, and an
+optional prior year-end close so YTD works from day one. The new row appears
+in the grid ready for estimates; assign it to comp groups on the peers tabs,
+and its price arrives with the next "Update prices".
+
+On Sector Peers and Financial Peers, expanding a group lists its
+constituents with the same columns as the group row (including YTD,
+aggregated with the selected median/mean statistic), each removable in
+place. Every membership add or remove is recorded to `group-audit.json` and
+readable in the "Membership audit log" at the bottom of each peers tab.
+
 ## Backups
 
 Two paths, both covering the whole data directory — models, overrides, the

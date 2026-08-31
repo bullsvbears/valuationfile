@@ -370,6 +370,79 @@ describe('writes land on the data directory', () => {
     })
   })
 
+  it('serves the membership audit log, newest change first', async () => {
+    const cookie = await signIn()
+    // The previous test added then removed CRM from Adtech; both edits must
+    // be on the log, with the removal at the top.
+    const res = await fetch(`${baseUrl}/api/groups/audit`, { headers: { cookie } })
+    expect(res.ok).toBe(true)
+    const { entries } = (await res.json()) as {
+      entries: { kind: string; group: string; added: string[]; removed: string[] }[]
+    }
+    expect(entries.length).toBeGreaterThanOrEqual(2)
+    expect(entries[0]).toMatchObject({ kind: 'sector', group: 'Adtech', removed: ['CRM'] })
+    expect(entries[1]).toMatchObject({ kind: 'sector', group: 'Adtech', added: ['CRM'] })
+  })
+
+  it('adds a brand-new company that flows through the whole app', async () => {
+    const cookie = await signIn()
+    const headers = { 'Content-Type': 'application/json', cookie }
+
+    const post = await fetch(`${baseUrl}/api/companies`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        ticker: 'newco',
+        name: 'NewCo, Inc.',
+        fiscalYearEnd: 12,
+        covered: true,
+        priorYearClose: 80,
+      }),
+    })
+    expect(post.status).toBe(200)
+    expect(((await post.json()) as { company: { ticker: string } }).company.ticker).toBe('NEWCO')
+
+    // It shows on the dashboard with its hand-entered YTD baseline...
+    const res = await fetch(`${baseUrl}/api/dashboard`, { headers: { cookie } })
+    const dashboard = (await res.json()) as {
+      companies: {
+        meta: { ticker: string; covered: boolean }
+        priorYearClose: { value: number | null; tier: string | null }
+      }[]
+    }
+    const newco = dashboard.companies.find((c) => c.meta.ticker === 'NEWCO')
+    expect(newco?.meta.covered).toBe(true)
+    expect(newco?.priorYearClose).toEqual({ value: 80, tier: 'override' })
+
+    // ...accepts inputs like any other name, and joins comp groups.
+    const override = await fetch(`${baseUrl}/api/company/NEWCO/override`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ series: { revenue: { '2027': 500 } } }),
+    })
+    expect(override.ok).toBe(true)
+    const group = await fetch(`${baseUrl}/api/groups`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ kind: 'financial', group: 'Software Group', add: ['NEWCO'] }),
+    })
+    expect(group.ok).toBe(true)
+
+    // Duplicates and junk are refused.
+    const dup = await fetch(`${baseUrl}/api/companies`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ ticker: 'NEWCO', name: 'Again', fiscalYearEnd: 12 }),
+    })
+    expect(dup.status).toBe(400)
+    const junk = await fetch(`${baseUrl}/api/companies`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ ticker: 'X', name: 'X', fiscalYearEnd: 'december' }),
+    })
+    expect(junk.status).toBe(400)
+  })
+
   it('rejects a group edit with an unknown ticker or bad kind', async () => {
     const cookie = await signIn()
     const unknown = await fetch(`${baseUrl}/api/groups`, {
@@ -438,7 +511,8 @@ describe('writes land on the data directory', () => {
       models: Record<string, unknown>
       kpis: Record<string, unknown>
     }
-    expect(bundle.universe.companies.length).toBe(323)
+    // 323 from the workbook import, plus NEWCO added by the test above.
+    expect(bundle.universe.companies.length).toBe(324)
     expect(Object.keys(bundle.models).length).toBeGreaterThan(40)
     expect(Object.keys(bundle.kpis).length).toBeGreaterThan(150)
   })

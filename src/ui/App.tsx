@@ -15,7 +15,7 @@ type View = 'summary' | 'master' | 'screener' | 'sectors' | 'peers' | 'changes'
 export function App() {
   const [dashboard, setDashboard] = useState<Dashboard | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [view, setView] = useState<View>('summary')
+  const [view, setView] = useState<View>('screener')
   const [selected, setSelected] = useState<string | null>(null)
   const [year, setYear] = useState<string | null>(null)
   const [session, setSession] = useState<SessionState | null>(null)

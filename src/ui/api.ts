@@ -1,9 +1,10 @@
 import type { Dashboard } from '../lib/dashboard.js'
 import type { CompanyView } from '../lib/dashboard.js'
 import type { CompanyFacts, OverrideEntry, OwnModel } from '../lib/types.js'
-import type { SavedView } from '../lib/store.js'
+import type { CompanyMeta } from '../lib/types.js'
+import type { GroupAuditEntry, SavedView } from '../lib/store.js'
 
-export type { SavedView }
+export type { GroupAuditEntry, SavedView }
 
 /** Thin fetch wrappers over the dashboard API. */
 
@@ -95,6 +96,20 @@ export const api = {
 
   historySnapshot: (date: string) =>
     json<HistorySnapshot>(`/api/history/${encodeURIComponent(date)}`),
+
+  groupAudit: () => json<{ entries: GroupAuditEntry[] }>('/api/groups/audit'),
+
+  addCompany: (input: {
+    ticker: string
+    name: string
+    fiscalYearEnd: number
+    covered: boolean
+    priorYearClose?: number
+  }) =>
+    json<{ ok: boolean; company: CompanyMeta }>('/api/companies', {
+      method: 'POST',
+      body: JSON.stringify(input),
+    }),
 
   logout: () => json<{ ok: boolean }>('/api/logout', { method: 'POST' }),
 

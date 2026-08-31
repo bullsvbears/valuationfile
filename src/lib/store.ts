@@ -36,6 +36,21 @@ export interface Universe {
   peerGroups: Record<string, string[]>
 }
 
+/** One comp-group membership change, as recorded in the audit log. */
+export interface GroupAuditEntry {
+  at: string
+  kind: 'sector' | 'financial'
+  group: string
+  added: string[]
+  removed: string[]
+  /** Set when this edit brought the group into existence. */
+  created?: boolean
+}
+
+export interface GroupAuditLog {
+  entries: GroupAuditEntry[]
+}
+
 export class DataStore {
   constructor(private readonly root: string) {}
 
@@ -280,9 +295,11 @@ export class DataStore {
     const remove = new Set((changes.remove ?? []).filter((t) => t.trim()).map(normalise))
     if (!(group in mapping) && !add.length) throw new Error(`Unknown group "${group}"`)
 
+    const existed = group in mapping
     const current = mapping[group] ?? []
     const next = current.filter((t) => !remove.has(t))
-    for (const ticker of add) if (!next.includes(ticker)) next.push(ticker)
+    const added = add.filter((t) => !next.includes(t))
+    next.push(...added)
     mapping[group] = next
 
     const field = kind === 'sector' ? 'sectors' : 'peerGroups'
@@ -295,7 +312,73 @@ export class DataStore {
     }
 
     await this.writeJson('universe.json', universe)
+
+    // Every membership change leaves an audit entry, so a stat that moved can
+    // be traced to the roster edit that moved it.
+    const removed = current.filter((t) => remove.has(t))
+    if (added.length || removed.length) {
+      const log = await this.loadGroupAudit()
+      log.entries.push({
+        at: new Date().toISOString(),
+        kind,
+        group,
+        added,
+        removed,
+        ...(existed ? {} : { created: true }),
+      })
+      // The log is a working record, not an archive; keep it bounded.
+      if (log.entries.length > 1000) log.entries = log.entries.slice(-1000)
+      await this.writeJson('group-audit.json', log)
+    }
     return next
+  }
+
+  /** The comp-group membership audit log, oldest entry first. */
+  loadGroupAudit(): Promise<GroupAuditLog> {
+    return this.readJson<GroupAuditLog>('group-audit.json', { entries: [] })
+  }
+
+  /**
+   * Add a brand-new company to the universe.
+   *
+   * Only the identity is set here: estimates and balance-sheet inputs are
+   * typed into Master Input afterwards (or arrive with the next FactSet
+   * refresh), the price comes with the next price update, and comp-group
+   * membership is assigned on the peers tabs.
+   */
+  async addCompany(input: {
+    ticker: string
+    name: string
+    fiscalYearEnd: number
+    covered: boolean
+  }): Promise<CompanyMeta> {
+    const ticker = input.ticker.trim().toUpperCase()
+    const name = input.name.trim()
+    if (!/^[A-Z0-9.-]{1,12}$/.test(ticker)) {
+      throw new Error(`"${input.ticker}" is not a usable ticker (letters, digits, . or -)`)
+    }
+    if (!name) throw new Error('The company needs a name')
+    if (!Number.isInteger(input.fiscalYearEnd) || input.fiscalYearEnd < 1 || input.fiscalYearEnd > 12) {
+      throw new Error('Fiscal year end must be a month, 1-12')
+    }
+
+    const universe = await this.loadUniverse()
+    if (universe.companies.some((c) => c.ticker.toUpperCase() === ticker)) {
+      throw new Error(`${ticker} is already in the universe`)
+    }
+
+    const meta: CompanyMeta = {
+      ticker,
+      name,
+      fiscalYearEnd: input.fiscalYearEnd,
+      coverage: input.covered ? 'Bhatia - Covered Companies' : 'Non-Covered Companies',
+      covered: input.covered,
+      sectors: [],
+      peerGroups: [],
+    }
+    universe.companies.push(meta)
+    await this.writeJson('universe.json', universe)
+    return meta
   }
 
   /** Count of override cells an analyst entered here, ignoring imported ones. */

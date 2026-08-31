@@ -161,4 +161,79 @@ describe('comp group editing', () => {
     expect(universe.sectors['Front Office']).toEqual(['ADBE', 'CRM'])
     expect(universe.companies.find((c) => c.ticker === 'ADBE')?.sectors).toEqual(['Front Office'])
   })
+
+  it('records every membership change in the audit log', async () => {
+    await store.updateGroup('sector', 'Front Office', { add: ['NOW'], remove: ['CRM'] })
+    await store.updateGroup('financial', 'My Watchlist', { add: ['ADBE'] })
+    // A no-op edit (already a member) must not clutter the log.
+    await store.updateGroup('sector', 'Front Office', { add: ['ADBE'] })
+
+    const log = await store.loadGroupAudit()
+    expect(log.entries).toHaveLength(2)
+    expect(log.entries[0]).toMatchObject({
+      kind: 'sector',
+      group: 'Front Office',
+      added: ['NOW'],
+      removed: ['CRM'],
+    })
+    expect(log.entries[0]?.created).toBeUndefined()
+    expect(log.entries[0]?.at).toMatch(/^\d{4}-\d{2}-\d{2}T/)
+    expect(log.entries[1]).toMatchObject({
+      kind: 'financial',
+      group: 'My Watchlist',
+      added: ['ADBE'],
+      removed: [],
+      created: true,
+    })
+  })
+})
+
+describe('adding a company', () => {
+  it('adds identity only, normalised, and refuses duplicates and junk', async () => {
+    const meta = await store.addCompany({
+      ticker: ' newco ',
+      name: '  NewCo, Inc. ',
+      fiscalYearEnd: 1,
+      covered: true,
+    })
+    expect(meta).toMatchObject({
+      ticker: 'NEWCO',
+      name: 'NewCo, Inc.',
+      fiscalYearEnd: 1,
+      covered: true,
+      coverage: 'Bhatia - Covered Companies',
+      sectors: [],
+      peerGroups: [],
+    })
+
+    const universe = await store.loadUniverse()
+    expect(universe.companies.map((c) => c.ticker)).toContain('NEWCO')
+
+    // The new name is immediately usable everywhere tickers are validated.
+    await store.updateGroup('sector', 'Front Office', { add: ['NEWCO'] })
+
+    await expect(
+      store.addCompany({ ticker: 'newco', name: 'Again', fiscalYearEnd: 12, covered: false }),
+    ).rejects.toThrow('already in the universe')
+    await expect(
+      store.addCompany({ ticker: 'BAD TICKER', name: 'X', fiscalYearEnd: 12, covered: false }),
+    ).rejects.toThrow('not a usable ticker')
+    await expect(
+      store.addCompany({ ticker: 'OK', name: '  ', fiscalYearEnd: 12, covered: false }),
+    ).rejects.toThrow('needs a name')
+    await expect(
+      store.addCompany({ ticker: 'OK', name: 'X', fiscalYearEnd: 13, covered: false }),
+    ).rejects.toThrow('month')
+  })
+
+  it('marks a non-covered add as such', async () => {
+    const meta = await store.addCompany({
+      ticker: 'PLAIN',
+      name: 'Plain Co',
+      fiscalYearEnd: 12,
+      covered: false,
+    })
+    expect(meta.covered).toBe(false)
+    expect(meta.coverage).toBe('Non-Covered Companies')
+  })
 })
