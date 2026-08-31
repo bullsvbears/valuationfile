@@ -77,6 +77,29 @@ describe('fetching', () => {
     const fetchImpl = (async () => new Response('', { status: 503, statusText: 'down' })) as typeof fetch
     await expect(fetchStooqPrices(['ADBE'], { fetchImpl })).rejects.toThrow('503')
   })
+
+  it('includes the response body in an HTTP failure, tags stripped', async () => {
+    const fetchImpl = (async () =>
+      new Response('<html><body>Exceeded the daily hits limit</body></html>', {
+        status: 404,
+        statusText: 'Not Found',
+      })) as typeof fetch
+    await expect(fetchStooqPrices(['ADBE'], { fetchImpl })).rejects.toThrow(
+      /404 Not Found — Exceeded the daily hits limit/,
+    )
+  })
+
+  it('sends browser-like headers, which Stooq requires of both endpoints', async () => {
+    const seen: (string | undefined)[] = []
+    const fetchImpl = (async (_url: string, init?: RequestInit) => {
+      seen.push((init?.headers as Record<string, string> | undefined)?.['User-Agent'])
+      return new Response('Symbol,Date,Time,Open,High,Low,Close,Volume')
+    }) as typeof fetch
+    await fetchStooqPrices(['ADBE'], { fetchImpl })
+    await fetchYearEndCloses(['ADBE'], 2025, { fetchImpl })
+    expect(seen).toHaveLength(2)
+    for (const agent of seen) expect(agent).toMatch(/^Mozilla\/5\.0/)
+  })
 })
 
 describe('year-end closes', () => {

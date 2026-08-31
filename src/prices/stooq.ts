@@ -19,6 +19,18 @@ const BATCH_SIZE = 40
 const HISTORY_CONCURRENCY = 6
 
 /**
+ * Node's fetch sends no User-Agent at all, and Stooq answers header-less
+ * bot-looking requests with a 404 for URLs that load fine in a browser.
+ * Present ordinary browser headers; the endpoint needs no more than that.
+ */
+const REQUEST_HEADERS = {
+  'User-Agent':
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  Accept: 'text/csv,text/plain,*/*',
+  'Accept-Language': 'en-US,en;q=0.9',
+} as const
+
+/**
  * Non-US listings need explicit symbols; a wrong guess would risk pricing the
  * wrong instrument, so anything unlisted here that is not a plain US ticker
  * goes unmapped and lands on the report instead.
@@ -92,9 +104,13 @@ export async function fetchStooqPrices(
   for (let i = 0; i < symbols.length; i += BATCH_SIZE) {
     const batch = symbols.slice(i, i + BATCH_SIZE)
     const url = `${baseUrl}?s=${batch.join('+')}&f=sd2t2ohlcv&h&e=csv`
-    const res = await doFetch(url)
+    const res = await doFetch(url, { headers: REQUEST_HEADERS })
     if (!res.ok) {
-      throw new Error(`Stooq request failed: ${res.status} ${res.statusText}`)
+      // Surface what Stooq actually said — a bare status is undiagnosable.
+      const body = (await res.text().catch(() => '')).replace(/<[^>]*>/g, ' ').trim().slice(0, 160)
+      throw new Error(
+        `Stooq request failed: ${res.status} ${res.statusText}${body ? ` — ${body}` : ''}`,
+      )
     }
     const quotes = parseStooqCsv(await res.text())
     for (const [symbol, quote] of quotes) {
@@ -157,7 +173,7 @@ export async function fetchYearEndCloses(
       if (!target) return
       const url = `${historyUrl}?s=${target.symbol}&d1=${year}1215&d2=${year}1231&i=d`
       try {
-        const res = await doFetch(url)
+        const res = await doFetch(url, { headers: REQUEST_HEADERS })
         if (!res.ok) continue
         const close = lastCloseFromHistory(await res.text())
         if (close !== null) closes[target.ticker] = close
