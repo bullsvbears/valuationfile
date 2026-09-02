@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { summariseGroup } from '../lib/aggregate.js'
 import type { CompanyView, Dashboard } from '../lib/dashboard.js'
 import { isMeaningful, type YearMetrics } from '../lib/metrics.js'
@@ -174,6 +174,143 @@ function BarChart({
   )
 }
 
+/** Chart-drawing constants shared with the capture below. */
+const CHART_W = 340
+const CHART_H = 240
+
+/**
+ * Serialize one chart's SVG with its styles inlined, so it renders
+ * identically outside the page's stylesheets, and load it as an image.
+ */
+function svgToImage(svg: SVGSVGElement): Promise<HTMLImageElement> {
+  const clone = svg.cloneNode(true) as SVGSVGElement
+  const originals = svg.querySelectorAll<SVGElement>('*')
+  const copies = clone.querySelectorAll<SVGElement>('*')
+  const KEEP = ['fill', 'stroke', 'stroke-width', 'font-size', 'font-family', 'font-weight'] as const
+  originals.forEach((node, index) => {
+    const computed = getComputedStyle(node)
+    const copy = copies[index]
+    if (!copy) return
+    for (const property of KEEP) {
+      copy.style.setProperty(property, computed.getPropertyValue(property))
+    }
+  })
+  clone.setAttribute('width', String(CHART_W))
+  clone.setAttribute('height', String(CHART_H))
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+
+  const blob = new Blob([new XMLSerializer().serializeToString(clone)], {
+    type: 'image/svg+xml;charset=utf-8',
+  })
+  const url = URL.createObjectURL(blob)
+  return new Promise((resolve, reject) => {
+    const image = new Image()
+    image.onload = () => { URL.revokeObjectURL(url); resolve(image) }
+    image.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Chart render failed')) }
+    image.src = url
+  })
+}
+
+/**
+ * Rasterise the whole snapshot — title line, legend, all nine charts — onto
+ * one canvas at 2x, so the paste into a document is crisp at print size.
+ */
+async function renderSnapshotPng(
+  root: HTMLElement,
+  title: string,
+  seriesLabels: [string, string],
+): Promise<HTMLCanvasElement> {
+  const charts = [...root.querySelectorAll<HTMLElement>('.snap-chart')]
+  const images = await Promise.all(
+    charts.map((chart) => {
+      const svg = chart.querySelector('svg')
+      if (!svg) throw new Error('Chart render failed')
+      return svgToImage(svg)
+    }),
+  )
+  const titles = charts.map((c) => c.querySelector('h4')?.textContent ?? '')
+
+  const rootStyle = getComputedStyle(document.documentElement)
+  const colorA = rootStyle.getPropertyValue('--snap-a').trim() || '#2f54a8'
+  const colorB = rootStyle.getPropertyValue('--snap-b').trim() || '#3ba7de'
+  const ink = rootStyle.getPropertyValue('--text').trim() || '#14171d'
+  const border = rootStyle.getPropertyValue('--border').trim() || '#e6e9ef'
+  const surface = rootStyle.getPropertyValue('--surface').trim() || '#ffffff'
+
+  const scale = 2
+  const pad = 14
+  const chartTitleH = 26
+  const cols = 3
+  const rows = Math.ceil(images.length / cols)
+  const cellW = CHART_W + pad * 2
+  const cellH = CHART_H + chartTitleH + pad
+  const headerH = 76
+  const width = cols * cellW + pad * 2
+  const height = headerH + rows * cellH + pad
+
+  const canvas = document.createElement('canvas')
+  canvas.width = width * scale
+  canvas.height = height * scale
+  const ctx = canvas.getContext('2d')
+  if (!ctx) throw new Error('Canvas unavailable')
+  ctx.scale(scale, scale)
+
+  ctx.fillStyle = surface
+  ctx.fillRect(0, 0, width, height)
+
+  // Title line with the reference slide's underline rule, then the legend.
+  ctx.fillStyle = ink
+  ctx.font = '700 20px system-ui, sans-serif'
+  ctx.textAlign = 'center'
+  ctx.fillText(title, width / 2, 30)
+  ctx.strokeStyle = colorB
+  ctx.lineWidth = 2
+  ctx.beginPath()
+  ctx.moveTo(pad * 2, 42)
+  ctx.lineTo(width - pad * 2, 42)
+  ctx.stroke()
+
+  ctx.font = '600 13px system-ui, sans-serif'
+  const legendWidths = seriesLabels.map((label) => ctx.measureText(label).width + 20)
+  const legendGap = 26
+  let x = width / 2 - (legendWidths[0]! + legendWidths[1]! + legendGap) / 2
+  seriesLabels.forEach((label, index) => {
+    ctx.fillStyle = index === 0 ? colorA : colorB
+    ctx.fillRect(x, 54, 12, 12)
+    ctx.fillStyle = ink
+    ctx.textAlign = 'left'
+    ctx.fillText(label, x + 18, 64)
+    x += legendWidths[index]! + legendGap
+  })
+
+  images.forEach((image, index) => {
+    const col = index % cols
+    const row = Math.floor(index / cols)
+    const cellX = pad + col * cellW
+    const cellY = headerH + row * cellH
+
+    ctx.strokeStyle = border
+    ctx.lineWidth = 1
+    ctx.strokeRect(cellX + 0.5, cellY + 0.5, cellW - pad, cellH - pad)
+
+    ctx.fillStyle = ink
+    ctx.font = '700 14px system-ui, sans-serif'
+    ctx.textAlign = 'center'
+    const titleX = cellX + (cellW - pad) / 2
+    ctx.fillText(titles[index] ?? '', titleX, cellY + 18)
+    const half = ctx.measureText(titles[index] ?? '').width / 2
+    ctx.strokeStyle = ink
+    ctx.beginPath()
+    ctx.moveTo(titleX - half, cellY + 21)
+    ctx.lineTo(titleX + half, cellY + 21)
+    ctx.stroke()
+
+    ctx.drawImage(image, cellX + (cellW - pad - CHART_W) / 2, cellY + chartTitleH, CHART_W, CHART_H)
+  })
+
+  return canvas
+}
+
 export function Snapshot({ dashboard }: { dashboard: Dashboard }) {
   const companies = useMemo(
     () =>
@@ -230,6 +367,51 @@ export function Snapshot({ dashboard }: { dashboard: Dashboard }) {
     return new Map(years.map((year) => [year, summariseGroup(group, metrics, year).stats]))
   }, [members, years, group])
 
+  const gridRef = useRef<HTMLDivElement>(null)
+  const [captureNote, setCaptureNote] = useState<{ text: string; error: boolean } | null>(null)
+  const [capturing, setCapturing] = useState(false)
+
+  const copyCharts = async () => {
+    const view = byTicker.get(ticker)
+    if (!gridRef.current || !view) return
+    setCapturing(true)
+    setCaptureNote(null)
+    try {
+      const canvas = await renderSnapshotPng(
+        gridRef.current,
+        `${ticker}: ${view.meta.name} — Stock Price: ${formatPrice(view.metrics.price)}`,
+        [ticker, `${group} Median`],
+      )
+      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'))
+      if (!blob) throw new Error('Could not render the image')
+
+      // Clipboard first; a blocked clipboard falls back to a PNG download,
+      // which inserts into a document just as well.
+      if (navigator.clipboard && typeof ClipboardItem !== 'undefined') {
+        try {
+          await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+          setCaptureNote({ text: 'Copied — paste straight into your doc.', error: false })
+          return
+        } catch {
+          // fall through to the download
+        }
+      }
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(blob)
+      link.download = `${ticker}-snapshot.png`
+      link.click()
+      URL.revokeObjectURL(link.href)
+      setCaptureNote({
+        text: 'Clipboard blocked by the browser — downloaded a PNG instead.',
+        error: false,
+      })
+    } catch (e) {
+      setCaptureNote({ text: e instanceof Error ? e.message : String(e), error: true })
+    } finally {
+      setCapturing(false)
+    }
+  }
+
   if (!company) return <div className="panel">No companies yet.</div>
 
   const seriesLabels: [string, string] = [ticker, `${group} Median`]
@@ -275,9 +457,21 @@ export function Snapshot({ dashboard }: { dashboard: Dashboard }) {
             </optgroup>
           </select>
         </div>
-        <span className="hint">
-          Group medians include every member with data, as on the peers tabs.
-        </span>
+        <button
+          className="btn"
+          onClick={() => void copyCharts()}
+          disabled={capturing}
+          title="Render the title, legend and all nine charts into one image on the clipboard, ready to paste into Word"
+        >
+          {capturing ? 'Capturing…' : 'Copy charts'}
+        </button>
+        {captureNote ? (
+          <span className={captureNote.error ? 'asof-error' : 'hint'}>{captureNote.text}</span>
+        ) : (
+          <span className="hint">
+            Group medians include every member with data, as on the peers tabs.
+          </span>
+        )}
       </div>
 
       <h3 className="snap-title">
@@ -289,7 +483,7 @@ export function Snapshot({ dashboard }: { dashboard: Dashboard }) {
         <span><i className="snap-dot b" /> {seriesLabels[1]}</span>
       </div>
 
-      <div className="snap-grid-3">
+      <div className="snap-grid-3" ref={gridRef}>
         {CHARTS.map((chart) => (
           <BarChart
             key={chart.key}
